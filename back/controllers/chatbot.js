@@ -51,7 +51,7 @@ function execute_sql_query(args) {
             });
         } else {
             const info = statement.run(); 
-            console.log(`✅ Commande non-SELECT exécutée : ${trimmedQuery.split(' ')[0]}`);
+            console.log(`Commande non-SELECT exécutée : ${trimmedQuery.split(' ')[0]}`);
             return JSON.stringify({ 
                 status: "success",
                 type: "NON_SELECT_INFO",
@@ -96,10 +96,7 @@ async function runChatWithTools(history, model) {
         const call = response.functionCalls[0];
         const functionName = call.name;
         
-        const {functionResult, manage_window_b} = availableFunctions[functionName](call.args);
-        if (manage_window_b) {
-          manage_window_args = call.args;
-        }
+        const functionResult = availableFunctions[functionName](call.args);
         newHistory.push({
             role: "tool",
             parts: [{ functionResponse: { name: functionName, response: { content: functionResult } } }]

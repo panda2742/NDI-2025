@@ -39,7 +39,7 @@ const Task = () => {
                 }
             };
     
-            const intervalId = setInterval(executeRoutineAndNotify, 10000);
+            const intervalId = setInterval(executeRoutineAndNotify, 30000);
     
             return () => {
                 clearInterval(intervalId);
