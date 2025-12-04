@@ -33,12 +33,12 @@ export interface IApp {
 export const defaultApps: IApp[][] = [
     [
         {
-            label: "WhatsWeb",
-            id: "whatsweb",
-            content: <WhatsWebProject key={"whatsweb"} />,
-            iconKey: "whatsweb",
-            state: 2,
-            type: "project",
+            label: 'WhatsWeb',
+            id: 'whatsweb',
+            content: <WhatsWebProject key={'whatsweb'} />,
+            iconKey: 'whatsweb',
+            state: 0,
+            type: 'project'
         },
         {
             label: "Server",
@@ -65,13 +65,13 @@ export const defaultApps: IApp[][] = [
             type: "project",
         },
         {
-            label: "Terminal",
-            id: "terminal",
-            content: <Terminal key={"contact"} />,
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
+            label: 'Terminal',
+            id: 'terminal',
+            content: <Terminal key={'contact'} />,
+            iconKey: 'terminal',
+            state: 2,
+            type: 'application'
+        }
     ],
     [
         {
