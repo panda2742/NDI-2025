@@ -40,6 +40,46 @@
 			background: rgba(255, 255, 255, 0.03);
 			color: #d6dce6;
 		}
+
+		/* typing indicator */
+		.message.typing {
+			display: inline-flex;
+			gap: 6px;
+			align-items: center;
+			background: rgba(255,255,255,0.02);
+			padding: 8px 12px;
+			border-radius: 16px;
+		}
+
+		.typing-dot {
+			width: 6px;
+			height: 6px;
+			background: rgba(255,255,255,0.5);
+			border-radius: 50%;
+			opacity: 0.25;
+			animation: blink 1s infinite ease-in-out;
+		}
+
+		.typing-dot:nth-child(2) {
+			animation-delay: 0.12s;
+		}
+
+		.typing-dot:nth-child(3) {
+			animation-delay: 0.24s;
+		}
+
+		@keyframes blink {
+			0% { opacity: 0.25; transform: translateY(0); }
+			40% { opacity: 1; transform: translateY(-3px); }
+			100% { opacity: 0.25; transform: translateY(0); }
+		}
+
+		.composer-send[disabled] {
+			opacity: 0.6;
+			cursor: not-allowed;
+			transform: none;
+			box-shadow: none;
+		}
 	}
 
 
@@ -94,6 +134,19 @@
 			transform: translateY(0);
 			box-shadow: 0 3px 8px linear-gradient(180deg, rgba(6, 95, 70, 0.32), rgba(6, 78, 59, 0.32));
 		}
+	}
+
+	/* shake animation */
+	@keyframes horizontal-shaking {
+		0% { transform: translateX(0) }
+		25% { transform: translateX(5px) }
+		50% { transform: translateX(-5px) }
+		75% { transform: translateX(5px) }
+		100% { transform: translateX(0) }
+	}
+
+	.composer.error {
+		animation: infinite 100ms horizontal-shaking;
 	}
 
 

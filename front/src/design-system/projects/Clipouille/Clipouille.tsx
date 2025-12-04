@@ -18,18 +18,29 @@ export const Clipouille = () => {
 	const [input, setInput] = useState('')
 	const nextId = useRef(2)
 	const endRef = useRef<HTMLDivElement | null>(null)
+	const [isThinking, setIsThinking] = useState(false)
+	const [isInputShaking, setIsInputShaking] = useState(false)
 
 	useEffect(() => {
 		endRef.current?.scrollIntoView({ behavior: 'smooth' })
 	}, [messages])
 
+	const shakeInputError = () => {
+		setIsInputShaking(true);
+		setTimeout(() => {	
+			setIsInputShaking(false);
+		}, 200);
+	}
+
 	const sendMessage = () => {
+		if (isThinking) return shakeInputError();
 		const text = input.trim()
-		if (!text) return
+		if (!text) return shakeInputError();
 
 		const userMsg: Message = { id: nextId.current++, sender: 'user', text }
 		setMessages((prev) => [...prev, userMsg])
 		setInput('')
+		setIsThinking(true)
 
 		setTimeout(() => {
 			const reply: Message = {
@@ -38,7 +49,8 @@ export const Clipouille = () => {
 				text: `Réponse fixe de l'assistant : j'ai reçu "${text}".`,
 			}
 			setMessages((prev) => [...prev, reply])
-		}, 500)
+			setIsThinking(false)
+		}, 800)
 	}
 
 	return (
@@ -49,11 +61,18 @@ export const Clipouille = () => {
 						{m.text}
 					</div>
 				))}
+					{isThinking && (
+						<div className={`message assistant typing`} aria-hidden>
+							<span className="typing-dot"/>
+							<span className="typing-dot"/>
+							<span className="typing-dot"/>
+						</div>
+					)}
 				<div ref={endRef} />
 			</div>
 
 			<form
-				className="composer"
+				className={`composer ${isInputShaking ? 'error' : ''}`}
 				onSubmit={(e) => {
 					e.preventDefault()
 					sendMessage()
