@@ -1,56 +1,58 @@
-import {useState, useRef, useEffect, MutableRefObject, MouseEvent} from 'react';
+import {
+    useState,
+    useRef,
+    useEffect,
+    MutableRefObject,
+    MouseEvent,
+} from "react";
 
-import { WindowServer } from '@molecules/window_server/window_server.tsx';
-import { defaultApps, IApp } from '#/default_apps.tsx';
-import { Dock } from '@molecules/dock/dock.tsx';
-import { App } from '@molecules/app/app.tsx'
+import { WindowServer } from "@molecules/window_server/window_server.tsx";
+import { defaultApps, IApp } from "#/default_apps.tsx";
+import { Dock } from "@molecules/dock/dock.tsx";
+import { App } from "@molecules/app/app.tsx";
+import { Activities } from "@molecules/activities/activities.tsx";
 
-import Draggable from 'gsap/Draggable'
-import gsap from 'gsap';
+import Draggable from "gsap/Draggable";
+import gsap from "gsap";
 
-import '@css/App.scss'
-
-
-
+import "@css/App.scss";
 
 gsap.registerPlugin(Draggable);
 
 const createDraggableApp = (uniqueKey: string) => {
     Draggable.create(`.app-id-${uniqueKey}`, {
-        bounds: '.apps-container',
+        bounds: ".apps-container",
         trigger: `.app-id-${uniqueKey} > .app-header`,
         allowEventDefault: true,
-        zIndexBoost: false
-    })
-}
+        zIndexBoost: false,
+    });
+};
 
-function MacOS() {
-
+function Ubuntu() {
     const [appWindow, setAppWindow] = useState({
-        focusAppName: 'Finder',
+        focusAppName: "Finder",
         menuItems: [
-            { label: 'Fichier' },
-            { label: 'Éditer' },
-            { label: 'Présentation' },
-            { label: 'Aller' },
-            { label: 'Fenêtre' },
-            { label: 'Aide' },
-        ]
-    })
+            { label: "Fichier" },
+            { label: "Éditer" },
+            { label: "Présentation" },
+            { label: "Aller" },
+            { label: "Fenêtre" },
+            { label: "Aide" },
+        ],
+    });
 
-
-    const [apps, setApps] = useState(defaultApps)
+    const [apps, setApps] = useState(defaultApps);
+    const [showActivities, setShowActivities] = useState(false);
 
     const updateAppState = (id: string, newState: 0 | 1 | 2) => {
         setApps((prevApps) =>
             prevApps.map((group) =>
                 group.map((app) =>
-                    app.id === id ? { ...app, state: newState } : app
-                )
-            )
+                    app.id === id ? { ...app, state: newState } : app,
+                ),
+            ),
         );
     };
-
 
     const zIndexBoost = useRef(100);
 
@@ -59,32 +61,36 @@ function MacOS() {
     useEffect(() => {
         if (!appsContainer.current) return;
 
-        apps.forEach(appGroup => appGroup.forEach((app) => {
-            createDraggableApp(app.id)
-        }))
+        apps.forEach((appGroup) =>
+            appGroup.forEach((app) => {
+                createDraggableApp(app.id);
+            }),
+        );
+    }, [appsContainer]);
 
-    }, [appsContainer])
-
-    const handleZIndexBoost = (e: MutableRefObject<HTMLDivElement | null>, currentApp: IApp) => {
-        if (!e.current) return
-        console.log(`➡️ Focus : ${currentApp.id}`)
+    const handleZIndexBoost = (
+        e: MutableRefObject<HTMLDivElement | null>,
+        currentApp: IApp,
+    ) => {
+        if (!e.current) return;
+        console.log(`➡️ Focus : ${currentApp.id}`);
 
         e.current.style.zIndex = zIndexBoost.current.toString();
         zIndexBoost.current++;
 
-        setAppWindow((prevState) =>
-            ({...prevState, focusAppName: currentApp.label}))
-    }
-
+        setAppWindow((prevState) => ({
+            ...prevState,
+            focusAppName: currentApp.label,
+        }));
+    };
 
     let mousePressed = false;
     let firstPosX = 0;
     let firstPosY = 0;
     const selectZoneRef = useRef<HTMLDivElement | null>(null);
 
-
     const handleMouseMove = (e: MouseEvent) => {
-        if (!mousePressed || !selectZoneRef.current) return
+        if (!mousePressed || !selectZoneRef.current) return;
         // e.preventDefault();
 
         // console.log(e.target)
@@ -107,55 +113,106 @@ function MacOS() {
             selectZoneRef.current.style.top = `${e.pageY}px`;
             selectZoneRef.current.style.height = `${edgeY * -1}px`;
         }
-
-
-    }
+    };
 
     const handleMouseDown = (e: MouseEvent) => {
-        const target = e.target as HTMLElement
-        if (!target?.classList.contains('apps-container')) return;
+        const target = e.target as HTMLElement;
+        if (!target?.classList.contains("apps-container")) return;
 
         e.preventDefault();
 
         firstPosX = e.pageX;
         firstPosY = e.pageY;
-        mousePressed = true
+        mousePressed = true;
 
-        if (!selectZoneRef.current) return
-        selectZoneRef.current.style.display = 'flex'
-
-    }
+        if (!selectZoneRef.current) return;
+        selectZoneRef.current.style.display = "flex";
+    };
 
     const handleMouseUP = () => {
-        mousePressed = false
-        if (!selectZoneRef.current) return
+        mousePressed = false;
+        if (!selectZoneRef.current) return;
 
-        selectZoneRef.current.style.display = 'none'
-        selectZoneRef.current.style.left = '0';
-        selectZoneRef.current.style.width = '0';
-        selectZoneRef.current.style.top = '0';
-        selectZoneRef.current.style.height = '0';
-    }
+        selectZoneRef.current.style.display = "none";
+        selectZoneRef.current.style.left = "0";
+        selectZoneRef.current.style.width = "0";
+        selectZoneRef.current.style.top = "0";
+        selectZoneRef.current.style.height = "0";
+    };
 
+    return (
+        <div
+            id="app"
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUP}
+            onMouseDown={handleMouseDown}
+        >
+            <img
+                src="/src/assets/jellyfish_RGB-grey_hex.svg"
+                alt="jellyfish"
+                className="background-svg-overlay"
+            />
+            <WindowServer
+                {...appWindow}
+                onActivityClick={() => setShowActivities(true)}
+            />
+            {showActivities && (
+                <Activities
+                    isVisible={showActivities}
+                    apps={apps}
+                    onClose={() => setShowActivities(false)}
+                    onAppClick={(appId) => {
+                        updateAppState(appId, 2);
+                    }}
+                    onWindowBringToFront={(appId) => {
+                        const appElement = document.querySelector(
+                            `.app-id-${appId}`,
+                        ) as HTMLElement;
 
-    return <div id="app" onMouseMove={handleMouseMove} onMouseUp={handleMouseUP} onMouseDown={handleMouseDown}>
-        <WindowServer {...appWindow} />
-        <div className="apps-container" ref={appsContainer}>
+                        const currentApp = apps
+                            .flat()
+                            .find((app) => app.id === appId);
 
-            {apps.map((appGroup, groupIndex) => (
-                appGroup.map((app, appIndex) => {
-                    if (!app.content) return
-                    return <App label={app.label} state={app.state} uniqueKey={app.id} type={app.type} key={groupIndex+appIndex} onMouseDown={(e) => {handleZIndexBoost(e, app)}} updateState={(newState) => updateAppState(app.id, newState)}>
-                        {app.content}
-                    </App>
-                })
-            ))}
+                        if (appElement && currentApp) {
+                            const elementRef: MutableRefObject<HTMLDivElement | null> =
+                                {
+                                    current: appElement as HTMLDivElement,
+                                };
+                            handleZIndexBoost(elementRef, currentApp);
+                        }
+                    }}
+                />
+            )}
+            <div className="apps-container" ref={appsContainer}>
+                {apps.map((appGroup, groupIndex) =>
+                    appGroup.map((app, appIndex) => {
+                        if (!app.content) return;
+                        return (
+                            <App
+                                label={app.label}
+                                state={app.state}
+                                uniqueKey={app.id}
+                                type={app.type}
+                                key={groupIndex + appIndex}
+                                onMouseDown={(e) => {
+                                    handleZIndexBoost(e, app);
+                                }}
+                                updateState={(newState) =>
+                                    updateAppState(app.id, newState)
+                                }
+                            >
+                                {app.content}
+                            </App>
+                        );
+                    }),
+                )}
+            </div>
+
+            <div id="select-zone" ref={selectZoneRef}></div>
+
+            <Dock apps={apps} updateAppState={updateAppState} />
         </div>
-
-        <div id="select-zone" ref={selectZoneRef}></div>
-
-        <Dock apps={apps} updateAppState={updateAppState}/>
-    </div>;
+    );
 }
 
-export default MacOS
+export default Ubuntu;

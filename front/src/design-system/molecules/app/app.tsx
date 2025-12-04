@@ -1,36 +1,47 @@
-import {PropsWithChildren, useState, useEffect, useRef, MutableRefObject} from "react";
-import './style.scss'
-import './style-project.scss'
-import './style-application.scss'
-import './style-contact.scss'
+import {
+    PropsWithChildren,
+    useState,
+    useEffect,
+    useRef,
+    MutableRefObject,
+} from "react";
+import "./style.scss";
+import "./style-project.scss";
+import "./style-application.scss";
+import "./style-contact.scss";
 
-import {Controls} from "@atoms/controls/controls.tsx";
-import {openFullscreen} from "#/lib/fullscreen.tsx";
+import { Controls } from "@atoms/controls/controls.tsx";
+import { openFullscreen } from "#/lib/fullscreen.tsx";
 
-
-const ACCEPTED_FULLSCREEN_APP_TYPES: IAppC['type'][] = ['project']
-
+const ACCEPTED_FULLSCREEN_APP_TYPES: IAppC["type"][] = ["project"];
 
 interface IAppC {
-    label: string,
-    uniqueKey: string,
-    state: 0 | 1 | 2,
-    type: 'project' | 'application' | 'contact',
-    onMouseDown?: (e: MutableRefObject<HTMLDivElement | null>) => void,
-    updateState?: (newState: 0 | 1 | 2) => void,
+    label: string;
+    uniqueKey: string;
+    state: 0 | 1 | 2;
+    type: "project" | "application" | "contact";
+    onMouseDown?: (e: MutableRefObject<HTMLDivElement | null>) => void;
+    updateState?: (newState: 0 | 1 | 2) => void;
 }
 
-export const App = ({label, uniqueKey, state, type, children, onMouseDown = () => {}, updateState = () => {}}: PropsWithChildren<IAppC>) => {
+export const App = ({
+    label,
+    uniqueKey,
+    state,
+    type,
+    children,
+    onMouseDown = () => {},
+    updateState = () => {},
+}: PropsWithChildren<IAppC>) => {
     const [isVisible, setVisibility] = useState(state === 2);
 
     const component = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (!component.current) return
-        setVisibility(state === 2)
-        onMouseDown(component)
-
-    }, [state])
+        if (!component.current) return;
+        setVisibility(state === 2);
+        onMouseDown(component);
+    }, [state]);
 
     const bodyRef = useRef<HTMLDivElement>(null);
 
