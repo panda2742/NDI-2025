@@ -3,7 +3,7 @@ import { ReactElement } from 'react'
 // import { ProjectTemplate } from '@atoms/project_template/project_template.tsx';
 // import { Terminal } from '@molecules/terminal/terminal.tsx';
 import { Contact } from '@molecules/contact/contact.tsx';
-import { OkNestorProject, RootmeProject, ServerProject, WhatsWebProject } from '@projects/index.ts';
+import { OkNestorProject, Clipouille, ServerProject, WhatsWebProject } from '@projects/index.ts';
 import {Terminal} from "@molecules/terminal/terminal.tsx";
 
 
@@ -24,7 +24,7 @@ export const defaultApps: IApp[][] = [
             id: 'whatsweb',
             content: <WhatsWebProject key={'whatsweb'} />,
             iconKey: 'whatsweb',
-            state: 2,
+            state: 0,
             type: 'project'
         },
         {
@@ -36,11 +36,11 @@ export const defaultApps: IApp[][] = [
             type: 'project'
         },
         {
-            label: 'RootMe',
-            id: 'rootme',
-            content: <RootmeProject key={'rootme'} />,
+            label: 'Clipouille',
+            id: 'clipouille',
+            content: <Clipouille key={'clipouille'} />,
             iconKey: 'rootme',
-            state: 0,
+            state: 2,
             type: 'project'
         },
         {

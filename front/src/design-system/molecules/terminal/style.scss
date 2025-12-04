@@ -2,8 +2,11 @@
     background: #1e1d1e;
     color: white;
 
-    height: 340px;
-    width: 600px;
+    // height: 340px;
+    // width: 600px;
+    height: 100%;
+    width: 100%;
+    min-width: max-content;
 
     overflow: auto;
 
@@ -52,14 +55,10 @@
             min-height: 18px;
 
             .pre-command-text {
+                margin-left: 3px;
                 display: flex;
                 align-items: center;
             }
-
-
-
-
-
 
             .bold {
                 font-weight: bold;
@@ -84,9 +83,9 @@
             }
 
             .blue {
-                color: #0000ff; /* Bleu vif */
-                fill: #0000ff;
-                stroke: #0000ff;
+                color: #2525ff; /* Bleu vif */
+                fill: #2525ff;
+                stroke: #2525ff;
             }
 
             .purple {
