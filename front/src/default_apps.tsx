@@ -58,7 +58,7 @@ export const defaultApps: IApp[][] = [
             id: 'terminal',
             content: <Terminal key={'contact'} />,
             iconKey: 'terminal',
-            state: 2,
+            state: 0,
             type: 'application'
         }
     ],

@@ -3,6 +3,8 @@ import './style.scss';
 import { useEffect, useRef, useState } from 'react'
 import '@atoms/project_template/style.scss'
 
+import SendIcon from '../../../assets/clipouille/send.svg'
+
 type Message = {
 	id: number
 	sender: 'user' | 'assistant'
@@ -64,7 +66,7 @@ export const Clipouille = () => {
 					placeholder="Écrire un message..."
 				/>
 				<button className="composer-send" type="submit">
-					Envoyer
+					<img src={SendIcon} alt="send" />
 				</button>
 			</form>
 		</div>
