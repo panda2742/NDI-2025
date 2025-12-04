@@ -1,16 +1,11 @@
-import {
-    useState,
-    useRef,
-    useEffect,
-    MutableRefObject,
-    MouseEvent,
-} from "react";
+import { useState, useRef, useEffect, MutableRefObject } from "react";
 
 import { WindowServer } from "@molecules/window_server/window_server.tsx";
 import { defaultApps, IApp } from "#/default_apps.tsx";
 import { Dock } from "@molecules/dock/dock.tsx";
 import { App } from "@molecules/app/app.tsx";
 import { Activities } from "@molecules/activities/activities.tsx";
+import { DraggableJellyfish } from "@molecules/draggable-jellyfish/draggable-jellyfish.tsx";
 
 import Draggable from "gsap/Draggable";
 import gsap from "gsap";
@@ -84,78 +79,13 @@ function Ubuntu() {
         }));
     };
 
-    let mousePressed = false;
-    let firstPosX = 0;
-    let firstPosY = 0;
-    const selectZoneRef = useRef<HTMLDivElement | null>(null);
-
-    const handleMouseMove = (e: MouseEvent) => {
-        if (!mousePressed || !selectZoneRef.current) return;
-        // e.preventDefault();
-
-        // console.log(e.target)
-
-        const edgeX = e.pageX - firstPosX;
-        const edgeY = e.pageY - firstPosY;
-
-        if (edgeX > 0) {
-            selectZoneRef.current.style.left = `${firstPosX}px`;
-            selectZoneRef.current.style.width = `${edgeX}px`;
-        } else {
-            selectZoneRef.current.style.left = `${e.pageX}px`;
-            selectZoneRef.current.style.width = `${edgeX * -1}px`;
-        }
-
-        if (edgeY > 0) {
-            selectZoneRef.current.style.top = `${firstPosY}px`;
-            selectZoneRef.current.style.height = `${edgeY}px`;
-        } else {
-            selectZoneRef.current.style.top = `${e.pageY}px`;
-            selectZoneRef.current.style.height = `${edgeY * -1}px`;
-        }
-    };
-
-    const handleMouseDown = (e: MouseEvent) => {
-        const target = e.target as HTMLElement;
-        if (!target?.classList.contains("apps-container")) return;
-
-        e.preventDefault();
-
-        firstPosX = e.pageX;
-        firstPosY = e.pageY;
-        mousePressed = true;
-
-        if (!selectZoneRef.current) return;
-        selectZoneRef.current.style.display = "flex";
-    };
-
-    const handleMouseUP = () => {
-        mousePressed = false;
-        if (!selectZoneRef.current) return;
-
-        selectZoneRef.current.style.display = "none";
-        selectZoneRef.current.style.left = "0";
-        selectZoneRef.current.style.width = "0";
-        selectZoneRef.current.style.top = "0";
-        selectZoneRef.current.style.height = "0";
-    };
-
     return (
-        <div
-            id="app"
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUP}
-            onMouseDown={handleMouseDown}
-        >
-            <img
-                src="/src/assets/jellyfish_RGB-grey_hex.svg"
-                alt="jellyfish"
-                className="background-svg-overlay"
-            />
+        <div id="app">
             <WindowServer
                 {...appWindow}
                 onActivityClick={() => setShowActivities(true)}
             />
+            {showActivities && <div className="activities-overlay"></div>}
             {showActivities && (
                 <Activities
                     isVisible={showActivities}
@@ -208,9 +138,14 @@ function Ubuntu() {
                 )}
             </div>
 
-            <div id="select-zone" ref={selectZoneRef}></div>
-
             <Dock apps={apps} updateAppState={updateAppState} />
+
+            <div className="jellyfish-layer">
+                <DraggableJellyfish
+                    src="/src/assets/jellyfish_RGB-grey_hex.svg"
+                    alt="jellyfish"
+                />
+            </div>
         </div>
     );
 }
