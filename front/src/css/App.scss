@@ -6,14 +6,26 @@
     height: 100vh;
     width: 100vw;
 
+    background: #ffffff url("../assets/background.jpg") center center/cover
+        no-repeat local;
 
-    background: #ffffff url("../assets/background.jpg") center center/cover no-repeat local;;
-
+    .background-svg-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 600px;
+        height: auto;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.15;
+    }
 
     .apps-container {
         position: relative;
         width: 100%;
         height: calc(100vh - 24px - 68px);
+        z-index: 1;
 
         .app-id-Cacacacazerr {
             transform: translate(40px, 50px);
