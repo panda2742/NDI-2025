@@ -1,0 +1,90 @@
+.appIcon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+        .tool-tip-name {
+            display: flex;
+        }
+    }
+
+    .tool-tip-name {
+        position: absolute;
+        background: transparent;
+
+        display: none;
+        flex-direction: column;
+        align-items: center;
+
+        z-index: 99999999;
+
+        transform: translateY(-48px);
+
+        .text {
+            font-size: 0.8em;
+            font-weight: 400;
+
+            color: black;
+            padding: 6px 14px;
+
+            border-radius: 4px;
+
+            background-color: var(--bg-primary);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .blurred-shape {
+            align-self: center;
+            position: relative;
+
+
+            width: 27px;
+            height: 8px;
+
+            background-color: var(--bg-primary);
+
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            svg {
+                position: absolute;
+                top: 0;
+
+                mask path {
+                    fill: rgb(255, 255, 255);
+                }
+
+            }
+        }
+
+    }
+
+    img {
+        display: flex;
+        width: 50px;
+        height: 50px;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .open {
+        &.active {
+            border-radius: 4px;
+            background-color: var(--bg-secondary);
+            mix-blend-mode: hard-light;
+        }
+
+        position: relative;
+        top: 3px;
+
+        //justify-self: center;
+
+        width: 4px;
+        height: 4px;
+        border-radius: 2px;
+    }
+}

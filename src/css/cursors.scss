@@ -1,0 +1,55 @@
+body, * {
+    cursor: url("../assets/cursors/Normal.cur"), auto; /* Curseur par défaut */
+}
+
+a, .link, .pointer {
+    cursor: url("../assets/cursors/Link.cur"), pointer;
+}
+
+button, .button {
+    cursor: url("../assets/cursors/Handwriting.cur"), pointer;
+}
+
+input[type="text"], textarea, .text-input {
+    cursor: url("../assets/cursors/Text.cur"), text;
+}
+
+input[type="not-allowed"], .disabled {
+    cursor: url("../assets/cursors/Unavailable.cur"), not-allowed;
+}
+
+.move, .draggable {
+    cursor: url("../assets/cursors/Move.cur"), move;
+}
+
+.resize-horizontal {
+    cursor: url("../assets/cursors/Horizontal Resize.cur"), ew-resize;
+}
+
+.resize-vertical {
+    cursor: url("../assets/cursors/Vertical Resize.cur"), ns-resize;
+}
+
+.resize-diagonal-1 {
+    cursor: url("../assets/cursors/Diagonal Resize 1.cur"), nesw-resize;
+}
+
+.resize-diagonal-2 {
+    cursor: url("../assets/cursors/Diagonal Resize 2.cur"), nwse-resize;
+}
+
+.zoom-in {
+    cursor: url("../assets/cursors/Zoom-in.cur"), zoom-in;
+}
+
+.zoom-out {
+    cursor: url("../assets/cursors/Zoom-out.cur"), zoom-out;
+}
+
+.progress {
+    cursor: url("../assets/cursors/Working.ani"), progress;
+}
+
+.help {
+    cursor: url("../assets/cursors/Help.cur"), help;
+}

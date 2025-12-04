@@ -1,0 +1,59 @@
+.dock {
+    width: fit-content;
+    position: relative;
+
+    .dock-apps {
+        position: relative;
+        //z-index: ;
+        display: flex;
+
+        gap: 18px;
+
+        width: 100%;
+        height: 100%;
+
+        padding: 4px 4px 5px 4px;
+
+        .apps-group {
+            position: relative;
+            display: flex;
+            gap: 2px;
+
+
+        }
+
+        .apps-group:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 5px;
+
+            height: calc(100% - 9px);
+            width: 1px;
+
+            border-radius: 10px;
+            //align-self: center;
+
+
+
+            background-color: rgba(61, 61, 61, 0.7);
+        }
+    }
+    .dock-bg {
+        width: 100%;
+        height: 100%;
+
+        position: absolute;
+        z-index: 0;
+
+        border-radius: 16px;
+        border: 1px solid var(--border-dock);
+
+        background: var(--bg-primary);
+
+        mix-blend-mode: normal;
+
+        box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(15px);
+    }
+}

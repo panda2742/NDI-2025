@@ -1,0 +1,32 @@
+.window_menu_item {
+    font-size: .82em;
+    font-weight: 400;
+
+    color: black;
+
+    padding: 0 8px 0 8px;
+
+    height: 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    border-radius: 3px;
+
+    //text-shadow: rgba(0, 0, 0, 0.4) 0 0 15px;
+
+    cursor: pointer;
+
+    transition: all ease-in-out 100ms;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.15);
+    }
+
+    &.primary {
+        font-weight: 600;
+    }
+}

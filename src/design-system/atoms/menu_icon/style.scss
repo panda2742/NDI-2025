@@ -1,0 +1,40 @@
+.window_menu_icon {
+    color: white;
+
+    padding: 0 10px 0 10px;
+
+    height: 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    border-radius: 3px;
+
+    //text-shadow: #000 1px 3px 15px;
+
+    cursor: pointer;
+
+    svg {
+        background: transparent;
+
+        path {
+            fill: black;
+        }
+    }
+
+    .window-menu-icon-date {
+        color: black;
+        font-size: .82em;
+
+        white-space: nowrap;
+        text-overflow: '';
+        overflow: hidden;
+    }
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.15);
+    }
+}

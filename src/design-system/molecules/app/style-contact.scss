@@ -1,0 +1,42 @@
+.app-contact {
+    position: absolute;
+
+    top: 16px;
+    left: 16px;
+
+    &:not(.active) {
+        display: none;
+    }
+
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid #929292;
+
+    width: fit-content;
+    overflow: hidden;
+
+
+    &-header {
+        position: absolute;
+
+        width: 250px;
+
+        padding: 13px 13px;
+        display: flex;
+        align-items: center;
+
+        height: calc(14px + 13px*2);
+
+
+        &-name {
+            display: none;
+        }
+    }
+
+    &-body {
+        max-height: none;
+    }
+}

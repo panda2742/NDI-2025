@@ -1,0 +1,24 @@
+{
+    "files": [],
+    "references": [
+        {
+            "path": "./tsconfig.app.json"
+        },
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ],
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@atoms/*": ["src/design-system/atoms/*"],
+            "@molecules/*": ["src/design-system/molecules/*"],
+            "@projects/*": ["src/design-system/projects/*"],
+            "@assets/*": ["src/assets/*"],
+            "@types/*": ["src/types/*"],
+            "@css/*": ["src/css/*"],
+            "#/*": ["src/*"]
+        },
+        "types": ["node"]
+    }
+}
