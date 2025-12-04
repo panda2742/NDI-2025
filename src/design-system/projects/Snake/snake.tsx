@@ -1,14 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 
 export const SnakeProject = () => {
+
+	const divRef = useRef<HTMLDivElement | null>(null);
+	const [cellSize, setCellSize] = useState(20);
+
+	useEffect(() => {
+	if (divRef.current) {
+		const rect = divRef.current.getBoundingClientRect();
+		const size = Math.floor(Math.min(rect.width, rect.height) / GRID_SIZE);
+		setCellSize(size);
+	}
+	}, []);
+
 	const GRID_SIZE = 20;
-	const CELL = 20;
 	const snakeStartingX = 19;
 	const snakeStartingY = 10;
 	const snakeSpeed = 10;
 	const snakeInterval = 1000 / snakeSpeed;
 
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+	const [isRunning, setIsRunning] = useState(false);
+	const [isPaused, setIsPaused] = useState(false);
+	const [score, setScore] = useState(0);
+	const [time, setTime] = useState(0);
 
 	const directionList = {
 		ArrowUp: { x: 0, y: -1 },
@@ -17,7 +33,7 @@ export const SnakeProject = () => {
 		ArrowRight: { x: 1, y: 0 },
 	};
 
-	const [snake, setSnake] = useState([{ x: 10, y: 10 }]);
+	const [snake, setSnake] = useState([{ x: snakeStartingX, y: snakeStartingY }]);
 	const snakeRef = useRef(snake);
 	snakeRef.current = snake;
 
@@ -34,14 +50,9 @@ export const SnakeProject = () => {
 		y: Math.floor(Math.random() * GRID_SIZE),
 	});
 
-	const [apple, setApple] = useState(randomPos());
+	const [apple, setApple] = useState({x: -1, y: -1});
 	const appleRef = useRef(apple);
 	appleRef.current = apple;
-
-	const [isRunning, setIsRunning] = useState(false);
-	const [isPaused, setIsPaused] = useState(false);
-	const [score, setScore] = useState(0);
-	const [time, setTime] = useState(0);
 
 	const startGame = () => {
 		const startSnake = [{ x: snakeStartingX, y: snakeStartingY}];
@@ -155,22 +166,22 @@ export const SnakeProject = () => {
 		const ctx = ctxRef.current;
 		if (!ctx) return;
 
-		ctx.clearRect(0, 0, GRID_SIZE * CELL, GRID_SIZE * CELL);
+		ctx.clearRect(0, 0, GRID_SIZE * cellSize, GRID_SIZE * cellSize);
 
 		// background
 		for (let y = 0; y < GRID_SIZE; y++) {
 			for (let x = 0; x < GRID_SIZE; x++) {
 			ctx.fillStyle = (x + y) % 2 ? "#ADF6B1" : "#A1E5AB";
-			ctx.fillRect(x * CELL, y * CELL, CELL, CELL);
+			ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
 			}
 		}
 
 		ctx.fillStyle = "#FF4747";
 		ctx.beginPath();
 		ctx.arc(
-			appleRef.current.x * CELL + CELL / 2,
-			appleRef.current.y * CELL + CELL / 2,
-			CELL * 0.4,
+			appleRef.current.x * cellSize + cellSize / 2,
+			appleRef.current.y * cellSize + cellSize / 2,
+			cellSize * 0.4,
 			0,
 			Math.PI * 2
 		);
@@ -178,7 +189,7 @@ export const SnakeProject = () => {
 
 		ctx.fillStyle = "#3d53e0";
 		snakeRef.current.forEach(seg => {
-			ctx.fillRect(seg.x * CELL, seg.y * CELL, CELL, CELL);
+			ctx.fillRect(seg.x * cellSize, seg.y * cellSize, cellSize, cellSize);
 		});
 
 		ctx.fillStyle = "black";
@@ -190,21 +201,21 @@ export const SnakeProject = () => {
 
 		if (!isRunning) {
 			ctx.fillStyle = "rgba(0,0,0,0.5)";
-			ctx.fillRect(GRID_SIZE * CELL / 4, GRID_SIZE * CELL / 2 - 30, GRID_SIZE * CELL / 2, 60);
+			ctx.fillRect(GRID_SIZE * cellSize / 4, GRID_SIZE * cellSize / 2 - 30, GRID_SIZE * cellSize / 2, 60);
 			ctx.fillStyle = "white";
 			ctx.font = "30px Arial";
 			ctx.textAlign = "center";
 			ctx.textBaseline = "middle";
-			ctx.fillText("START GAME", GRID_SIZE * CELL / 2, GRID_SIZE * CELL / 2);
+			ctx.fillText("START GAME", GRID_SIZE * cellSize / 2, GRID_SIZE * cellSize / 2);
 		}
 		if (isPaused) {
 			ctx.fillStyle = "rgba(0,0,0,0.5)";
-			ctx.fillRect(GRID_SIZE * CELL / 4, GRID_SIZE * CELL / 2 - 30, GRID_SIZE * CELL / 2, 60);
+			ctx.fillRect(GRID_SIZE * cellSize / 4, GRID_SIZE * cellSize / 2 - 30, GRID_SIZE * cellSize / 2, 60);
 			ctx.fillStyle = "white";
 			ctx.font = "30px Arial";
 			ctx.textAlign = "center";
 			ctx.textBaseline = "middle";
-			ctx.fillText("PAUSE", GRID_SIZE * CELL / 2, GRID_SIZE * CELL / 2);
+			ctx.fillText("PAUSE", GRID_SIZE * cellSize / 2, GRID_SIZE * cellSize / 2);
 		}
 
 		if (!isRunning && snakeRef.current.length > 0) {
@@ -214,7 +225,7 @@ export const SnakeProject = () => {
 			if (hitSelf) {
 			ctx.fillStyle = "red";
 			ctx.font = "40px Arial";
-			ctx.fillText("GAME OVER", GRID_SIZE * CELL / 2, GRID_SIZE * CELL / 2 - 60);
+			ctx.fillText("GAME OVER", GRID_SIZE * cellSize / 2, GRID_SIZE * cellSize / 2 - 60);
 			}
 		}
 
@@ -227,10 +238,10 @@ export const SnakeProject = () => {
 		const x = e.clientX - rect.left;
 		const y = e.clientY - rect.top;
 		if (
-			x >= GRID_SIZE * CELL / 4 &&
-			x <= GRID_SIZE * CELL * 3 / 4 &&
-			y >= GRID_SIZE * CELL / 2 - 30 &&
-			y <= GRID_SIZE * CELL / 2 + 30
+			x >= GRID_SIZE * cellSize / 4 &&
+			x <= GRID_SIZE * cellSize * 3 / 4 &&
+			y >= GRID_SIZE * cellSize / 2 - 30 &&
+			y <= GRID_SIZE * cellSize / 2 + 30
 		) {
 			startGame();
 		}
@@ -242,12 +253,20 @@ export const SnakeProject = () => {
 	}, [score, isRunning, time, isPaused]);
 
 	return (
-		<div style={{ textAlign: "center", marginTop: 20 }}>
-		<canvas
-			ref={canvasRef}
-			width={GRID_SIZE * CELL}
-			height={GRID_SIZE * CELL}
-		/>
+		<div
+			ref={divRef}
+			style={{
+				textAlign: "center",
+				marginTop: 20,
+				width: "100%",
+				height: "100%",
+			}}
+		>
+			<canvas
+				ref={canvasRef}
+				width={GRID_SIZE * cellSize}
+				height={GRID_SIZE * cellSize}
+			/>
 		</div>
 	);
 };
