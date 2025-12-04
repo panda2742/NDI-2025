@@ -6,10 +6,13 @@
 }
 
 .app {
+    position: absolute; // attendu par le code TSX
+    box-sizing: border-box;
+
     &-body {
         overflow-y: auto;
 
-        max-height: 430px;
+        // max-height: 430px;
         width: fit-content;
 
 
@@ -44,4 +47,43 @@
             background-color: #4B4B4B;
         }
     }
+}
+
+.app-resize-handle {
+  position: absolute;
+  z-index: 10;
+  background: transparent;
+}
+
+/* gauche: fine bande centrée verticalement */
+.app-resize-handle-left {
+  left: -6px;
+  top: 10%;
+  bottom: 10%;
+  width: 12px;
+}
+
+/* droite: fine bande centrée verticalement */
+.app-resize-handle-right {
+  right: -6px;
+  top: 10%;
+  bottom: 10%;
+  width: 12px;
+}
+
+/* coin bas-droite : carré */
+.app-resize-handle-corner {
+  right: 0;
+  bottom: 0;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.15) 50%);
+}
+
+.app-resize-handle-bottom {
+  left: 10%;
+  right: 10%;
+  bottom: -6px;
+  height: 12px;
+  position: absolute;
 }

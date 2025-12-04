@@ -1,0 +1,30 @@
+{
+  "name": "ndi-2025-back",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "backend"
+  ],
+  "homepage": "https://github.com/panda2742/NDI-2025#readme",
+  "bugs": {
+    "url": "https://github.com/panda2742/NDI-2025/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/panda2742/NDI-2025.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11",
+    "sqlite3": "^5.1.7"
+  }
+}
