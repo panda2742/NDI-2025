@@ -6,6 +6,8 @@ import { ReactElement } from "react";
 import {
     Clipouille,
     SnakeProject,
+    CalculatorProject,
+    ClockProject,
     LeaderboardProject,
     Windous,
 } from "@projects/index.ts";
@@ -20,13 +22,20 @@ export interface IApp {
         | "terminal"
         | "clipouille"
         | "windous"
-        | "leaderboard";
+        | "leaderboard"
+        | "calc"
+        | "clock";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
     onClick?: () => void;
     pinnedToDock?: boolean;
     hide?: boolean;
     resizable?: boolean;
+    defaultSize?: { width: number; height: number };
+    minWidth?: number;
+    minHeight?: number;
+    maxWidth?: number;
+    maxHeight?: number;
 }
 
 export const defaultApps: IApp[][] = [
@@ -56,6 +65,17 @@ export const defaultApps: IApp[][] = [
             iconKey: "terminal",
             state: 2,
             type: "application",
+            pinnedToDock: true,
+        },
+        {
+            label: "Calculator",
+            id: "calculator",
+            content: <CalculatorProject key={"calculator"} />,
+            iconKey: "calc",
+            state: 0,
+            type: "application",
+            resizable: false,
+            defaultSize: { width: 300, height: 440 },
             pinnedToDock: true,
         },
     ],
@@ -159,7 +179,9 @@ export const defaultApps: IApp[][] = [
         {
             label: "OBS Studio",
             id: "obs",
-            content: <PlaceholderApp appName="OBS Studio" iconKey="clipouille" />,
+            content: (
+                <PlaceholderApp appName="OBS Studio" iconKey="clipouille" />
+            ),
             iconKey: "clipouille",
             state: 0,
             type: "application",
@@ -193,7 +215,9 @@ export const defaultApps: IApp[][] = [
         {
             label: "Thunderbird",
             id: "thunderbird",
-            content: <PlaceholderApp appName="Thunderbird" iconKey="terminal" />,
+            content: (
+                <PlaceholderApp appName="Thunderbird" iconKey="terminal" />
+            ),
             iconKey: "terminal",
             state: 0,
             type: "application",
@@ -207,12 +231,14 @@ export const defaultApps: IApp[][] = [
             type: "application",
         },
         {
-            label: "Calculator",
-            id: "calculator",
-            content: <PlaceholderApp appName="Calculator" iconKey="clipouille" />,
-            iconKey: "clipouille",
+            label: "Clock",
+            id: "clock",
+            content: <ClockProject key={"clock"} />,
+            iconKey: "clock",
             state: 0,
             type: "application",
+            resizable: false,
+            defaultSize: { width: 320, height: 380 },
         },
         {
             label: "Settings",
