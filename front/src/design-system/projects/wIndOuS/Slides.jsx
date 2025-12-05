@@ -6,7 +6,7 @@ import { closeApp } from '#/api/appController';
 import LanguageSelector from './LanguageSelector.jsx';
 
 function Slides() {
-  const [slideNumber, setslideNumber] = useState(2);
+  const [slideNumber, setslideNumber] = useState(0);
   const [slideValid, setslideValid] = useState(0);
   const slides = [<Slide1 setValid={setslideValid}/>, <Slide2 setValid={setslideValid}/>, <Slide3 setValid={setslideValid}/>];
   
