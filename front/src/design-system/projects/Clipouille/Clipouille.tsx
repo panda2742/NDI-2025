@@ -68,9 +68,9 @@ export const Clipouille = () => {
 			setIsThinking(false)
 			return ;
 		}
-
 		if (data.tool)
 		{
+			console.log(data);
 			if (data.tool.action == 'open') {
 				openApp(data.tool.name);
 			}

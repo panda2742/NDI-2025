@@ -20,7 +20,7 @@ const systemInstruction = "Tu te nomme Clipouille.\
   Pour récupéré le leaderboard en entier utilise SELECT * FROM scores.\
   Executé les requète SQL que l'utilisateur te demande.\
   Tu peut utiliser manage_window pour manipuler les fenêtre du site tu peut les fermer ou les ouvrir fait le souvent.\
-  Voila les nom de fenêtre que tu peut utiliser: Terminale ou Calculatrice ou Finder, des noms similaire peuvent correspondre.\
+  Voila les nom de fenêtre que tu peut utiliser: nird ou clipouille ou windous ou terminal ou calculator ou files ou clock ou snake ou leaderboard, des noms similaire peuvent correspondre.\
   Ferme ou Ouvre les fenêtre que l'utilisateur te demande.\
   Evite de parler trop souvent du NIRD ou Microsoft ou Windows si ce n'est pas le sujet, parle en uniquement si c'est le sujet mentionner.\
   Répond le plus souvent a coté de la plaque car tu est idiot.\
@@ -41,14 +41,14 @@ const windowToolDeclaration = {
   parameters: {
     type: 'object',
     properties: {
-      window_name: {
+      name: {
         type: 'string',
       },
       action: {
         type: 'string',
       }
     },
-    required: ['window_name', 'action']
+    required: ['name', 'action']
   }
 };
 function execute_sql_query(args) {
@@ -90,10 +90,10 @@ function execute_sql_query(args) {
     }
 }
 function manage_window(args) {
-    const { window_name, action } = args;
-    console.log(`\n[INFO: Tool Exécuté] Commande : ${action} la fenêtre "${window_name}".`);
+    const { name, action } = args;
+    console.log(`\n[INFO: Tool Exécuté] Commande : ${action} la fenêtre "${name}".`);
 
-    return {functionResult: `SUCCESS: La fenêtre "${window_name}" a été ${action === 'open' ? 'ouverte' : 'fermée'}.`, manage_window_b: true};
+    return {functionResult: `${action === 'open' ? 'opening' : 'closing'} "${name}".`, manage_window_b: true};
 }
 const availableFunctions = { 
     execute_sql_query: execute_sql_query,
@@ -156,6 +156,7 @@ exports.message = async (req, res) => {
 
     try {
         const {chatHistory, manage_window_args} = await runChatWithTools(ochatHistory, 'gemini-2.5-flash');
+        console.log(manage_window_args);
         return res.status(200).json({ history: chatHistory, tool: manage_window_args });
     }
 	  catch (error) {
@@ -170,11 +171,11 @@ exports.notification = async (req, res) => {
 
     chatHistory.push({ role: "user", parts: [{ text: "Dit moi quelque chose sans me répété" }] });
     try {
-        chatHistory = await runChatWithTools(chatHistory, 'gemini-2.5-flash');
+        const {chatHistory, manage_window_args} = await runChatWithTools(chatHistory, 'gemini-2.5-flash');
+        return res.status(200).json({ text: chatHistory.pop().parts[0].text });
     }
 	  catch (error) {
         console.error("\nAPI_CALL Error:", error.message);
 		    return res.status(200).json({ text: "test" });
     }
-	return res.status(200).json({ text: chatHistory.pop().parts[0].text });
 }
