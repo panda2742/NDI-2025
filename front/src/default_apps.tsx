@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 
 // import { ProjectTemplate } from '@atoms/project_template/project_template.tsx';
 // import { Terminal } from '@molecules/terminal/terminal.tsx';
+import { NirdProject } from "@projects/Nird/nird";
 
 import {
     Clipouille,
@@ -31,7 +32,8 @@ export interface IApp {
         | "leaderboard"
         | "calc"
         | "clock"
-        | "snake";
+        | "snake"
+        | "nird";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
     onClick?: () => void;
@@ -39,6 +41,7 @@ export interface IApp {
     hide?: boolean;
     resizable?: boolean;
     defaultSize?: { width: number; height: number };
+    defaultPosition?: { left: number; top: number };
     minWidth?: number;
     minHeight?: number;
     maxWidth?: number;
@@ -98,19 +101,19 @@ export const defaultApps: IApp[][] = [
             minHeight: 400,
             pinnedToDock: true,
         },
+        {
+            label: "Nird",
+            id: "nird",
+            content: <NirdProject key={"nird"} />,
+            iconKey: "nird",
+            state: 2,
+            type: "application",
+            pinnedToDock: true,
+            defaultSize: { width: 1720, height: 800 },
+            defaultPosition: { left: 100, top: 50 },
+        },
     ],
     [
-        {
-            label: "Thunderbird",
-            id: "thunderbird",
-            content: (
-                <PlaceholderApp appName="Thunderbird" iconKey="terminal" />
-            ),
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
-
         {
             label: "Clock",
             id: "clock",
