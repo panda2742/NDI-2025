@@ -1,2 +1,4 @@
 .env
 database.debug
+database.db
+test/
