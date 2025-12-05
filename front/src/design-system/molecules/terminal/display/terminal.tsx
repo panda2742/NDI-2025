@@ -91,8 +91,11 @@ export function Terminal() {
     // }
 
     const handleClick = () => {
-        if (inputRef.current)
+        if (inputRef.current) {
             inputRef.current.focus();
+            // scroll to the last input when clicking the terminal
+            inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
     };
 
 
@@ -104,6 +107,12 @@ export function Terminal() {
 
     //     initRef.current = true;
     // }, []);
+
+    // Scroll to the last input whenever terminal content changes
+    useEffect(() => {
+        if (!inputRef.current) return;
+        inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, [terminalContentHistory]);
 
     return (
         <div className="terminal terminal-app" id="terminal" onClick={handleClick}>
