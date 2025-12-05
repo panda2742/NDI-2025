@@ -9,6 +9,7 @@ import {
     Clipouille,
     ServerProject,
     WhatsWebProject,
+    SnakeProject,
 } from "@projects/index.ts";
 import { Terminal } from "@molecules/terminal/terminal.tsx";
 import { PlaceholderApp } from "@molecules/placeholder-app/placeholder-app.tsx";
@@ -56,10 +57,10 @@ export const defaultApps: IApp[][] = [
             pinnedToDock: true,
         },
         {
-            label: 'Clipouille',
-            id: 'clipouille',
-            content: <Clipouille key={'clipouille'} />,
-            iconKey: 'rootme',
+            label: "Clipouille",
+            id: "clipouille",
+            content: <Clipouille key={"clipouille"} />,
+            iconKey: "rootme",
             state: 0,
             type: "project",
             pinnedToDock: true,
@@ -249,7 +250,7 @@ export const defaultApps: IApp[][] = [
         {
             label: "Snake",
             id: "snake",
-            content: <PlaceholderApp appName="snake" iconKey="pages" />,
+            content: <SnakeProject key={"snake"} />,
             iconKey: "pages",
             state: 0,
             type: "application",
