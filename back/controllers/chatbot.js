@@ -37,17 +37,41 @@ const sqlToolDeclaration = {
 };
 
 function execute_sql_query(args) {
-  const { query } = args;
-    console.log(`\n[INFO: Tool Exécuté] Requête SQL interceptée : ${query}`);
-    
-    try {
-      const lines = db.rawDb.prepare(query).all();
-      const sortieTexte = JSON.stringify(lines);
-      return JSON.stringify({ status: "success", result: sortieTexte });
+    const { query } = args;
+    if (!query) {
+        return JSON.stringify({ status: "error", result: "Requête SQL manquante." });
     }
-    catch (err) {
-      console.log(`Error SQL TOOL: ${err}`);
-      return JSON.stringify({ status: "error", result: err });
+    const trimmedQuery = query.trim().toUpperCase(); 
+    console.log(`\n[INFO: Tool Exécuté] Requête SQL interceptée : ${query}`);
+    try {
+        const statement = db.rawDb.prepare(query);
+        if (trimmedQuery.startsWith('SELECT')) {
+            const result = statement.all();
+            console.log(`SELECT exécuté. ${result ? result.length : 0} ligne(s) récupérée(s).`);
+            return JSON.stringify({ 
+                status: "success", 
+                type: "SELECT_DATA",
+                result: result
+            });
+        } else {
+            const info = statement.run(); 
+            console.log(`✅ Commande non-SELECT exécutée : ${trimmedQuery.split(' ')[0]}`);
+            return JSON.stringify({ 
+                status: "success",
+                type: "NON_SELECT_INFO",
+                result: {
+                    message: "Commande exécutée avec succès.",
+                    changes: info.changes,
+                    lastId: info.lastInsertRowid || null
+                }
+            });
+        }
+    } catch (err) {
+        console.error(`Erreur SQL TOOL: ${err.message}`);
+        return JSON.stringify({ 
+            status: "error", 
+            result: `Erreur SQL: ${err.message}` 
+        });
     }
 }
 const availableFunctions = { 
