@@ -38,21 +38,28 @@ export function Terminal() {
         historyIndexRef.current = historyIndex;
     }, [historyIndex]);
 
+    useEffect(() => {
+        if (inputRef.current)
+            inputRef.current.scrollIntoView();
+    }, [])
+
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             const output = runCommand(command, fileSystem, shell);
             const newContentHistory = output.content ?? [];
             if (!newContentHistory[newContentHistory.length - 1])
                 newContentHistory.pop();
-            setTerminalContentHistory([...terminalContentHistoryRef.current, <Line><Prompt /><span>{command}</span></Line>, ...(newContentHistory.map((txt) => <Line>{txt}</Line>))]);
+            setTerminalContentHistory([...terminalContentHistoryRef.current, <Line><Prompt path={fileSystem.currentPath}/><span>{command}</span></Line>, ...(newContentHistory.map((txt) => <Line>{txt}</Line>))]);
             setCommand("");
             setCommandHistory([...commandHistoryRef.current, command]);
+            setHistoryIndex(null);
             if (output.action === "exit") {
                 setTerminalContentHistory([]);
                 setTerminalContentHistory([]);
                 closeApp("terminal");
-            } else if (output.action === "clear")
+            } else if (output.action === "clear") {
                 setTerminalContentHistory([]);
+            }
         } else if (event.key === "ArrowUp") {
             event.preventDefault();
             const newIndex = historyIndexRef.current === null ? commandHistoryRef.current.length - 1 : Math.max(0, historyIndexRef.current - 1);

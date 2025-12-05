@@ -80,7 +80,6 @@ function Ubuntu() {
         currentApp: IApp,
     ) => {
         if (!e.current) return;
-        console.log(`➡️ Focus : ${currentApp.id}`);
 
         e.current.style.zIndex = zIndexBoost.current.toString();
         zIndexBoost.current++;
