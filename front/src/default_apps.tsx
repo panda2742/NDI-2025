@@ -9,6 +9,7 @@ import {
     CalculatorProject,
     ClockProject,
     LeaderboardProject,
+    FileExplorerProject,
 } from "@projects/index.ts";
 import { Terminal } from "@molecules/terminal/display/terminal";
 import { PlaceholderApp } from "@molecules/placeholder-app/placeholder-app.tsx";
@@ -17,7 +18,13 @@ export interface IApp {
     label: string;
     id: string;
     content: ReactElement | null;
-    iconKey: "terminal" | "clipouille" | "calc" | "clock" | "leaderboard";
+    iconKey:
+        | "terminal"
+        | "clipouille"
+        | "calc"
+        | "clock"
+        | "leaderboard"
+        | "folder";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
     onClick?: () => void;
@@ -60,6 +67,19 @@ export const defaultApps: IApp[][] = [
             type: "application",
             resizable: false,
             defaultSize: { width: 300, height: 440 },
+            pinnedToDock: true,
+        },
+        {
+            label: "Files",
+            id: "files",
+            content: <FileExplorerProject key={"files"} />,
+            iconKey: "folder",
+            state: 0,
+            type: "application",
+            resizable: true,
+            defaultSize: { width: 600, height: 500 },
+            minWidth: 450,
+            minHeight: 400,
             pinnedToDock: true,
         },
     ],
@@ -206,14 +226,7 @@ export const defaultApps: IApp[][] = [
             state: 0,
             type: "application",
         },
-        {
-            label: "Files",
-            id: "files",
-            content: <PlaceholderApp appName="Files" iconKey="terminal" />,
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
+
         {
             label: "Clock",
             id: "clock",
@@ -239,7 +252,7 @@ export const defaultApps: IApp[][] = [
             iconKey: "clipouille",
             state: 0,
             type: "application",
-            hide: true,
+            hide: false,
             resizable: false,
         },
         {
