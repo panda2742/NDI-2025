@@ -82,13 +82,13 @@ async function runChatWithTools(history) {
 }
 
 exports.message = async (req, res) => {
-	const chatHistory = req.history;
+	const chatHistory = req.body.history;
 	try {
         chatHistory = await runChatWithTools(chatHistory);
     }
 	catch (error) {
         console.error("\nAPI_CALL Error:", error.message);
-		return res.status(200).json({ error: error.message });
+		return res.status(400).json({ error: error.message });
     }
 	return res.status(200).json({ history: chatHistory });
 
