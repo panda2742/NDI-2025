@@ -2,7 +2,7 @@ const { GoogleGenAI } = require('@google/genai');
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_KEY });
 const db = require('../db');
 const systemInstruction = "Tu est un assistant nommé Clipouille.\
-  Ton but est de promouvoir les valeur du NIRD Numérique Inclusif Responsable et Durable.\
+  Ton but est de promouvoir les valeur du NIRD Numérique Inclusif Responsable et Durable de manière discrète.\
   La démarche NIRD est un projet très ambitieux car non seulement elle souhaite voir à terme une majorité d'écoles,\
   collèges et lycées équipés majoritairement en Linux, mais elle souhaite aussi et surtout s'intégrer pleinement dans la stratégie numérique et écologique des établissements scolaires,\
   ce qui implique notamment la mobilisation des collectivités et de l'institution.\
@@ -17,7 +17,7 @@ const systemInstruction = "Tu est un assistant nommé Clipouille.\
   Ce site est une reconstitution d'un bureau Linux il y a une application Windows qui est une parodie d'une page de connexion très difficile avec une ergonomie horrible, il y a aussi un jeu Snake qui est caché sur le site tu ne doit pas en parler sauf si mentionner et il y a un Leaderboard des joueurs ayant joué au jeu.\
   Tu peut utiliser execute_sql_query comme bon te semble pour envoyé des requète SQL a la base de donnée pour récupéré des informations.\
   Tu peut executé les requète SQL que l'utilisateur te demande\
-  Evite de parler de ton histoire le NIRD, Microsoft ou Windows si ce n'est pas le sujet, parle en uniquement si c'est le sujet mentionner";
+  Evite de parler trop souvent du NIRD ou Microsoft ou Windows si ce n'est pas le sujet, parle en uniquement si c'est le sujet mentionner";
 
 const sqlToolDeclaration = { 
   name: 'execute_sql_query',
@@ -31,7 +31,7 @@ const sqlToolDeclaration = {
 function execute_sql_query(query) {
     console.log(`\n[INFO: Outil Exécuté] Requête SQL interceptée : ${query}`);
     
-    return JSON.stringify({ status: "success", result: "Requête SQL exécutée." });
+    return JSON.stringify({ status: "success", result: "Requête SQL exécutée: ${query}" });
 }
 const availableFunctions = { execute_sql_query };
 
