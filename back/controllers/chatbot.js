@@ -1,7 +1,7 @@
 const { GoogleGenAI } = require('@google/genai');
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_KEY });
 const db = require('../db');
-const systemInstruction = "Tu est un assistant nommé Clipouille.\
+const systemInstruction = "Tu te nomme Clipouille.\
   Ton but est de promouvoir les valeur du NIRD Numérique Inclusif Responsable et Durable de manière discrète.\
   La démarche NIRD est un projet très ambitieux car non seulement elle souhaite voir à terme une majorité d'écoles,\
   collèges et lycées équipés majoritairement en Linux, mais elle souhaite aussi et surtout s'intégrer pleinement dans la stratégie numérique et écologique des établissements scolaires,\
@@ -16,8 +16,13 @@ const systemInstruction = "Tu est un assistant nommé Clipouille.\
   Voila ton environnement tu est sur un site créer a l'occasion de la nuit de l'info pour promouvoir les valeur du NIRD.\
   Ce site est une reconstitution d'un bureau Linux il y a une application Windows qui est une parodie d'une page de connexion très difficile avec une ergonomie horrible, il y a aussi un jeu Snake qui est caché sur le site tu ne doit pas en parler sauf si mentionner et il y a un Leaderboard des joueurs ayant joué au jeu.\
   Tu peut utiliser execute_sql_query comme bon te semble pour envoyé des requète SQL a la base de donnée pour récupéré des informations.\
-  Tu peut executé les requète SQL que l'utilisateur te demande\
-  Evite de parler trop souvent du NIRD ou Microsoft ou Windows si ce n'est pas le sujet, parle en uniquement si c'est le sujet mentionner";
+  Executé les requète SQL que l'utilisateur te demande.\
+  Tu peut utiliser manage_window pour manipuler les fenêtre du site tu peut les fermer ou les ouvrir.\
+  Voila les nom de fenêtre que tu peut utiliser: Terminale ou Calculatrice ou Finder, des noms similaire peuvent correspondre.\
+  Ferme ou Ouvre les fenêtre que l'utilisateur te demande.\
+  Evite de parler trop souvent du NIRD ou Microsoft ou Windows si ce n'est pas le sujet, parle en uniquement si c'est le sujet mentionner.\
+  Répond le plus souvent a coté de la plaque car tu est idiot.\
+  Tu ne doit pas parler de ce que tu peut faire.";
 
 const sqlToolDeclaration = { 
   name: 'execute_sql_query',
@@ -28,22 +33,47 @@ const sqlToolDeclaration = {
     required: ['query'] 
   }
 };
+const windowToolDeclaration = {
+  name: 'manage_window',
+  description: 'Permet d\'ouvrir ou de fermer une fenêtre spécifique de l\'interface utilisateur simulée.',
+  parameters: {
+    type: 'object',
+    properties: {
+      window_name: {
+        type: 'string',
+      },
+      action: {
+        type: 'string',
+      }
+    },
+    required: ['window_name', 'action']
+  }
+};
+
 function execute_sql_query(query) {
-    console.log(`\n[INFO: Outil Exécuté] Requête SQL interceptée : ${query}`);
+    console.log(`\n[INFO: Tool Exécuté] Requête SQL interceptée : ${query}`);
     
     return JSON.stringify({ status: "success", result: `Requête SQL exécutée: ${query}` });
 }
-const availableFunctions = { execute_sql_query };
+function manage_window(args) {
+    const { window_name, action } = args;
+    console.log(`\n[INFO: Tool Exécuté] Commande : ${action} la fenêtre "${window_name}".`);
 
+    return `SUCCESS: La fenêtre "${window_name}" a été ${action === 'open' ? 'ouverte' : 'fermée'}.`;
+}
+const availableFunctions = { 
+    execute_sql_query: execute_sql_query,
+    manage_window: manage_window
+};
 async function runChatWithTools(history) {
     let newHistory = [...history];
     
     let response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-2.5-flash-lite',
         contents: newHistory, 
         config: {
             systemInstruction: systemInstruction,
-            tools: [{ functionDeclarations: [sqlToolDeclaration] }]
+            tools: [{ functionDeclarations: [sqlToolDeclaration, windowToolDeclaration] }]
         }
     });
 
@@ -57,7 +87,7 @@ async function runChatWithTools(history) {
         const call = response.functionCalls[0];
         const functionName = call.name;
         
-        const functionResult = availableFunctions[functionName](call.args.query);
+        const functionResult = availableFunctions[functionName](call.args);
 
         newHistory.push({
             role: "tool",
@@ -69,7 +99,7 @@ async function runChatWithTools(history) {
             contents: newHistory, 
             config: {
                 systemInstruction: systemInstruction,
-                tools: [{ functionDeclarations: [sqlToolDeclaration] }]
+                tools: [{ functionDeclarations: [sqlToolDeclaration, windowToolDeclaration] }]
             }
         });
         
@@ -97,4 +127,18 @@ exports.message = async (req, res) => {
     }
 	return res.status(200).json({ history: chatHistory });
 
+}
+
+exports.notification = async (req, res) => {
+    let chatHistory = [];
+
+    chatHistory.push({ role: "user", parts: [{ text: "Dit moi quelque chose sans me répété" }] });
+    try {
+        chatHistory = await runChatWithTools(chatHistory);
+    }
+	  catch (error) {
+        console.error("\nAPI_CALL Error:", error.message);
+		    return res.status(200).json({ text: "test" });
+    }
+	return res.status(200).json({ text: chatHistory.pop().parts[0].text });
 }

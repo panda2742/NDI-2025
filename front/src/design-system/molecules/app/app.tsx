@@ -8,37 +8,30 @@ import {
 import "./style.scss";
 import "./style-project.scss";
 import "./style-application.scss";
-import "./style-contact.scss";
 
 import { Controls } from "@atoms/controls/controls.tsx";
 import { openFullscreen } from "#/lib/fullscreen.tsx";
 
+interface IAppProps {
+    label: string;
+    uniqueKey: string;
+    state: 0 | 1 | 2;
+    type: "application" | "project" | "contact";
+    onMouseDown?: (ref: MutableRefObject<HTMLDivElement | null>) => void;
+    updateState?: (newState: 0 | 1 | 2) => void;
+    resizable?: boolean;
+    defaultSize?: { width: number; height: number };
+    minWidth?: number;
+    minHeight?: number;
+    maxWidth?: number;
+    maxHeight?: number;
+}
+
 const ACCEPTED_FULLSCREEN_APP_TYPES: IAppProps["type"][] = [
     "project",
     "application",
+    "contact",
 ];
-
-export interface IApp {
-    label: string;
-    id: string;
-    content: ReactElement | null;
-    iconKey:
-        | "whatsweb"
-        | "whatsecosystem"
-        | "server"
-        | "rootme"
-        | "oknestor"
-        | "terminal"
-        | "contact"
-        | "document"
-        | "pages";
-    state: 0 | 1 | 2;
-    type: "application" | "project" | "contact";
-    onClick?: () => void;
-    pinnedToDock?: boolean;
-    hide?: boolean;
-    resizable?: boolean;
-}
 
 export const App = ({
     label,
@@ -49,7 +42,12 @@ export const App = ({
     onMouseDown = () => {},
     updateState = () => {},
     resizable = true,
-}: PropsWithChildren<IAppC>) => {
+    defaultSize,
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
+}: PropsWithChildren<IAppProps>) => {
     const [isVisible, setVisibility] = useState(state === 2);
 
     const component = useRef<HTMLDivElement | null>(null);
@@ -62,13 +60,15 @@ export const App = ({
 
     const bodyRef = useRef<HTMLDivElement>(null);
 
-    const MIN_WIDTH = 650;
-    const MIN_HEIGHT = 400;
+    const MIN_WIDTH = minWidth ?? 650;
+    const MIN_HEIGHT = minHeight ?? 400;
 
-    const MAX_WIDTH = 2350;
-    const MAX_HEIGHT = 1200;
+    const MAX_WIDTH = maxWidth ?? 2350;
+    const MAX_HEIGHT = maxHeight ?? 1200;
 
-    const [dimensions, setDimensions] = useState({ width: 777, height: 430 });
+    const [dimensions, setDimensions] = useState(
+        defaultSize || { width: 777, height: 430 },
+    );
     const [position, setPosition] = useState({ left: 100, top: 100 });
     const [isResizing, setIsResizing] = useState(false);
 
@@ -94,16 +94,17 @@ export const App = ({
             const maxW = Math.round(containerRect.right - rect.left);
             const maxH = Math.round(containerRect.bottom - rect.top);
 
-            setDimensions({
-                width: Math.max(
-                    MIN_WIDTH,
-                    Math.min(rect.width, maxW, MAX_WIDTH),
-                ),
-                height: Math.max(
-                    MIN_HEIGHT,
-                    Math.min(rect.height, maxH, MAX_HEIGHT),
-                ),
-            });
+            // Commenté pour ne pas écraser defaultSize
+            // setDimensions({
+            //     width: Math.max(
+            //         MIN_WIDTH,
+            //         Math.min(rect.width, maxW, MAX_WIDTH),
+            //     ),
+            //     height: Math.max(
+            //         MIN_HEIGHT,
+            //         Math.min(rect.height, maxH, MAX_HEIGHT),
+            //     ),
+            // });
             const clampedLeft = Math.max(
                 Math.round(containerRect.left),
                 Math.round(rect.left),
