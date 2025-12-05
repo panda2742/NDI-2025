@@ -1,0 +1,120 @@
+.placeholder-app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #ffffff;
+    overflow: auto;
+}
+
+.placeholder-app-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 32px 32px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    h1 {
+        margin: 16px 0 0;
+        font-size: 28px;
+        font-weight: 600;
+        color: #ffffff;
+        text-align: center;
+    }
+}
+
+.placeholder-app-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(74, 144, 226, 0.3);
+
+    .icon-text {
+        font-size: 40px;
+        font-weight: 700;
+        color: #ffffff;
+        text-transform: uppercase;
+    }
+}
+
+.placeholder-app-content {
+    flex: 1;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.placeholder-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    margin: 0;
+}
+
+.placeholder-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateX(4px);
+    }
+}
+
+.feature-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.feature-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.placeholder-info {
+    margin-top: auto;
+    padding: 16px;
+    background: rgba(74, 144, 226, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(74, 144, 226, 0.2);
+
+    p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+    }
+}
