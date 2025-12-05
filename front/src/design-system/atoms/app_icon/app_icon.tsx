@@ -2,16 +2,19 @@ import './style.scss'
 
 import Terminal from './icons/Terminal.png';
 import Clipouille from './icons/Clipouille.png';
+import Leaderboard from './icons/Leaderboard.png';
+
 
 const icons = {
     terminal: Terminal,
     clipouille: Clipouille,
+    leaderboard: Leaderboard,
 };
 
 export interface IconProps {
     label: string;
     state: 0 | 1 | 2;
-    iconKey: 'terminal' | 'clipouille';
+    iconKey: 'terminal' | 'clipouille' | 'leaderboard';
     index: number;
     onClick?: () => void;
 }

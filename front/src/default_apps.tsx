@@ -6,6 +6,7 @@ import { ReactElement } from "react";
 import {
     Clipouille,
     SnakeProject,
+    LeaderboardProject,
 } from "@projects/index.ts";
 import { Terminal } from "@molecules/terminal/display/terminal";
 import { PlaceholderApp } from "@molecules/placeholder-app/placeholder-app.tsx";
@@ -16,7 +17,8 @@ export interface IApp {
     content: ReactElement | null;
     iconKey:
         | "terminal"
-        | "clipouille";
+        | "clipouille"
+        | "leaderboard";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
     onClick?: () => void;
@@ -216,8 +218,18 @@ export const defaultApps: IApp[][] = [
             iconKey: "clipouille",
             state: 0,
             type: "application",
-            hide: true,
+            hide: false,
             resizable: false,
+        },
+        {
+            label: "Leaderboard",
+            id: "leaderboard",
+            content: <LeaderboardProject key={"leaderboard"} />,
+            iconKey: "leaderboard",
+            state: 0,
+            type: "application",
+            hide: true,
+            resizable: true,
         },
     ],
 ];
