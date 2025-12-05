@@ -218,7 +218,7 @@ export const defaultApps: IApp[][] = [
             iconKey: "clipouille",
             state: 0,
             type: "application",
-            hide: false,
+            hide: true,
             resizable: false,
         },
         {
