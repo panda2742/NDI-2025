@@ -3,12 +3,8 @@ import { ReactElement } from "react";
 // import { ProjectTemplate } from '@atoms/project_template/project_template.tsx';
 // import { Terminal } from '@molecules/terminal/terminal.tsx';
 
-import { Contact } from "@molecules/contact/contact.tsx";
 import {
-    OkNestorProject,
     Clipouille,
-    ServerProject,
-    WhatsWebProject,
     SnakeProject,
     LeaderboardProject,
 } from "@projects/index.ts";
@@ -20,15 +16,8 @@ export interface IApp {
     id: string;
     content: ReactElement | null;
     iconKey:
-        | "whatsweb"
-        | "whatsecosystem"
-        | "server"
-        | "rootme"
-        | "oknestor"
         | "terminal"
-        | "contact"
-        | "document"
-        | "pages";
+        | "clipouille";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
     onClick?: () => void;
@@ -40,39 +29,12 @@ export interface IApp {
 export const defaultApps: IApp[][] = [
     [
         {
-            label: "WhatsWeb",
-            id: "whatsweb",
-            content: <WhatsWebProject key={"whatsweb"} />,
-            iconKey: "whatsweb",
-            state: 0,
-            type: "project",
-            pinnedToDock: true,
-        },
-        {
-            label: "Server",
-            id: "server",
-            content: <ServerProject key={"server"} />,
-            iconKey: "server",
-            state: 0,
-            type: "project",
-            pinnedToDock: true,
-        },
-        {
             label: "Clipouille",
             id: "clipouille",
             content: <Clipouille key={"clipouille"} />,
-            iconKey: "rootme",
+            iconKey: "clipouille",
             state: 0,
-            type: "project",
-            pinnedToDock: true,
-        },
-        {
-            label: "OkNestor",
-            id: "oknestor",
-            content: <OkNestorProject key={"oknestor"} />,
-            iconKey: "oknestor",
-            state: 0,
-            type: "project",
+            type: "application",
             pinnedToDock: true,
         },
         {
@@ -89,120 +51,120 @@ export const defaultApps: IApp[][] = [
         {
             label: "Firefox",
             id: "firefox",
-            content: <PlaceholderApp appName="Firefox" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="Firefox" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
         {
             label: "Chrome",
             id: "chrome",
-            content: <PlaceholderApp appName="Chrome" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="Chrome" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
         {
             label: "VS Code",
             id: "vscode",
-            content: <PlaceholderApp appName="VS Code" iconKey="document" />,
-            iconKey: "document",
+            content: <PlaceholderApp appName="VS Code" iconKey="terminal" />,
+            iconKey: "terminal",
             state: 0,
             type: "application",
         },
         {
             label: "Spotify",
             id: "spotify",
-            content: <PlaceholderApp appName="Spotify" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="Spotify" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
         {
             label: "Discord",
             id: "discord",
-            content: <PlaceholderApp appName="Discord" iconKey="contact" />,
-            iconKey: "contact",
+            content: <PlaceholderApp appName="Discord" iconKey="terminal" />,
+            iconKey: "terminal",
             state: 0,
             type: "application",
         },
         {
             label: "Slack",
             id: "slack",
-            content: <PlaceholderApp appName="Slack" iconKey="contact" />,
-            iconKey: "contact",
+            content: <PlaceholderApp appName="Slack" iconKey="terminal" />,
+            iconKey: "terminal",
             state: 0,
             type: "application",
         },
         {
             label: "Notion",
             id: "notion",
-            content: <PlaceholderApp appName="Notion" iconKey="document" />,
-            iconKey: "document",
+            content: <PlaceholderApp appName="Notion" iconKey="terminal" />,
+            iconKey: "terminal",
             state: 0,
             type: "application",
         },
         {
             label: "Figma",
             id: "figma",
-            content: <PlaceholderApp appName="Figma" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="Figma" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
         {
             label: "Postman",
             id: "postman",
-            content: <PlaceholderApp appName="Postman" iconKey="server" />,
-            iconKey: "server",
+            content: <PlaceholderApp appName="Postman" iconKey="terminal" />,
+            iconKey: "terminal",
             state: 0,
             type: "application",
         },
         {
             label: "Docker",
             id: "docker",
-            content: <PlaceholderApp appName="Docker" iconKey="server" />,
-            iconKey: "server",
+            content: <PlaceholderApp appName="Docker" iconKey="terminal" />,
+            iconKey: "terminal",
             state: 0,
             type: "application",
         },
         {
             label: "Gimp",
             id: "gimp",
-            content: <PlaceholderApp appName="Gimp" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="Gimp" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
         {
             label: "Blender",
             id: "blender",
-            content: <PlaceholderApp appName="Blender" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="Blender" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
         {
             label: "OBS Studio",
             id: "obs",
-            content: <PlaceholderApp appName="OBS Studio" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="OBS Studio" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
         {
             label: "Audacity",
             id: "audacity",
-            content: <PlaceholderApp appName="Audacity" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="Audacity" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
         {
             label: "VLC",
             id: "vlc",
-            content: <PlaceholderApp appName="VLC" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="VLC" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
@@ -210,41 +172,41 @@ export const defaultApps: IApp[][] = [
             label: "LibreOffice",
             id: "libreoffice",
             content: (
-                <PlaceholderApp appName="LibreOffice" iconKey="document" />
+                <PlaceholderApp appName="LibreOffice" iconKey="terminal" />
             ),
-            iconKey: "document",
+            iconKey: "terminal",
             state: 0,
             type: "application",
         },
         {
             label: "Thunderbird",
             id: "thunderbird",
-            content: <PlaceholderApp appName="Thunderbird" iconKey="contact" />,
-            iconKey: "contact",
+            content: <PlaceholderApp appName="Thunderbird" iconKey="terminal" />,
+            iconKey: "terminal",
             state: 0,
             type: "application",
         },
         {
             label: "Files",
             id: "files",
-            content: <PlaceholderApp appName="Files" iconKey="document" />,
-            iconKey: "document",
+            content: <PlaceholderApp appName="Files" iconKey="terminal" />,
+            iconKey: "terminal",
             state: 0,
             type: "application",
         },
         {
             label: "Calculator",
             id: "calculator",
-            content: <PlaceholderApp appName="Calculator" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="Calculator" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
         {
             label: "Settings",
             id: "settings",
-            content: <PlaceholderApp appName="Settings" iconKey="pages" />,
-            iconKey: "pages",
+            content: <PlaceholderApp appName="Settings" iconKey="clipouille" />,
+            iconKey: "clipouille",
             state: 0,
             type: "application",
         },
@@ -252,7 +214,7 @@ export const defaultApps: IApp[][] = [
             label: "Snake",
             id: "snake",
             content: <SnakeProject key={"snake"} />,
-            iconKey: "pages",
+            iconKey: "clipouille",
             state: 0,
             type: "application",
             hide: false,

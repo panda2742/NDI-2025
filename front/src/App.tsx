@@ -135,10 +135,10 @@ function Ubuntu() {
                                     type={app.type}
                                     resizable={app.resizable}
                                     key={groupIndex + appIndex}
-                                    onMouseDown={(e) => {
+                                    onMouseDown={(e: any) => {
                                         handleZIndexBoost(e, app);
                                     }}
-                                    updateState={(newState) =>
+                                    updateState={(newState: any) =>
                                         updateAppState(app.id, newState)
                                     }
                                 >
