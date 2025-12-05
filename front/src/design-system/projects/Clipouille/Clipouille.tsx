@@ -77,6 +77,8 @@ export const Clipouille = () => {
 			<div className="messages-box">
 				{messages.map((m, i) => {
 					const part = m.parts[0];
+					console.log(part)
+					if (!part.functionResponse && !part.text) return ;
 					return (
 						<div key={i} className={`message ${m.role}`}>
 							{part.functionResponse ? (
