@@ -2,13 +2,13 @@ import { Copy, S } from '@atoms/project_template/project_template.tsx';
 import '@atoms/project_template/style.scss'
 import './style.scss'
 
-import test from './assets/image_1.png'
+// import test from './assets/image_1.png'
 
-import { useToast } from '#/lib/toast';
-import { svc } from '#/services/ScoreService';
+// import { useToast } from '#/lib/toast';
+// import { svc } from '#/services/ScoreService';
 
 export const WhatsWebProject = () => {
-    const toast = useToast(); // <-- Appelle le hook ici !
+    // const toast = useToast(); // <-- Appelle le hook ici !
 
     return <div className={'project'}>
         <div className={'project-demo'}>
@@ -33,7 +33,7 @@ export const WhatsWebProject = () => {
                             //     score: parseInt((Math.random() * 1000).toFixed(0))
                             // }))
                             // console.log(await svc.getScores());
-                            console.log((await svc.getRank("The Goat 69")).best_score);
+                            // console.log((await svc.getRank("The Goat 69")).best_score);
                             // toast.success("Liam", (Math.random() * 1000).toString(), <img src={test} />);
                         }}
                         className={'btn-watch-demo'}
