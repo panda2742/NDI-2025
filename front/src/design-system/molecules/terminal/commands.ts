@@ -8,6 +8,7 @@ import { mkdir } from "./commands/mkdir";
 import { pwd } from "./commands/pwd";
 import { snake } from "./commands/snake";
 import { cat } from "./commands/cat";
+import { touch } from "./commands/touch";
 
 export type TerminalAction =
 	| "clear"
@@ -32,5 +33,6 @@ export const commands: CommandMap = {
 	ls,
 	cat,
 	pwd,
-	snake
+	snake,
+	touch
 }
