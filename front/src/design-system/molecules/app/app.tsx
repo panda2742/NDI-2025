@@ -21,6 +21,7 @@ interface IAppProps {
     updateState?: (newState: 0 | 1 | 2) => void;
     resizable?: boolean;
     defaultSize?: { width: number; height: number };
+    defaultPosition?: { left: number; top: number };
     minWidth?: number;
     minHeight?: number;
     maxWidth?: number;
@@ -43,6 +44,7 @@ export const App = ({
     updateState = () => {},
     resizable = true,
     defaultSize,
+    defaultPosition,
     minWidth,
     minHeight,
     maxWidth,
@@ -69,7 +71,9 @@ export const App = ({
     const [dimensions, setDimensions] = useState(
         defaultSize || { width: 777, height: 430 },
     );
-    const [position, setPosition] = useState({ left: 100, top: 100 });
+    const [position, setPosition] = useState(
+        defaultPosition || { left: 100, top: 100 },
+    );
     const [isResizing, setIsResizing] = useState(false);
 
     const [resizeDir, setResizeDir] = useState<

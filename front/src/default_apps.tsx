@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 
 // import { ProjectTemplate } from '@atoms/project_template/project_template.tsx';
 // import { Terminal } from '@molecules/terminal/terminal.tsx';
-import { NirdProject } from '@projects/Nird/nird';
+import { NirdProject } from "@projects/Nird/nird";
 
 import {
     Clipouille,
@@ -41,6 +41,7 @@ export interface IApp {
     hide?: boolean;
     resizable?: boolean;
     defaultSize?: { width: number; height: number };
+    defaultPosition?: { left: number; top: number };
     minWidth?: number;
     minHeight?: number;
     maxWidth?: number;
@@ -101,14 +102,16 @@ export const defaultApps: IApp[][] = [
             pinnedToDock: true,
         },
         {
-            label: 'Nird',
-            id: 'nird',
-            content: <NirdProject key={'nird'} />,
-            iconKey: 'nird',
+            label: "Nird",
+            id: "nird",
+            content: <NirdProject key={"nird"} />,
+            iconKey: "nird",
             state: 2,
-            type: 'application',
+            type: "application",
             pinnedToDock: true,
-        }
+            defaultSize: { width: 1720, height: 800 },
+            defaultPosition: { left: 100, top: 50 },
+        },
     ],
     [
         {
