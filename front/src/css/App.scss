@@ -6,17 +6,21 @@
     height: 100vh;
     width: 100vw;
 
-
-    background: #ffffff url("../assets/background.jpg") center center/cover no-repeat local;;
-
+    background: #ffffff url("../assets/background.jpg") center center/cover
+        no-repeat local;
 
     .apps-container {
         position: relative;
         width: 100%;
         height: calc(100vh - 24px - 68px);
+        z-index: 100;
+        pointer-events: none;
 
         .app-id-Cacacacazerr {
             transform: translate(40px, 50px);
+        }
+        .app {
+            pointer-events: auto;
         }
     }
 
@@ -24,13 +28,16 @@
         align-self: center;
     }
 
-    #select-zone {
-        display: none;
-        position: absolute;
-        left: 0;
+    .jellyfish-layer {
+        position: fixed;
         top: 0;
-
-        background: rgba(255, 255, 255, 0.2);
-        border: solid 1px rgba(255, 255, 255, 0.5);
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 50;
+        * {
+            pointer-events: auto;
+        }
     }
 }

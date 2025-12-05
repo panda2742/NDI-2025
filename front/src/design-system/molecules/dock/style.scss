@@ -18,12 +18,10 @@
             position: relative;
             display: flex;
             gap: 2px;
-
-
         }
 
         .apps-group:not(:last-child)::after {
-            content: '';
+            content: "";
             position: absolute;
             right: -10px;
             top: 5px;
@@ -33,8 +31,6 @@
 
             border-radius: 10px;
             //align-self: center;
-
-
 
             background-color: rgba(61, 61, 61, 0.7);
         }
@@ -47,13 +43,13 @@
         z-index: 0;
 
         border-radius: 16px;
-        border: 1px solid var(--border-dock);
 
         background: var(--bg-primary);
+        background-color: rgba(0, 0, 0, 0.35);
+        /* backdrop-filter: blur(12px); */
 
         mix-blend-mode: normal;
 
-        box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
-        backdrop-filter: blur(15px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 }

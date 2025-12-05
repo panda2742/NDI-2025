@@ -1,8 +1,8 @@
 .window_menu_item {
-    font-size: .82em;
+    font-size: 0.82em;
     font-weight: 400;
 
-    color: black;
+    color: white;
 
     padding: 0 8px 0 8px;
 
@@ -23,7 +23,7 @@
     transition: all ease-in-out 100ms;
 
     &:hover {
-        background: rgba(0, 0, 0, 0.15);
+        background: rgba(255, 255, 255, 0.15);
     }
 
     &.primary {
