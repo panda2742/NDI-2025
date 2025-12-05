@@ -6,6 +6,9 @@ const app = express();
 
 dotenv.config({ path: './.env' });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const http = require("http").createServer(app);
 
 
@@ -25,6 +28,8 @@ app.use(function (req, res, next) {
 	})
 });
 
-http.listen(process.env.PORT, () => {
-	console.log("http://localhost:" + process.env.PORT);
+const PORT = process.env.PORT || 3000;
+
+http.listen(PORT, () => {
+	console.log("http://localhost:" + PORT);
 });
