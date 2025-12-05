@@ -5,6 +5,7 @@ import { WhatsEcoSystemProject } from "@projects/WhatsEcoSystem/whatsecosystem.t
 import { WhatsWebProject } from "@projects/WhatsWeb/whatsweb.tsx";
 import { Clipouille } from "@projects/Clipouille/Clipouille.tsx";
 import { SnakeProject } from "@projects/Snake/snake.tsx";
+import { LeaderboardProject } from "@projects/Leaderboard/leaderboard.tsx";
 
 export {
     OkNestorProject,
@@ -14,4 +15,5 @@ export {
     WhatsWebProject,
     Clipouille,
     SnakeProject,
+    LeaderboardProject,
 };

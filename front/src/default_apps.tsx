@@ -10,6 +10,7 @@ import {
     ServerProject,
     WhatsWebProject,
     SnakeProject,
+    LeaderboardProject,
 } from "@projects/index.ts";
 import { Terminal } from "@molecules/terminal/display/terminal";
 import { PlaceholderApp } from "@molecules/placeholder-app/placeholder-app.tsx";
@@ -260,7 +261,7 @@ export const defaultApps: IApp[][] = [
         {
             label: "Leaderboard",
             id: "leaderboard",
-            content: <SnakeProject key={"leaderboard"} />,
+            content: <LeaderboardProject key={"leaderboard"} />,
             iconKey: "pages",
             state: 0,
             type: "application",

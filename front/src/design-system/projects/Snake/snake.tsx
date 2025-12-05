@@ -9,6 +9,7 @@ import playButton from "./assets/playButton.png";
 import playButtonHover from "./assets/playButtonHover.png";
 import cupImg from "./assets/cup.png";
 import cupHoverImg from "./assets/cupHover.png";
+import { openApp } from "../../../api/appController";
 import "./style.scss";
 
 export const SnakeProject = () => {
@@ -24,6 +25,11 @@ export const SnakeProject = () => {
 
 	const [score, setScore] = useState(0);
 	const [time, setTime] = useState(0);
+
+	const [playerName, setPlayerName] = useState<string | null>(null);
+	const nameInputRef = useRef<HTMLInputElement | null>(null);
+
+	const [tempName, setTempName] = useState<string>("");
 
 	const cellSize = 15;
 	const GRID_SIZE = 20;
@@ -51,14 +57,14 @@ export const SnakeProject = () => {
 	const canChangeDirectionRef = useRef(canChangeDirection);
 	canChangeDirectionRef.current = canChangeDirection;
 
+	const [apple, setApple] = useState({ x: -1, y: -1 });
+	const appleRef = useRef(apple);
+	appleRef.current = apple;
+
 	const randomPos = () => ({
 		x: Math.floor(Math.random() * GRID_SIZE),
 		y: Math.floor(Math.random() * GRID_SIZE),
 	});
-
-	const [apple, setApple] = useState({ x: -1, y: -1 });
-	const appleRef = useRef(apple);
-	appleRef.current = apple;
 
 	const startGame = () => {
 		const startSnake = [{ x: snakeStartingX, y: snakeStartingY }];
@@ -84,14 +90,19 @@ export const SnakeProject = () => {
 		setShowMenu(false);
 	};
 
-	// CONTINUE AFTER PAUSE
 	const resumeGame = () => {
 		setIsPaused(false);
 		setShowMenu(false);
 		setIsRunning(true);
 	};
 
-	// KEY HANDLING
+	
+	useEffect(() => {
+	if (!playerName && nameInputRef.current) {
+		nameInputRef.current.focus();
+	}
+	}, [playerName]);
+
 	useEffect(() => {
 		function handleKeyDown(e: KeyboardEvent) {
 			if (isGameOver && (e.key === "Enter" || e.key === "Escape")) {
@@ -101,6 +112,7 @@ export const SnakeProject = () => {
 			}
 
 			if (showMenu && e.key === "Enter") {
+				if (!playerName) return; // le pseudo doit être saisi avant de commencer
 				startGame();
 				return;
 			}
@@ -110,11 +122,8 @@ export const SnakeProject = () => {
 			if (e.key === "Escape") {
 				setIsPaused(prev => {
 					const newState = !prev;
-					if (newState) {
-						setShowMenu(true);
-					} else {
-						setShowMenu(false);
-					}
+					if (newState) setShowMenu(true);
+					else setShowMenu(false);
 					return newState;
 				});
 				return;
@@ -134,9 +143,8 @@ export const SnakeProject = () => {
 
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [isRunning, isPaused, isGameOver, showMenu]);
+	}, [isRunning, isPaused, isGameOver, showMenu, playerName]);
 
-	// SNAKE MOVEMENT
 	useEffect(() => {
 		if (!isRunning || isPaused) return;
 
@@ -186,7 +194,7 @@ export const SnakeProject = () => {
 		return () => clearInterval(timer);
 	}, [isRunning, isPaused]);
 
-	// RENDER
+	// CANVAS RENDER
 	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 
 	useEffect(() => {
@@ -236,20 +244,14 @@ export const SnakeProject = () => {
 				if (i === 0) {
 					img = headImg;
 					const next = snakeRef.current[1];
-					let dx, dy;
-					if (next) {
-						dx = next.x - seg.x;
-						dy = next.y - seg.y;
-					} else {
-						dx = -directionRef.current.x;
-						dy = -directionRef.current.y;
-					}
+					let dx = next ? next.x - seg.x : -directionRef.current.x;
+					let dy = next ? next.y - seg.y : -directionRef.current.y;
+
 					if (dx === 1) rotation = Math.PI;
 					if (dx === -1) rotation = 0;
 					if (dy === 1) rotation = -Math.PI / 2;
 					if (dy === -1) rotation = Math.PI / 2;
-				}
-				else if (i === snakeRef.current.length - 1) {
+				} else if (i === snakeRef.current.length - 1) {
 					img = tailImg;
 					const prev = snakeRef.current[i - 1];
 					const dx = prev.x - seg.x;
@@ -258,8 +260,7 @@ export const SnakeProject = () => {
 					if (dx === -1) rotation = Math.PI;
 					if (dy === 1) rotation = Math.PI / 2;
 					if (dy === -1) rotation = -Math.PI / 2;
-				}
-				else {
+				} else {
 					const prev = snakeRef.current[i - 1];
 					const next = snakeRef.current[i + 1];
 					const dxPrev = seg.x - prev.x;
@@ -267,14 +268,8 @@ export const SnakeProject = () => {
 					const dxNext = next.x - seg.x;
 					const dyNext = next.y - seg.y;
 
-					if (dyPrev === 0 && dyNext === 0) {
-						img = bodyImg;
-						rotation = dxPrev === 1 ? 0 : Math.PI;
-					}
-					else if (dxPrev === 0 && dxNext === 0) {
-						img = bodyImg;
-						rotation = dyPrev === 1 ? Math.PI / 2 : -Math.PI / 2;
-					}
+					if (dyPrev === 0 && dyNext === 0) rotation = dxPrev === 1 ? 0 : Math.PI;
+					else if (dxPrev === 0 && dxNext === 0) rotation = dyPrev === 1 ? Math.PI / 2 : -Math.PI / 2;
 					else {
 						img = angleImg;
 						if ((dxPrev === 1 && dyNext === 1) || (dxNext === -1 && dyPrev === -1)) rotation = Math.PI / 2;
@@ -297,6 +292,7 @@ export const SnakeProject = () => {
 		draw();
 	}, [score, isRunning, time, isPaused]);
 
+	// RETURN
 	return (
 	<div
 		style={{
@@ -315,21 +311,14 @@ export const SnakeProject = () => {
 			style={{
 			position: "absolute",
 			inset: 0,
-			backgroundColor: "rgba(0, 0, 0, 0.5)",
+			backgroundColor: "rgba(0,0,0,0.5)",
 			pointerEvents: "none",
 			}}
 		/>
 		)}
 
-		<div
-		style={{
-			display: "flex",
-			flexDirection: "row",
-			gap: "20px",
-			alignItems: "center",
-		}}
-		>
-		{/* --- LEFT PANEL : SCORE + TIME --- */}
+		<div style={{ display: "flex", flexDirection: "row", gap: "20px", alignItems: "center" }}>
+		{/* LEFT PANEL */}
 		<div
 			style={{
 			width: "120px",
@@ -342,32 +331,69 @@ export const SnakeProject = () => {
 		>
 			<div style={{ marginBottom: "20px" }}>
 			<div className="snake-font">SCORE</div>
-			<div className="snake-font" style={{ fontSize: "16px", marginTop: "5px" }}>{score}</div>
+			<div className="snake-font" style={{ fontSize: "16px", marginTop: "5px" }}>
+				{score}
 			</div>
-
+			</div>
 			<div>
 			<div className="snake-font">TIME</div>
-			<div className="snake-font" style={{ fontSize: "16px", marginTop: "5px" }}>{time}s</div>
+			<div className="snake-font" style={{ fontSize: "16px", marginTop: "5px" }}>
+				{time}s
+			</div>
 			</div>
 		</div>
 
-		{/* --- CANVAS AREA --- */}
-		<div
-			style={{
-			textAlign: "center",
-			width: GRID_SIZE * cellSize,
-			height: GRID_SIZE * cellSize,
-			position: "relative",
-			}}
-		>
-			<canvas
-			ref={canvasRef}
-			width={GRID_SIZE * cellSize}
-			height={GRID_SIZE * cellSize}
-			/>
+		<div style={{ textAlign: "center", width: GRID_SIZE * cellSize, height: GRID_SIZE * cellSize, position: "relative" }}>
+			<canvas ref={canvasRef} width={GRID_SIZE * cellSize} height={GRID_SIZE * cellSize} />
 
-			{/* --- MENU START / PAUSE --- */}
-			{showMenu && !isGameOver && (
+			{!playerName && (
+			<div
+				style={{
+				position: "absolute",
+				top: 0,
+				left: 0,
+				width: "100%",
+				height: "100%",
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
+				backgroundColor: "rgba(0,0,0,0.7)",
+				}}
+			>
+				<div className="snake-font" style={{ marginBottom: "20px" }}>
+				Enter Name
+				</div>
+				<input
+					ref={nameInputRef}
+					className="snake-font"
+					type="text"
+					value={tempName}
+					onChange={(e) => setTempName(e.target.value)}
+					style={{ textAlign: "center", fontSize: "14px", padding: "5px", marginBottom: "20px" }}
+					onKeyDown={(e) => {
+						if (e.key === "Enter" && tempName.trim()) {
+						setPlayerName(tempName.trim());
+						startGame();
+						}
+					}}
+				/>
+				<button
+				className="snake-font"
+				onClick={() => {
+					if (tempName.trim()) {
+					setPlayerName(tempName.trim());
+					startGame();
+					}
+				}}
+				style={{ cursor: "pointer", padding: "5px 10px" }}
+				>
+				Start Playing
+				</button>
+			</div>
+			)}
+
+			{playerName && showMenu && !isGameOver && (
 			<div
 				style={{
 				position: "absolute",
@@ -383,7 +409,6 @@ export const SnakeProject = () => {
 				cursor: "pointer",
 				}}
 			>
-				{/* Bouton Play */}
 				<img
 				src={isHover ? playButtonHover : playButton}
 				alt="Play"
@@ -396,18 +421,16 @@ export const SnakeProject = () => {
 				}}
 				/>
 
-				{/* Coupe en dessous */}
 				<img
 				src={isCupHover ? cupHoverImg : cupImg}
-				alt="Cup"
 				style={{ width: "20%", marginTop: "20px" }}
 				onMouseEnter={() => setIsCupHover(true)}
 				onMouseLeave={() => setIsCupHover(false)}
+				onClick={() => openApp("leaderboard")}
 				/>
 			</div>
 			)}
 
-			{/* --- GAME OVER SCREEN --- */}
 			{isGameOver && (
 			<div
 				style={{
@@ -423,15 +446,11 @@ export const SnakeProject = () => {
 				userSelect: "none",
 				}}
 			>
-				<img
-				src={gameOverImg}
-				alt="Game Over"
-				style={{ width: "80%" }}
-				/>
+				<img src={gameOverImg} alt="Game Over" style={{ width: "80%" }} />
 			</div>
 			)}
 		</div>
 		</div>
 	</div>
-	);
+);
 };
