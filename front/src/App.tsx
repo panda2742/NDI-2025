@@ -10,6 +10,9 @@ import gsap from 'gsap';
 
 import '@css/App.scss'
 
+import { ToastContainer } from '#/lib/toast/ToastContainer.tsx'
+import { ToastProvider } from './lib/toast';
+
 
 
 
@@ -139,22 +142,25 @@ function MacOS() {
 
 
     return <div id="app" onMouseMove={handleMouseMove} onMouseUp={handleMouseUP} onMouseDown={handleMouseDown}>
-        <WindowServer {...appWindow} />
-        <div className="apps-container" ref={appsContainer}>
+        <ToastProvider>
+            <WindowServer {...appWindow} />
+            <div className="apps-container" ref={appsContainer}>
 
-            {apps.map((appGroup, groupIndex) => (
-                appGroup.map((app, appIndex) => {
-                    if (!app.content) return
-                    return <App label={app.label} state={app.state} uniqueKey={app.id} type={app.type} key={groupIndex+appIndex} onMouseDown={(e) => {handleZIndexBoost(e, app)}} updateState={(newState) => updateAppState(app.id, newState)}>
-                        {app.content}
-                    </App>
-                })
-            ))}
-        </div>
+                {apps.map((appGroup, groupIndex) => (
+                    appGroup.map((app, appIndex) => {
+                        if (!app.content) return
+                        return <App label={app.label} state={app.state} uniqueKey={app.id} type={app.type} key={groupIndex+appIndex} onMouseDown={(e) => {handleZIndexBoost(e, app)}} updateState={(newState) => updateAppState(app.id, newState)}>
+                            {app.content}
+                        </App>
+                    })
+                ))}
+            </div>
 
-        <div id="select-zone" ref={selectZoneRef}></div>
+            <div id="select-zone" ref={selectZoneRef}></div>
 
-        <Dock apps={apps} updateAppState={updateAppState}/>
+            <Dock apps={apps} updateAppState={updateAppState}/>
+            <ToastContainer />
+        </ToastProvider>
     </div>;
 }
 
