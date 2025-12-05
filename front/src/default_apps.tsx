@@ -11,7 +11,7 @@ import {
     WhatsWebProject,
     SnakeProject,
 } from "@projects/index.ts";
-import { Terminal } from "@molecules/terminal/terminal.tsx";
+import { Terminal } from "@molecules/terminal/display/terminal";
 import { PlaceholderApp } from "@molecules/placeholder-app/placeholder-app.tsx";
 
 export interface IApp {

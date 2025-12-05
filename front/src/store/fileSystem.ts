@@ -4,7 +4,7 @@ import { create } from "zustand";
 
 export type FileSystemState = {
 	fs: FileSystemRoot,
-	currentPath: Array<string>,
+	currentPath: string,
 	createDirectory: (path: string) => void,
 	createFile: (path: string, content?: string) => void,
 };
@@ -61,7 +61,7 @@ function createFile(path: string, fs: FileSystemRoot, content: string) {
 
 export const useFileSystem = create<FileSystemState>((set) => ({
 	fs: baseFileSystem,
-	currentPath: ["home", "user"],
+	currentPath: "/home/user",
 	createDirectory: (path: string) => set((state) => {
 		createDirectory(path, state.fs);
 		return { ...state };

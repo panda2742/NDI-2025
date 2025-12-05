@@ -66,9 +66,10 @@ export class FileSystemDirectory extends FileSystemParent {
 			super(arg0, children);
 		} else {
 			if (arg0.children) {
-				super(arg0.name, arg0.children.map((childSchema: FileSystemSchema) => childSchema.type == "file" ? new FileSystemFile(childSchema, this) : new FileSystemDirectory(childSchema, this)));
-			} else {
 				super(arg0.name, []);
+				this.children = arg0.children.map((childSchema: FileSystemSchema) => childSchema.type == "file" ? new FileSystemFile(childSchema, this) : new FileSystemDirectory(childSchema, this))
+			} else {
+				super(arg0.name, children);
 			}
 		}
 		this.parent = parent;
