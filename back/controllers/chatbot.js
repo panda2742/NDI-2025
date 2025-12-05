@@ -31,7 +31,7 @@ const sqlToolDeclaration = {
 function execute_sql_query(query) {
     console.log(`\n[INFO: Outil Exécuté] Requête SQL interceptée : ${query}`);
     
-    return JSON.stringify({ status: "success", result: "Requête SQL exécutée: ${query}" });
+    return JSON.stringify({ status: "success", result: `Requête SQL exécutée: ${query}` });
 }
 const availableFunctions = { execute_sql_query };
 
