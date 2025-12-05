@@ -4,18 +4,20 @@ import Terminal from "./icons/Terminal.png";
 import Clipouille from "./icons/Clipouille.png";
 import Calc from "./icons/calc.svg";
 import Clock from "./icons/clock-icon.svg";
+import Leaderboard from "./icons/Leaderboard.png";
 
 const icons = {
     terminal: Terminal,
     clipouille: Clipouille,
     calc: Calc,
     clock: Clock,
+    leaderboard: Leaderboard,
 };
 
 export interface IconProps {
     label: string;
     state: 0 | 1 | 2;
-    iconKey: "terminal" | "clipouille" | "calc";
+    iconKey: "terminal" | "clipouille" | "calc" | "clock" | "leaderboard";
     index: number;
     onClick?: () => void;
 }

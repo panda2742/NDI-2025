@@ -8,6 +8,7 @@ import {
     SnakeProject,
     CalculatorProject,
     ClockProject,
+    LeaderboardProject,
 } from "@projects/index.ts";
 import { Terminal } from "@molecules/terminal/display/terminal";
 import { PlaceholderApp } from "@molecules/placeholder-app/placeholder-app.tsx";
@@ -16,7 +17,7 @@ export interface IApp {
     label: string;
     id: string;
     content: ReactElement | null;
-    iconKey: "terminal" | "clipouille" | "calc" | "clock";
+    iconKey: "terminal" | "clipouille" | "calc" | "clock" | "leaderboard";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
     onClick?: () => void;
@@ -240,6 +241,16 @@ export const defaultApps: IApp[][] = [
             type: "application",
             hide: true,
             resizable: false,
+        },
+        {
+            label: "Leaderboard",
+            id: "leaderboard",
+            content: <LeaderboardProject key={"leaderboard"} />,
+            iconKey: "leaderboard",
+            state: 0,
+            type: "application",
+            hide: true,
+            resizable: true,
         },
     ],
 ];

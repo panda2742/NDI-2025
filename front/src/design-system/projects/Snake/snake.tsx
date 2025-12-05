@@ -7,467 +7,457 @@ import appleImg from "./assets/apple.png";
 import gameOverImg from "./assets/gameOver.png";
 import playButton from "./assets/playButton.png";
 import playButtonHover from "./assets/playButtonHover.png";
+import cupImg from "./assets/cup.png";
+import cupHoverImg from "./assets/cupHover.png";
+import { openApp } from "../../../api/appController";
+import { svc } from "../../../services/ScoreService.ts";
 import "./style.scss";
 
 export const SnakeProject = () => {
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-    const [isRunning, setIsRunning] = useState(false);
-    const [isPaused, setIsPaused] = useState(false);
-    const [isGameOver, setIsGameOver] = useState(false);
-    const [showMenu, setShowMenu] = useState(true);
+	const [isRunning, setIsRunning] = useState(false);
+	const [isPaused, setIsPaused] = useState(false);
+	const [isGameOver, setIsGameOver] = useState(false);
+	const [showMenu, setShowMenu] = useState(true);
 
-    const [isHover, setIsHover] = useState(false);
+	const [isCupHover, setIsCupHover] = useState(false);
+	const [isHover, setIsHover] = useState(false);
 
-    const [score, setScore] = useState(0);
-    const [time, setTime] = useState(0);
+	const [score, setScore] = useState(0);
+	const scoreRef = useRef(score);
+	scoreRef.current = score;
 
-    const cellSize = 15;
-    const GRID_SIZE = 20;
-    const snakeStartingX = 19;
-    const snakeStartingY = 10;
-    const snakeSpeed = 10;
-    const snakeInterval = 1000 / snakeSpeed;
+	const [time, setTime] = useState(0);
 
-    const directionList = {
-        ArrowUp: { x: 0, y: -1 },
-        ArrowDown: { x: 0, y: 1 },
-        ArrowLeft: { x: -1, y: 0 },
-        ArrowRight: { x: 1, y: 0 },
-    };
+	const [playerName, setPlayerName] = useState<string | null>(null);
+	const nameInputRef = useRef<HTMLInputElement | null>(null);
 
-    const [snake, setSnake] = useState([
-        { x: snakeStartingX, y: snakeStartingY },
-    ]);
-    const snakeRef = useRef(snake);
-    snakeRef.current = snake;
+	const [tempName, setTempName] = useState<string>("");
 
-    const [direction, setDirection] = useState({ x: -1, y: 0 });
-    const directionRef = useRef(direction);
-    directionRef.current = direction;
+	const cellSize = 15;
+	const GRID_SIZE = 20;
+	const snakeStartingX = 19;
+	const snakeStartingY = 10;
+	const snakeSpeed = 10;
+	const snakeInterval = 1000 / snakeSpeed;
 
-    const [canChangeDirection, setCanChangeDirection] = useState(true);
-    const canChangeDirectionRef = useRef(canChangeDirection);
-    canChangeDirectionRef.current = canChangeDirection;
+	const directionList = {
+		ArrowUp: { x: 0, y: -1 },
+		ArrowDown: { x: 0, y: 1 },
+		ArrowLeft: { x: -1, y: 0 },
+		ArrowRight: { x: 1, y: 0 },
+	};
 
-    const randomPos = () => ({
-        x: Math.floor(Math.random() * GRID_SIZE),
-        y: Math.floor(Math.random() * GRID_SIZE),
-    });
+	const [snake, setSnake] = useState([{ x: snakeStartingX, y: snakeStartingY }]);
+	const snakeRef = useRef(snake);
+	snakeRef.current = snake;
 
-    const [apple, setApple] = useState({ x: -1, y: -1 });
-    const appleRef = useRef(apple);
-    appleRef.current = apple;
+	const [direction, setDirection] = useState({ x: -1, y: 0 });
+	const directionRef = useRef(direction);
+	directionRef.current = direction;
 
-    const startGame = () => {
-        const startSnake = [{ x: snakeStartingX, y: snakeStartingY }];
-        setSnake(startSnake);
-        snakeRef.current = startSnake;
+	const [canChangeDirection, setCanChangeDirection] = useState(true);
+	const canChangeDirectionRef = useRef(canChangeDirection);
+	canChangeDirectionRef.current = canChangeDirection;
 
-        const startDir = { x: -1, y: 0 };
-        setDirection(startDir);
-        directionRef.current = startDir;
+	const [apple, setApple] = useState({ x: -1, y: -1 });
+	const appleRef = useRef(apple);
+	appleRef.current = apple;
 
-        setCanChangeDirection(true);
-        canChangeDirectionRef.current = true;
+	const randomPos = () => ({
+		x: Math.floor(Math.random() * GRID_SIZE),
+		y: Math.floor(Math.random() * GRID_SIZE),
+	});
 
-        const newApple = randomPos();
-        setApple(newApple);
-        appleRef.current = newApple;
+	const startGame = () => {
+		const startSnake = [{ x: snakeStartingX, y: snakeStartingY }];
+		setSnake(startSnake);
+		snakeRef.current = startSnake;
 
-        setScore(0);
-        setTime(0);
-        setIsRunning(true);
-        setIsPaused(false);
-        setIsGameOver(false);
-        setShowMenu(false);
-    };
+		const startDir = { x: -1, y: 0 };
+		setDirection(startDir);
+		directionRef.current = startDir;
 
-    // CONTINUE AFTER PAUSE
-    const resumeGame = () => {
-        setIsPaused(false);
-        setShowMenu(false);
-        setIsRunning(true);
-    };
+		setCanChangeDirection(true);
+		canChangeDirectionRef.current = true;
 
-    // KEY HANDLING
-    useEffect(() => {
-        function handleKeyDown(e: KeyboardEvent) {
-            if (isGameOver && (e.key === "Enter" || e.key === "Escape")) {
-                setShowMenu(true);
-                setIsGameOver(false);
-                return;
-            }
+		const newApple = randomPos();
+		setApple(newApple);
+		appleRef.current = newApple;
 
-            if (showMenu && e.key === "Enter") {
-                startGame();
-                return;
-            }
+		setScore(0);
+		scoreRef.current = score;
+		setTime(0);
+		setIsRunning(true);
+		setIsPaused(false);
+		setIsGameOver(false);
+		setShowMenu(false);
+	};
 
-            if (!isRunning) return;
+	const resumeGame = () => {
+		setIsPaused(false);
+		setShowMenu(false);
+		setIsRunning(true);
+	};
 
-            if (e.key === "Escape") {
-                setIsPaused((prev) => {
-                    const newState = !prev;
-                    if (newState) {
-                        setShowMenu(true);
-                    } else {
-                        setShowMenu(false);
-                    }
-                    return newState;
-                });
-                return;
-            }
+	
+	useEffect(() => {
+	if (!playerName && nameInputRef.current) {
+		nameInputRef.current.focus();
+	}
+	}, [playerName]);
 
-            if (isPaused) return;
-            if (!canChangeDirectionRef.current) return;
-            if (!(e.key in directionList)) return;
+	useEffect(() => {
+		function handleKeyDown(e: KeyboardEvent) {
+			if (isGameOver && (e.key === "Enter" || e.key === "Escape")) {
+				setShowMenu(true);
+				setIsGameOver(false);
+				return;
+			}
 
-            const newDir = directionList[e.key as keyof typeof directionList];
-            const cur = directionRef.current;
-            if (newDir.x === -cur.x && newDir.y === -cur.y) return;
+			if (showMenu && e.key === "Enter") {
+				if (!playerName) return; // le pseudo doit être saisi avant de commencer
+				startGame();
+				return;
+			}
 
-            setDirection(newDir);
-            setCanChangeDirection(false);
-        }
+			if (!isRunning) return;
 
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [isRunning, isPaused, isGameOver, showMenu]);
+			if (e.key === "Escape") {
+				setIsPaused(prev => {
+					const newState = !prev;
+					if (newState) setShowMenu(true);
+					else setShowMenu(false);
+					return newState;
+				});
+				return;
+			}
 
-    // SNAKE MOVEMENT
-    useEffect(() => {
-        if (!isRunning || isPaused) return;
+			if (isPaused) return;
+			if (!canChangeDirectionRef.current) return;
+			if (!(e.key in directionList)) return;
 
-        const interval = setInterval(() => {
-            const dir = directionRef.current;
+			const newDir = directionList[e.key as keyof typeof directionList];
+			const cur = directionRef.current;
+			if (newDir.x === -cur.x && newDir.y === -cur.y) return;
 
-            const newSnake = [...snakeRef.current];
-            const head = newSnake[0];
-            const newHead = { x: head.x + dir.x, y: head.y + dir.y };
+			setDirection(newDir);
+			setCanChangeDirection(false);
+		}
 
-            const bodyWithoutTail = newSnake.slice(0, newSnake.length - 1);
-            const hitSelf = bodyWithoutTail.some(
-                (s) => s.x === newHead.x && s.y === newHead.y,
-            );
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [isRunning, isPaused, isGameOver, showMenu, playerName]);
 
-            if (
-                hitSelf ||
-                newHead.x < 0 ||
-                newHead.y < 0 ||
-                newHead.x >= GRID_SIZE ||
-                newHead.y >= GRID_SIZE
-            ) {
-                setIsRunning(false);
-                setIsGameOver(true);
-                return;
-            }
+	useEffect(() => {
+		if (!isRunning || isPaused) return;
 
-            if (
-                appleRef.current.x === newHead.x &&
-                appleRef.current.y === newHead.y
-            ) {
-                newSnake.unshift(newHead);
-                let newApple = randomPos();
-                while (
-                    newSnake.some(
-                        (s) => s.x === newApple.x && s.y === newApple.y,
-                    )
-                ) {
-                    newApple = randomPos();
-                }
-                setApple(newApple);
-                appleRef.current = newApple;
-                setScore((prev) => prev + 1);
-            } else {
-                newSnake.unshift(newHead);
-                newSnake.pop();
-            }
+		const interval = setInterval( async () => {
+			const dir = directionRef.current;
 
-            setSnake(newSnake);
-            snakeRef.current = newSnake;
+			const newSnake = [...snakeRef.current];
+			const head = newSnake[0];
+			const newHead = { x: head.x + dir.x, y: head.y + dir.y };
 
-            setCanChangeDirection(true);
-        }, snakeInterval);
+			const bodyWithoutTail = newSnake.slice(0, newSnake.length - 1);
+			const hitSelf = bodyWithoutTail.some(s => s.x === newHead.x && s.y === newHead.y);
 
-        return () => clearInterval(interval);
-    }, [isRunning, isPaused]);
+			if (hitSelf || newHead.x < 0 || newHead.y < 0 || newHead.x >= GRID_SIZE || newHead.y >= GRID_SIZE) {
+				setIsRunning(false);
+				setIsGameOver(true);
+				if (playerName)
+					await svc.createScore({player_name : playerName, score: scoreRef.current});
+				return;
+			}
 
-    // TIMER
-    useEffect(() => {
-        if (!isRunning || isPaused) return;
-        const timer = setInterval(() => setTime((prev) => prev + 1), 1000);
-        return () => clearInterval(timer);
-    }, [isRunning, isPaused]);
+			if (appleRef.current.x === newHead.x && appleRef.current.y === newHead.y) {
+				newSnake.unshift(newHead);
+				let newApple = randomPos();
+				while (newSnake.some(s => s.x === newApple.x && s.y === newApple.y)) {
+					newApple = randomPos();
+				}
+				setApple(newApple);
+				appleRef.current = newApple;
+				setScore(prev => prev + 1);
+				scoreRef.current = score;
+			} else {
+				newSnake.unshift(newHead);
+				newSnake.pop();
+			}
 
-    // RENDER
-    const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+			setSnake(newSnake);
+			snakeRef.current = newSnake;
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
-        ctxRef.current = ctx;
+			setCanChangeDirection(true);
+		}, snakeInterval);
 
-        const headImg = new Image();
-        headImg.src = snakeHeadImg;
-        const bodyImg = new Image();
-        bodyImg.src = snakeBodyImg;
-        const tailImg = new Image();
-        tailImg.src = snakeTailImg;
-        const angleImg = new Image();
-        angleImg.src = snakeAngleImg;
-        const appleImage = new Image();
-        appleImage.src = appleImg;
+		return () => clearInterval(interval);
+	}, [isRunning, isPaused]);
 
-        function draw() {
-            const ctx = ctxRef.current;
-            if (!ctx) return;
+	useEffect(() => {
+		if (!isRunning || isPaused) return;
+		const timer = setInterval(() => setTime(prev => prev + 1), 1000);
+		return () => clearInterval(timer);
+	}, [isRunning, isPaused]);
 
-            // Background
-            for (let y = 0; y < GRID_SIZE; y++) {
-                for (let x = 0; x < GRID_SIZE; x++) {
-                    ctx.fillStyle = (x + y) % 2 ? "#ADF6B1" : "#A1E5AB";
-                    ctx.fillRect(
-                        x * cellSize,
-                        y * cellSize,
-                        cellSize,
-                        cellSize,
-                    );
-                }
-            }
+	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 
-            // Apple
-            ctx.drawImage(
-                appleImage,
-                appleRef.current.x * cellSize,
-                appleRef.current.y * cellSize,
-                cellSize,
-                cellSize,
-            );
+	useEffect(() => {
+		const canvas = canvasRef.current;
+		if (!canvas) return;
+		const ctx = canvas.getContext("2d");
+		if (!ctx) return;
+		ctxRef.current = ctx;
 
-            // Snake
-            snakeRef.current.forEach((seg, i) => {
-                let img = bodyImg;
-                let rotation = 0;
+		const headImg = new Image();
+		headImg.src = snakeHeadImg;
+		const bodyImg = new Image();
+		bodyImg.src = snakeBodyImg;
+		const tailImg = new Image();
+		tailImg.src = snakeTailImg;
+		const angleImg = new Image();
+		angleImg.src = snakeAngleImg;
+		const appleImage = new Image();
+		appleImage.src = appleImg;
 
-                if (i === 0) {
-                    img = headImg;
-                    const next = snakeRef.current[1];
-                    let dx, dy;
-                    if (next) {
-                        dx = next.x - seg.x;
-                        dy = next.y - seg.y;
-                    } else {
-                        dx = -directionRef.current.x;
-                        dy = -directionRef.current.y;
-                    }
-                    if (dx === 1) rotation = Math.PI;
-                    if (dx === -1) rotation = 0;
-                    if (dy === 1) rotation = -Math.PI / 2;
-                    if (dy === -1) rotation = Math.PI / 2;
-                } else if (i === snakeRef.current.length - 1) {
-                    img = tailImg;
-                    const prev = snakeRef.current[i - 1];
-                    const dx = prev.x - seg.x;
-                    const dy = prev.y - seg.y;
-                    if (dx === 1) rotation = 0;
-                    if (dx === -1) rotation = Math.PI;
-                    if (dy === 1) rotation = Math.PI / 2;
-                    if (dy === -1) rotation = -Math.PI / 2;
-                } else {
-                    const prev = snakeRef.current[i - 1];
-                    const next = snakeRef.current[i + 1];
-                    const dxPrev = seg.x - prev.x;
-                    const dyPrev = seg.y - prev.y;
-                    const dxNext = next.x - seg.x;
-                    const dyNext = next.y - seg.y;
+		function draw() {
+			const ctx = ctxRef.current;
+			if (!ctx) return;
 
-                    if (dyPrev === 0 && dyNext === 0) {
-                        img = bodyImg;
-                        rotation = dxPrev === 1 ? 0 : Math.PI;
-                    } else if (dxPrev === 0 && dxNext === 0) {
-                        img = bodyImg;
-                        rotation = dyPrev === 1 ? Math.PI / 2 : -Math.PI / 2;
-                    } else {
-                        img = angleImg;
-                        if (
-                            (dxPrev === 1 && dyNext === 1) ||
-                            (dxNext === -1 && dyPrev === -1)
-                        )
-                            rotation = Math.PI / 2;
-                        else if (
-                            (dxPrev === 1 && dyNext === -1) ||
-                            (dxNext === -1 && dyPrev === 1)
-                        )
-                            rotation = Math.PI;
-                        else if (
-                            (dxPrev === -1 && dyNext === 1) ||
-                            (dxNext === 1 && dyPrev === -1)
-                        )
-                            rotation = 0;
-                        else if (
-                            (dxPrev === -1 && dyNext === -1) ||
-                            (dxNext === 1 && dyPrev === 1)
-                        )
-                            rotation = -Math.PI / 2;
-                    }
-                }
+			// Background
+			for (let y = 0; y < GRID_SIZE; y++) {
+				for (let x = 0; x < GRID_SIZE; x++) {
+					ctx.fillStyle = (x + y) % 2 ? "#ADF6B1" : "#A1E5AB";
+					ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+				}
+			}
 
-                ctx.save();
-                ctx.translate(
-                    seg.x * cellSize + cellSize / 2,
-                    seg.y * cellSize + cellSize / 2,
-                );
-                ctx.rotate(rotation);
-                ctx.drawImage(
-                    img,
-                    -cellSize / 2,
-                    -cellSize / 2,
-                    cellSize,
-                    cellSize,
-                );
-                ctx.restore();
-            });
+			// Apple
+			ctx.drawImage(
+				appleImage,
+				appleRef.current.x * cellSize,
+				appleRef.current.y * cellSize,
+				cellSize,
+				cellSize
+			);
 
-            requestAnimationFrame(draw);
-        }
+			// Snake
+			snakeRef.current.forEach((seg, i) => {
+				let img = bodyImg;
+				let rotation = 0;
 
-        draw();
-    }, [score, isRunning, time, isPaused]);
+				if (i === 0) {
+					img = headImg;
+					const next = snakeRef.current[1];
+					let dx = next ? next.x - seg.x : -directionRef.current.x;
+					let dy = next ? next.y - seg.y : -directionRef.current.y;
 
-    return (
-        <div
-            style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100%",
-                height: "100%",
-                background: "#A1E5AB",
-                position: "relative",
-            }}
-        >
-            {(showMenu || isGameOver) && (
-                <div
-                    style={{
-                        position: "absolute",
-                        inset: 0,
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        pointerEvents: "none",
-                    }}
-                />
-            )}
+					if (dx === 1) rotation = Math.PI;
+					if (dx === -1) rotation = 0;
+					if (dy === 1) rotation = -Math.PI / 2;
+					if (dy === -1) rotation = Math.PI / 2;
+				} else if (i === snakeRef.current.length - 1) {
+					img = tailImg;
+					const prev = snakeRef.current[i - 1];
+					const dx = prev.x - seg.x;
+					const dy = prev.y - seg.y;
+					if (dx === 1) rotation = 0;
+					if (dx === -1) rotation = Math.PI;
+					if (dy === 1) rotation = Math.PI / 2;
+					if (dy === -1) rotation = -Math.PI / 2;
+				} else {
+					const prev = snakeRef.current[i - 1];
+					const next = snakeRef.current[i + 1];
+					const dxPrev = seg.x - prev.x;
+					const dyPrev = seg.y - prev.y;
+					const dxNext = next.x - seg.x;
+					const dyNext = next.y - seg.y;
 
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: "20px",
-                    alignItems: "center",
-                }}
-            >
-                <div
-                    style={{
-                        width: "120px",
-                        textAlign: "left",
-                        color: "#fff",
-                        fontSize: "12px",
-                        textShadow: "2px 2px 0px #000",
-                        userSelect: "none",
-                    }}
-                >
-                    <div style={{ marginBottom: "20px" }}>
-                        <div className="snake-font">SCORE</div>
-                        <div
-                            className="snake-font"
-                            style={{ fontSize: "16px", marginTop: "5px" }}
-                        >
-                            {score}
-                        </div>
-                    </div>
+					if (dyPrev === 0 && dyNext === 0) rotation = dxPrev === 1 ? 0 : Math.PI;
+					else if (dxPrev === 0 && dxNext === 0) rotation = dyPrev === 1 ? Math.PI / 2 : -Math.PI / 2;
+					else {
+						img = angleImg;
+						if ((dxPrev === 1 && dyNext === 1) || (dxNext === -1 && dyPrev === -1)) rotation = Math.PI / 2;
+						else if ((dxPrev === 1 && dyNext === -1) || (dxNext === -1 && dyPrev === 1)) rotation = Math.PI;
+						else if ((dxPrev === -1 && dyNext === 1) || (dxNext === 1 && dyPrev === -1)) rotation = 0;
+						else if ((dxPrev === -1 && dyNext === -1) || (dxNext === 1 && dyPrev === 1)) rotation = -Math.PI / 2;
+					}
+				}
 
-                    <div>
-                        <div className="snake-font">TIME</div>
-                        <div
-                            className="snake-font"
-                            style={{ fontSize: "16px", marginTop: "5px" }}
-                        >
-                            {time}s
-                        </div>
-                    </div>
-                </div>
+				ctx.save();
+				ctx.translate(seg.x * cellSize + cellSize / 2, seg.y * cellSize + cellSize / 2);
+				ctx.rotate(rotation);
+				ctx.drawImage(img, -cellSize / 2, -cellSize / 2, cellSize, cellSize);
+				ctx.restore();
+			});
 
-                <div
-                    style={{
-                        textAlign: "center",
-                        width: GRID_SIZE * cellSize,
-                        height: GRID_SIZE * cellSize,
-                        position: "relative",
-                    }}
-                >
-                    <canvas
-                        ref={canvasRef}
-                        width={GRID_SIZE * cellSize}
-                        height={GRID_SIZE * cellSize}
-                    />
+			requestAnimationFrame(draw);
+		}
 
-                    {/* MENU (pause or start) */}
-                    {showMenu && !isGameOver && (
-                        <div
-                            style={{
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                width: "100%",
-                                height: "100%",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                                cursor: "pointer",
-                            }}
-                            onMouseEnter={() => setIsHover(true)}
-                            onMouseLeave={() => setIsHover(false)}
-                            onClick={() => {
-                                if (isPaused) resumeGame();
-                                else startGame();
-                            }}
-                        >
-                            <img
-                                src={isHover ? playButtonHover : playButton}
-                                alt="Play"
-                                style={{ width: "40%" }}
-                            />
-                        </div>
-                    )}
+		draw();
+	}, [score, isRunning, time, isPaused]);
 
-                    {/* GAME OVER SCREEN */}
-                    {isGameOver && (
-                        <div
-                            style={{
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                width: "100%",
-                                height: "100%",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                backgroundColor: "rgba(0,0,0,0.5)",
-                                userSelect: "none",
-                            }}
-                        >
-                            <img
-                                src={gameOverImg}
-                                alt="Game Over"
-                                style={{ width: "80%" }}
-                            />
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
+	// RETURN
+	return (
+	<div
+		style={{
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		width: "100%",
+		height: "100%",
+		background: "#A1E5AB",
+		position: "relative",
+		fontFamily: "'Press Start 2P', monospace",
+		}}
+	>
+		{(showMenu || isGameOver) && (
+		<div
+			style={{
+			position: "absolute",
+			inset: 0,
+			backgroundColor: "rgba(0,0,0,0.5)",
+			pointerEvents: "none",
+			}}
+		/>
+		)}
+
+		<div style={{ display: "flex", flexDirection: "row", gap: "20px", alignItems: "center" }}>
+		{/* LEFT PANEL */}
+		<div
+			style={{
+			width: "120px",
+			textAlign: "left",
+			color: "#fff",
+			fontSize: "12px",
+			textShadow: "2px 2px 0px #000",
+			userSelect: "none",
+			}}
+		>
+			<div style={{ marginBottom: "20px" }}>
+			<div className="snake-font">SCORE</div>
+			<div className="snake-font" style={{ fontSize: "16px", marginTop: "5px" }}>
+				{score}
+			</div>
+			</div>
+			<div>
+			<div className="snake-font">TIME</div>
+			<div className="snake-font" style={{ fontSize: "16px", marginTop: "5px" }}>
+				{time}s
+			</div>
+			</div>
+		</div>
+
+		<div style={{ textAlign: "center", width: GRID_SIZE * cellSize, height: GRID_SIZE * cellSize, position: "relative" }}>
+			<canvas ref={canvasRef} width={GRID_SIZE * cellSize} height={GRID_SIZE * cellSize} />
+
+			{!playerName && (
+			<div
+				style={{
+				position: "absolute",
+				top: 0,
+				left: 0,
+				width: "100%",
+				height: "100%",
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
+				backgroundColor: "rgba(0,0,0,0.7)",
+				}}
+			>
+				<div className="snake-font" style={{ marginBottom: "20px" }}>
+				Enter Name
+				</div>
+				<input
+					ref={nameInputRef}
+					placeholder="Name"
+					className="snake-font placeholder-name"
+					type="text"
+					value={tempName}
+					onChange={(e) => setTempName(e.target.value)}
+					style={{ textAlign: "center", fontSize: "14px", padding: "5px", marginBottom: "20px"}}
+					onKeyDown={(e) => {
+						if (e.key === "Enter" && tempName.trim()) {
+						setPlayerName(tempName.trim());
+						startGame();
+						}
+					}}
+				/>
+				<button
+				className="snake-font"
+				onClick={() => {
+					if (tempName.trim()) {
+					setPlayerName(tempName.trim());
+					startGame();
+					}
+				}}
+				style={{ cursor: "pointer", padding: "5px 10px" }}
+				>
+				Start Playing
+				</button>
+			</div>
+			)}
+
+			{playerName && showMenu && !isGameOver && (
+			<div
+				style={{
+				position: "absolute",
+				top: 0,
+				left: 0,
+				width: "100%",
+				height: "100%",
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
+				backgroundColor: "rgba(0, 0, 0, 0.5)",
+				cursor: "pointer",
+				}}
+			>
+				<img
+				src={isHover ? playButtonHover : playButton}
+				alt="Play"
+				style={{ width: "40%" }}
+				onMouseEnter={() => setIsHover(true)}
+				onMouseLeave={() => setIsHover(false)}
+				onClick={() => {
+					if (isPaused) resumeGame();
+					else startGame();
+				}}
+				/>
+
+				<img
+				src={isCupHover ? cupHoverImg : cupImg}
+				style={{ width: "20%", marginTop: "20px" }}
+				onMouseEnter={() => setIsCupHover(true)}
+				onMouseLeave={() => setIsCupHover(false)}
+				onClick={() => openApp("leaderboard")}
+				/>
+			</div>
+			)}
+
+			{isGameOver && (
+			<div
+				style={{
+				position: "absolute",
+				top: 0,
+				left: 0,
+				width: "100%",
+				height: "100%",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+				backgroundColor: "rgba(0,0,0,0.5)",
+				userSelect: "none",
+				}}
+			>
+				<img src={gameOverImg} alt="Game Over" style={{ width: "80%" }} />
+			</div>
+			)}
+		</div>
+		</div>
+	</div>
+);
 };
