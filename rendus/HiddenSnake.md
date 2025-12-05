@@ -7,4 +7,4 @@ Rendu Hidden Snake
 - URL: https://miku-miku-beam.fr
 - Activation:
 	- Ouvir l'application Terminal
-	- Écrire la commande "./snake" ou "snake" !
+	- Écrire la commande "snake" !

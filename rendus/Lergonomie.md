@@ -6,5 +6,5 @@ Rendu L'ergonomie : simplifier pour mieux vivre.
 - GIT: https://github.com/panda2742/NDI-2025.git
 - URL: https://miku-miku-beam.fr
 - Activation:
-	- Ouvir l'application Windous
+	- Ouvir l'application 'Windous' ou 'Calculator'
 	- Et s'ammuser avec tous les champs !
