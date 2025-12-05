@@ -1,31 +1,17 @@
 import './style.scss'
 
-import WhatsWeb from './icons/WhatsWeb.svg';
-import WhatsEcoSystem from './icons/WhatsWeb.svg';
-import Server from './icons/Termius.svg';
-import RootMe from './icons/RootMe.svg';
-import OkNestor from './icons/OkNestor.svg';
-import Contact from './icons/Contact.png';
-import Document from './icons/Documents.png';
-import Pages from './icons/Pages.png';
 import Terminal from './icons/Terminal.png';
+import Clipouille from './icons/Clipouille.png';
 
 const icons = {
-    whatsweb: WhatsWeb,
-    whatsecosystem: WhatsEcoSystem,
-    server: Server,
-    rootme: RootMe,
-    oknestor: OkNestor,
     terminal: Terminal,
-    contact: Contact,
-    document: Document,
-    pages: Pages,
+    clipouille: Clipouille,
 };
 
 export interface IconProps {
     label: string;
     state: 0 | 1 | 2;
-    iconKey: 'whatsweb' | 'whatsecosystem' | 'server' | 'rootme' | 'oknestor' | 'contact' | 'terminal' | 'document' | 'pages';
+    iconKey: 'terminal' | 'clipouille';
     index: number;
     onClick?: () => void;
 }
