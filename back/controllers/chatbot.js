@@ -16,6 +16,8 @@ const systemInstruction = "Tu te nomme Clipouille.\
   Voila ton environnement tu est sur un site créer a l'occasion de la nuit de l'info pour promouvoir les valeur du NIRD.\
   Ce site est une reconstitution d'un bureau Linux il y a une application Windows qui est une parodie d'une page de connexion très difficile avec une ergonomie horrible, il y a aussi un jeu Snake qui est caché sur le site tu ne doit pas en parler sauf si mentionner et il y a un Leaderboard des joueurs ayant joué au jeu.\
   Tu peut utiliser execute_sql_query comme bon te semble pour envoyé des requète SQL a la base de donnée pour récupéré des informations.\
+  La Table qui contient les donnée du leaderboard est nomé \"scores\" et contient ces champs \"id\" \"player\" \"score\" \"metadata\".\
+  Pour récupéré le leaderboard en entier utilise SELECT * FROM scores.\
   Executé les requète SQL que l'utilisateur te demande.\
   Tu peut utiliser manage_window pour manipuler les fenêtre du site tu peut les fermer ou les ouvrir.\
   Voila les nom de fenêtre que tu peut utiliser: Terminale ou Calculatrice ou Finder, des noms similaire peuvent correspondre.\
@@ -33,47 +35,33 @@ const sqlToolDeclaration = {
     required: ['query'] 
   }
 };
-const windowToolDeclaration = {
-  name: 'manage_window',
-  description: 'Permet d\'ouvrir ou de fermer une fenêtre spécifique de l\'interface utilisateur simulée.',
-  parameters: {
-    type: 'object',
-    properties: {
-      window_name: {
-        type: 'string',
-      },
-      action: {
-        type: 'string',
-      }
-    },
-    required: ['window_name', 'action']
-  }
-};
 
-function execute_sql_query(query) {
+function execute_sql_query(args) {
+  const { query } = args;
     console.log(`\n[INFO: Tool Exécuté] Requête SQL interceptée : ${query}`);
     
-    return JSON.stringify({ status: "success", result: `Requête SQL exécutée: ${query}` });
-}
-function manage_window(args) {
-    const { window_name, action } = args;
-    console.log(`\n[INFO: Tool Exécuté] Commande : ${action} la fenêtre "${window_name}".`);
-
-    return `SUCCESS: La fenêtre "${window_name}" a été ${action === 'open' ? 'ouverte' : 'fermée'}.`;
+    try {
+      const lines = db.rawDb.prepare(query).all();
+      const sortieTexte = JSON.stringify(lines);
+      return JSON.stringify({ status: "success", result: sortieTexte });
+    }
+    catch (err) {
+      console.log(`Error SQL TOOL: ${err}`);
+      return JSON.stringify({ status: "error", result: err });
+    }
 }
 const availableFunctions = { 
-    execute_sql_query: execute_sql_query,
-    manage_window: manage_window
+    execute_sql_query: execute_sql_query
 };
-async function runChatWithTools(history) {
+async function runChatWithTools(history, model) {
     let newHistory = [...history];
     
     let response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-lite',
+        model: model,
         contents: newHistory, 
         config: {
             systemInstruction: systemInstruction,
-            tools: [{ functionDeclarations: [sqlToolDeclaration, windowToolDeclaration] }]
+            tools: [{ functionDeclarations: [sqlToolDeclaration] }]
         }
     });
 
@@ -96,10 +84,10 @@ async function runChatWithTools(history) {
 
         const toolResponse = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
-            contents: newHistory, 
+            contents: newHistory,
             config: {
                 systemInstruction: systemInstruction,
-                tools: [{ functionDeclarations: [sqlToolDeclaration, windowToolDeclaration] }]
+                tools: [{ functionDeclarations: [sqlToolDeclaration] }]
             }
         });
         
@@ -119,7 +107,7 @@ exports.message = async (req, res) => {
     if (!chatHistory) return res.status(400).json({ error: "Invalid request body: missing history" });
 
     try {
-        chatHistory = await runChatWithTools(chatHistory);
+        chatHistory = await runChatWithTools(chatHistory, 'gemini-2.5-flash');
     }
 	catch (error) {
         console.error("\nAPI_CALL Error:", error.message);
@@ -134,7 +122,7 @@ exports.notification = async (req, res) => {
 
     chatHistory.push({ role: "user", parts: [{ text: "Dit moi quelque chose sans me répété" }] });
     try {
-        chatHistory = await runChatWithTools(chatHistory);
+        chatHistory = await runChatWithTools(chatHistory, 'gemini-2.5-flash');
     }
 	  catch (error) {
         console.error("\nAPI_CALL Error:", error.message);

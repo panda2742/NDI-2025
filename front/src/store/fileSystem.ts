@@ -1,4 +1,10 @@
-import { FileSystemDirectory, FileSystemFile, FileSystemNode, FileSystemParent, FileSystemRoot } from "#/structure/FileSystem";
+import {
+    FileSystemDirectory,
+    FileSystemFile,
+    FileSystemNode,
+    FileSystemParent,
+    FileSystemRoot,
+} from "#/structure/FileSystem";
 import baseFileSystem from "@molecules/terminal/baseFileSystem";
 import { create } from "zustand";
 
@@ -39,44 +45,46 @@ function toAbsolutePath(currentPath: string, path: string) {
 function resolvePath(path: string, fs: FileSystemRoot/*, symlinkRecursion: number = 0*/): FileSystemParent | FileSystemFile {
 	const splittedPath = path.split("/").filter(Boolean);
 
-	let directory: FileSystemNode = fs;
-	for (const name of splittedPath) {
-		if (!(directory instanceof FileSystemDirectory) && !(directory instanceof FileSystemRoot)) {
-			throw new Error("File exists7");
-		}
-		// if (directory instanceof FileSystemSymLink) {
-		// 	if (symlinkRecursion > 64) throw new Error("too many levels of symbolic links");
-		// 	symlinkRecursion++;
-		// 	directory = resolvePath(directory.targetPath, fs);
-		// 	continue;
-		// }
-		const child = directory.find(name);
-		if (!child) throw new Error("no such file or directory");
-		directory = child;
-	}
-	return directory as FileSystemParent | FileSystemFile;
+    let directory: FileSystemNode = fs;
+    for (const name of splittedPath) {
+        if (!(directory instanceof FileSystemDirectory) && !(directory instanceof FileSystemRoot)) {
+            throw new Error("File exists7");
+        }
+        // if (directory instanceof FileSystemSymLink) {
+        // 	if (symlinkRecursion > 64) throw new Error("too many levels of symbolic links");
+        // 	symlinkRecursion++;
+        // 	directory = resolvePath(directory.targetPath, fs);
+        // 	continue;
+        // }
+        const child = directory.find(name);
+        if (!child) throw new Error("no such file or directory");
+        directory = child;
+    }
+    return directory as FileSystemParent | FileSystemFile;
 }
 
 function createDirectory(path: string, fs: FileSystemRoot) {
-	const splittedPath = path.split("/");
-	const basename = splittedPath.pop();
-	if (!basename) throw new Error("No entry");
-	const parentDirectoryPath = splittedPath.join("/");
-	const parentDirectory = resolvePath(parentDirectoryPath, fs);
-	if (parentDirectory instanceof FileSystemFile) throw new Error("File exists4");
-	if (parentDirectory.find(basename)) throw new Error("File exists5");
-	parentDirectory.addDirectory(basename);
+    const splittedPath = path.split("/");
+    const basename = splittedPath.pop();
+    if (!basename) throw new Error("No entry");
+    const parentDirectoryPath = splittedPath.join("/");
+    const parentDirectory = resolvePath(parentDirectoryPath, fs);
+    if (parentDirectory instanceof FileSystemFile)
+        throw new Error("File exists4");
+    if (parentDirectory.find(basename)) throw new Error("File exists5");
+    parentDirectory.addDirectory(basename);
 }
 
 function createFile(path: string, fs: FileSystemRoot, content: string) {
-	const splittedPath = path.split("/").filter(Boolean);
-	const basename = splittedPath.pop();
-	if (!basename) throw new Error("No entry");
-	const parentDirectoryPath = splittedPath.join("/");
-	const parentDirectory = resolvePath(parentDirectoryPath, fs);
-	if (parentDirectory instanceof FileSystemFile) throw new Error("File exists2");
-	if (parentDirectory.find(basename)) throw new Error("File exists3");
-	parentDirectory.addFile(basename, content);
+    const splittedPath = path.split("/").filter(Boolean);
+    const basename = splittedPath.pop();
+    if (!basename) throw new Error("No entry");
+    const parentDirectoryPath = splittedPath.join("/");
+    const parentDirectory = resolvePath(parentDirectoryPath, fs);
+    if (parentDirectory instanceof FileSystemFile)
+        throw new Error("File exists2");
+    if (parentDirectory.find(basename)) throw new Error("File exists3");
+    parentDirectory.addFile(basename, content);
 }
 
 export const useFileSystem = create<FileSystemState>((set, get) => ({

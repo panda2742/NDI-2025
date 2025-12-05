@@ -46,18 +46,24 @@ export const LeaderboardProject = () => {
   };
 
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "flex-start",
-      width: "100%",
-      height: "100%",
-      padding: "20px",
-      fontFamily: "'Press Start 2P', monospace",
-      backgroundColor: "#A1E5AB",
-      color: "#000",
-    }}>
+    <div
+      tabIndex={0}
+      role="region"
+      aria-label="Leaderboard"
+      onFocus={handleReload}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        width: "100%",
+        height: "100%",
+        padding: "20px",
+        fontFamily: "'Press Start 2P', monospace",
+        backgroundColor: "#A1E5AB",
+        color: "#000",
+      }}
+    >
       <h2 className="snake-font" style={{ marginBottom: "20px" }}>Leaderboard</h2>
 
       {loading && <div className="snake-font">Loading...</div>}

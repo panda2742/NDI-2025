@@ -6,10 +6,12 @@ import { exit } from "./commands/exit";
 import { ls } from "./commands/ls";
 import { mkdir } from "./commands/mkdir";
 import { pwd } from "./commands/pwd";
+import { snake } from "./commands/snake";
 
 export type TerminalAction =
 	| "clear"
 	| "exit"
+	| "snake"
 	| ""
 
 export interface TerminalResponse {
@@ -28,5 +30,6 @@ export const commands: CommandMap = {
 	mkdir,
 	cd,
 	ls,
-	pwd
+	pwd,
+	snake
 }
