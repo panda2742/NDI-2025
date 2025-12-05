@@ -29,38 +29,34 @@
   background:rgba(255, 255, 255, 0);
 }
 
-/* Bouton bleu Windows 11 style, coins carrés */
 .windows button {
   padding: 10px 20px;
-  border-radius: 0; /* coins carrés */
-  border: 1px solid #1a5fff; /* contour bleu foncé */
-  background: linear-gradient(145deg, #5eb8ff, #1a5fff); /* bleu ciel → bleu foncé */
-  color: #ffffff; /* texte blanc */
+  border-radius: 0;
+  border: 1px solid #1a5fff;
+  background: linear-gradient(145deg, #5eb8ff, #1a5fff);
+  color: #ffffff;
   font-size: 15px;
   font-family: "Segoe UI Variable", "Segoe UI", sans-serif;
   cursor: pointer;
   transition: 0.2s ease;
   box-shadow:
     0 2px 4px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.1); /* léger effet intérieur */
+    inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
-/* Hover : éclaircit légèrement le dégradé */
 .windows button:hover {
   background: linear-gradient(145deg, #70c3ff, #2b6bff);
   border-color: #2b6bff;
   box-shadow:
     0 3px 6px rgba(0,0,0,0.35),
-    0 0 0 2px rgba(75,152,255,0.2); /* glow léger */
+    0 0 0 2px rgba(75,152,255,0.2);
 }
 
-/* Click / active */
 .windows button:active {
   transform: scale(0.97);
-  background: linear-gradient(145deg, #1870e0, #124bb3); /* bleu foncé */
+  background: linear-gradient(145deg, #1870e0, #124bb3);
 }
 
-/* Disabled */
 .windows button:disabled {
   opacity: 0.5;
   cursor: default;
@@ -68,35 +64,32 @@
   background: linear-gradient(145deg, #5eb8ff, #1a5fff);
 }
 
-/* Inputs style Windows 11, fond blanc, bordure noire */
+
 .windows input {
   width: 100%;
   padding: 10px 14px;
   font-size: 15px;
   font-family: "Segoe UI Variable", "Segoe UI", sans-serif;
 
-  color: #000000; /* texte noir */
-  background: #ffffff; /* fond blanc */
-  border: 1px solid #000000; /* bordure noire par défaut */
-  border-radius: 0; /* coins carrés */
+  color: #000000;
+  background: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 0;
 
   outline: none;
   transition: 0.25s ease;
   box-sizing: border-box;
 }
 
-/* Hover : bordure bleu ciel */
 .windows input:hover {
-  border-color: #5eb8ff; /* bleu ciel */
+  border-color: #5eb8ff;
 }
 
-/* Focus : même couleur que hover + léger glow */
 .windows input:focus {
   border-color: #5eb8ff;
   box-shadow: 0 0 0 2px rgba(94,184,255,0.3);
 }
 
-/* Disabled */
 .windows input:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -104,27 +97,24 @@
   background: #f0f0f0;
 }
 
-/* Select basique, fond blanc, bordure noire, coins carrés */
 .windows select {
   width: 100%;
   padding: 10px;
   font-size: 15px;
   font-family: "Segoe UI Variable", "Segoe UI", sans-serif;
 
-  color: #000;            /* texte noir */
-  background: #fff;        /* fond blanc */
-  border: 1px solid #000;  /* bordure noire */
-  border-radius: 0;         /* coins carrés */
+  color: #000;
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 0;
   cursor: pointer;
   outline: none;
 }
 
-/* Hover : bordure bleu ciel */
 .windows select:hover {
   border-color: #5eb8ff;
 }
 
-/* Focus : bordure bleu ciel */
 .windows select:focus {
   border-color: #5eb8ff;
 }

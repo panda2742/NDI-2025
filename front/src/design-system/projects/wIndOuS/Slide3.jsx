@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState} from 'react'
 
 function TextBox({ inputText, setValidText }) {
   const [text, setText] = useState("");
@@ -8,10 +8,10 @@ function TextBox({ inputText, setValidText }) {
 
   const addInput = () => {
     if (value === chars.length - 1) {
-      // Dernier caractère choisi → supprime le dernier caractère
       setText((prev) => prev.slice(0, -1));
       setValidText((prev) => prev.slice(0, -1));
-    } else {
+    }
+    else {
       setText((prev) => prev + chars[value]);
       setValidText((prev) => prev + chars[value]);
     }
@@ -29,7 +29,7 @@ function TextBox({ inputText, setValidText }) {
         />
       </div>
 
-      <div style={{ marginTop: "10px" }}>
+      <div>
         <h5>{value}</h5>
         <button onClick={addInput}>Add</button>
         <button onClick={incrementValue}>+</button>
@@ -60,10 +60,10 @@ function Slide3({ setValid }) {
     <h4>qazwsxedcrfvtgbyhnujmikolpAZERTYUIOPQSDFGHJKLMWXCVBN-_.@"del"</h4>
     <TextBox inputText="Mother Name" setValidText={setValidText1}/>
     <TextBox inputText="Father Name" setValidText={setValidText2}/>
-    <TextBox inputText="Mother Mother Name" setValidText={setValidText3}/>
-    <TextBox inputText="Mother Father Name" setValidText={setValidText4}/>
-    <TextBox inputText="Mother Father Name" setValidText={setValidText5}/>
-    <TextBox inputText="Father Father Name" setValidText={setValidText6}/>
+    <TextBox inputText="Mother's Mother Name" setValidText={setValidText3}/>
+    <TextBox inputText="Mother's Father Name" setValidText={setValidText4}/>
+    <TextBox inputText="Father's Mother Name" setValidText={setValidText5}/>
+    <TextBox inputText="Father's Father Name" setValidText={setValidText6}/>
     <button onClick={clickedButton}>Submit</button>
     </div>
   )
