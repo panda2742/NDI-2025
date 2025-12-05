@@ -9,6 +9,7 @@ import Contact from './icons/Contact.png';
 import Document from './icons/Documents.png';
 import Pages from './icons/Pages.png';
 import Terminal from './icons/Terminal.png';
+import Clipouille from './icons/Clipouille.png';
 
 const icons = {
     whatsweb: WhatsWeb,
@@ -20,12 +21,13 @@ const icons = {
     contact: Contact,
     document: Document,
     pages: Pages,
+    clipouille: Clipouille,
 };
 
 export interface IconProps {
     label: string;
     state: 0 | 1 | 2;
-    iconKey: 'whatsweb' | 'whatsecosystem' | 'server' | 'rootme' | 'oknestor' | 'contact' | 'terminal' | 'document' | 'pages';
+    iconKey: 'whatsweb' | 'whatsecosystem' | 'server' | 'rootme' | 'oknestor' | 'contact' | 'terminal' | 'document' | 'pages' | 'clipouille';
     index: number;
     onClick?: () => void;
 }

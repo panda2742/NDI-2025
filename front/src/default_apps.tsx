@@ -3,7 +3,6 @@ import { ReactElement } from "react";
 // import { ProjectTemplate } from '@atoms/project_template/project_template.tsx';
 // import { Terminal } from '@molecules/terminal/terminal.tsx';
 
-import { Contact } from "@molecules/contact/contact.tsx";
 import {
     OkNestorProject,
     Clipouille,
@@ -27,7 +26,8 @@ export interface IApp {
         | "terminal"
         | "contact"
         | "document"
-        | "pages";
+        | "pages"
+        | "clipouille";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
     onClick?: () => void;
@@ -60,7 +60,7 @@ export const defaultApps: IApp[][] = [
             label: "Clipouille",
             id: "clipouille",
             content: <Clipouille key={"clipouille"} />,
-            iconKey: "rootme",
+            iconKey: "clipouille",
             state: 0,
             type: "project",
             pinnedToDock: true,
