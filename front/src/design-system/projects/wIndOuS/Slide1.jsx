@@ -107,7 +107,7 @@ function TextBox({inputText, valid, setValidText}) {
         <h5>{inputText}</h5>
         <div onFocus={() => { setIsVisualKeyboardOpen(true) }} onBlur={() => { setIsVisualKeyboardOpen(false) }}>
 
-          <input value={text} disabled={isVisualKeyboardDisable}/>
+          <input value={text} disabled={isVisualKeyboardDisable} onChange={() => {}}/>
 
           {isVisualKeyboardOpen &&
             <div>
@@ -154,9 +154,9 @@ function Slide1({ setValid }) {
 
   return (
     <div>
-      <TextBox inputText="Name" valid={nameIsValid} setValidText={setValidText1}/>
-      <TextBox inputText="First Name" valid={nameIsValid} setValidText={setValidText2}/>
-      <TextBox inputText="Email" valid={emailIsValid} setValidText={setValidText3}/>
+      <TextBox inputText="Name (start with a uppercase, then lowercase)" valid={nameIsValid} setValidText={setValidText1}/>
+      <TextBox inputText="First Name (start with a uppercase, then lowercase)" valid={nameIsValid} setValidText={setValidText2}/>
+      <TextBox inputText="Email (*@*.**)" valid={emailIsValid} setValidText={setValidText3}/>
     </div>
   )
 }
