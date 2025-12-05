@@ -20,36 +20,23 @@ export const DraggableJellyfish = ({
 
         const element = jellyfishRef.current;
 
-        console.log("🐙 Initializing draggable jellyfish...");
-
-        // Créer l'instance Draggable avec effet élastique
         draggableInstance.current = Draggable.create(element, {
             type: "x,y",
             edgeResistance: 0.65,
             throwProps: true,
-            onDragStart: function () {
-                console.log("🐙 Drag started!");
-            },
-            onDrag: function () {
-                console.log("🐙 Dragging...");
-            },
+            onDragStart: function () {},
+            onDrag: function () {},
             onDragEnd: function () {
-                console.log("🐙 Drag ended, returning to center...");
-
-                // Calculer le centre de l'écran
                 const centerX = window.innerWidth / 2;
                 const centerY = window.innerHeight / 2;
 
-                // Obtenir la position actuelle de l'élément
                 const rect = element.getBoundingClientRect();
                 const elementCenterX = rect.left + rect.width / 2;
                 const elementCenterY = rect.top + rect.height / 2;
 
-                // Calculer le déplacement nécessaire pour revenir au centre
                 const deltaX = centerX - elementCenterX;
                 const deltaY = centerY - elementCenterY;
 
-                // Animer le retour au centre avec effet élastique (elastic)
                 gsap.to(element, {
                     x: `+=${deltaX}`,
                     y: `+=${deltaY}`,
@@ -60,12 +47,6 @@ export const DraggableJellyfish = ({
             },
         });
 
-        console.log(
-            "🐙 Draggable instance created:",
-            draggableInstance.current,
-        );
-
-        // Cleanup lors du démontage
         return () => {
             if (draggableInstance.current) {
                 draggableInstance.current.forEach((instance) =>
