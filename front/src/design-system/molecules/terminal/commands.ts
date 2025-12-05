@@ -9,6 +9,7 @@ import { pwd } from "./commands/pwd";
 import { snake } from "./commands/snake";
 import { cat } from "./commands/cat";
 import { touch } from "./commands/touch";
+import { help } from "./commands/help";
 
 export type TerminalAction =
 	| "clear"
@@ -34,5 +35,6 @@ export const commands: CommandMap = {
 	cat,
 	pwd,
 	snake,
-	touch
+	touch,
+	help
 }

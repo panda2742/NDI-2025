@@ -98,6 +98,7 @@ Le chatbot **Clipouille** possède une **faille de sécurité volontaire**  :
 - **Aucune limitation** n'est appliquée sur les requêtes
 - **Pas de validation** ni de sanitization des entrées
 - L'IA peut être manipulée pour exécuter n'importe quelle requête SQL
+- Cela peut conduire a des exploitation dangereuses dans une vrai production
 
 **Exploitation possible :**
 ```

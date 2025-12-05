@@ -17,6 +17,8 @@
 
         gap: 3px;
 
+        padding-left: 3px;
+
         div,
         span,
         input {
@@ -54,7 +56,7 @@
             //padding-bottom: 3px;
 
             .pre-command-text {
-                margin-left: 3px;
+                // margin-left: 3px;
                 display: flex;
                 align-items: center;
             }
