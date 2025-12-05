@@ -224,11 +224,11 @@ export const defaultApps: IApp[][] = [
             label: "Leaderboard",
             id: "leaderboard",
             content: <LeaderboardProject key={"leaderboard"} />,
-            iconKey: "pages",
+            iconKey: "clipouille",
             state: 0,
             type: "application",
             hide: true,
-            resizable: false,
+            resizable: true,
         },
     ],
 ];
