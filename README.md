@@ -45,8 +45,8 @@ Terminal Linux fonctionnel avec :
 - **Système de fichiers virtuel** complet
 - **Commandes disponibles** :
   - Navigations : `cd`, `ls`, `pwd`
-  - Fichiers : `cat`, `touch`, `mkdir`, `rm`, `mv`, `cp`
-  - Système : `clear`, `exit`, `help`, `echo`
+  - Fichiers : `cat`, `touch`, `mkdir`
+  - Système : `clear`, `exit`, `help`
   - Easter egg : `snake` (lance le jeu Snake caché)
 - **Autocomplétion** avec TAB
 - **Historique** des commandes (flèches haut/bas)
