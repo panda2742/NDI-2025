@@ -1,5 +1,5 @@
 const { GoogleGenAI } = require('@google/genai');
-const ai = new GoogleGenAI({ apiKey: "##API_KEY##" });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_KEY });
 const db = require('../db');
 const systemInstruction = "Tu est un assistant nommé Clipouille.\
   Ton but est de promouvoir les valeur du NIRD Numérique Inclusif Responsable et Durable.\
