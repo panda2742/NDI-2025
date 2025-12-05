@@ -6,6 +6,9 @@ import { Dock } from "@molecules/dock/dock.tsx";
 import { App } from "@molecules/app/app.tsx";
 import { Activities } from "@molecules/activities/activities.tsx";
 import { DraggableJellyfish } from "@molecules/draggable-jellyfish/draggable-jellyfish.tsx";
+import { ToastContainer } from '#/lib/toast/ToastContainer.tsx'
+import { ToastProvider } from './lib/toast';
+
 
 import Draggable from "gsap/Draggable";
 import gsap from "gsap";
@@ -81,71 +84,74 @@ function Ubuntu() {
 
     return (
         <div id="app">
-            <WindowServer
-                {...appWindow}
-                onActivityClick={() => setShowActivities(true)}
-            />
-            {showActivities && <div className="activities-overlay"></div>}
-            {showActivities && (
-                <Activities
-                    isVisible={showActivities}
-                    apps={apps}
-                    onClose={() => setShowActivities(false)}
-                    onAppClick={(appId) => {
-                        updateAppState(appId, 2);
-                    }}
-                    onWindowBringToFront={(appId) => {
-                        const appElement = document.querySelector(
-                            `.app-id-${appId}`,
-                        ) as HTMLElement;
+            <ToastProvider>
+                <WindowServer
+                    {...appWindow}
+                    onActivityClick={() => setShowActivities(true)}
+                />
+                {showActivities && <div className="activities-overlay"></div>}
+                {showActivities && (
+                    <Activities
+                        isVisible={showActivities}
+                        apps={apps}
+                        onClose={() => setShowActivities(false)}
+                        onAppClick={(appId) => {
+                            updateAppState(appId, 2);
+                        }}
+                        onWindowBringToFront={(appId) => {
+                            const appElement = document.querySelector(
+                                `.app-id-${appId}`,
+                            ) as HTMLElement;
 
-                        const currentApp = apps
-                            .flat()
-                            .find((app) => app.id === appId);
+                            const currentApp = apps
+                                .flat()
+                                .find((app) => app.id === appId);
 
-                        if (appElement && currentApp) {
-                            const elementRef: MutableRefObject<HTMLDivElement | null> =
+                            if (appElement && currentApp) {
+                                const elementRef: MutableRefObject<HTMLDivElement | null> =
                                 {
                                     current: appElement as HTMLDivElement,
                                 };
-                            handleZIndexBoost(elementRef, currentApp);
-                        }
-                    }}
-                />
-            )}
-            <div className="apps-container" ref={appsContainer}>
-                {apps.map((appGroup, groupIndex) =>
-                    appGroup.map((app, appIndex) => {
-                        if (!app.content) return;
-                        return (
-                            <App
-                                label={app.label}
-                                state={app.state}
-                                uniqueKey={app.id}
-                                type={app.type}
-                                key={groupIndex + appIndex}
-                                onMouseDown={(e) => {
-                                    handleZIndexBoost(e, app);
-                                }}
-                                updateState={(newState) =>
-                                    updateAppState(app.id, newState)
-                                }
-                            >
-                                {app.content}
-                            </App>
-                        );
-                    }),
+                                handleZIndexBoost(elementRef, currentApp);
+                            }
+                        }}
+                    />
                 )}
-            </div>
+                <div className="apps-container" ref={appsContainer}>
+                    {apps.map((appGroup, groupIndex) =>
+                        appGroup.map((app, appIndex) => {
+                            if (!app.content) return;
+                            return (
+                                <App
+                                    label={app.label}
+                                    state={app.state}
+                                    uniqueKey={app.id}
+                                    type={app.type}
+                                    key={groupIndex + appIndex}
+                                    onMouseDown={(e) => {
+                                        handleZIndexBoost(e, app);
+                                    }}
+                                    updateState={(newState) =>
+                                        updateAppState(app.id, newState)
+                                    }
+                                >
+                                    {app.content}
+                                </App>
+                            );
+                        }),
+                    )}
+                </div>
 
-            <Dock apps={apps} updateAppState={updateAppState} />
+                <Dock apps={apps} updateAppState={updateAppState} />
 
-            <div className="jellyfish-layer">
-                <DraggableJellyfish
-                    src="/src/assets/jellyfish_RGB-grey_hex.svg"
-                    alt="jellyfish"
-                />
-            </div>
+                <div className="jellyfish-layer">
+                    <DraggableJellyfish
+                        src="/src/assets/jellyfish_RGB-grey_hex.svg"
+                        alt="jellyfish"
+                    />
+                </div>
+                <ToastContainer />
+            </ToastProvider>
         </div>
     );
 }

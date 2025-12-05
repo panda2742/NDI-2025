@@ -37,7 +37,7 @@ export const defaultApps: IApp[][] = [
             id: 'whatsweb',
             content: <WhatsWebProject key={'whatsweb'} />,
             iconKey: 'whatsweb',
-            state: 0,
+            state: 2,
             type: 'project'
         },
         {
@@ -69,7 +69,7 @@ export const defaultApps: IApp[][] = [
             id: 'terminal',
             content: <Terminal key={'contact'} />,
             iconKey: 'terminal',
-            state: 2,
+            state: 0,
             type: 'application'
         }
     ],
