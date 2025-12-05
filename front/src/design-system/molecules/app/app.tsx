@@ -13,7 +13,10 @@ import "./style-contact.scss";
 import { Controls } from "@atoms/controls/controls.tsx";
 import { openFullscreen } from "#/lib/fullscreen.tsx";
 
-const ACCEPTED_FULLSCREEN_APP_TYPES: IAppC["type"][] = ["project"];
+const ACCEPTED_FULLSCREEN_APP_TYPES: IAppProps["type"][] = [
+    "project",
+    "application",
+];
 
 export interface IApp {
     label: string;
