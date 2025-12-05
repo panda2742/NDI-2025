@@ -10,6 +10,8 @@ import {
     ClockProject,
     LeaderboardProject,
     FileExplorerProject,
+    Windous,
+    Snake,
 } from "@projects/index.ts";
 import { Terminal } from "@molecules/terminal/display/terminal";
 import { PlaceholderApp } from "@molecules/placeholder-app/placeholder-app.tsx";
@@ -24,7 +26,12 @@ export interface IApp {
         | "calc"
         | "clock"
         | "leaderboard"
-        | "folder";
+        | "folder"
+        | "windous"
+        | "leaderboard"
+        | "calc"
+        | "clock"
+        | "snake";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
     onClick?: () => void;
@@ -45,6 +52,15 @@ export const defaultApps: IApp[][] = [
             id: "clipouille",
             content: <Clipouille key={"clipouille"} />,
             iconKey: "clipouille",
+            state: 0,
+            type: "application",
+            pinnedToDock: true,
+        },
+        {
+            label: "Login: WinDoUS",
+            id: "windous",
+            content: <Windous key={"windous"} />,
+            iconKey: "windous",
             state: 0,
             type: "application",
             pinnedToDock: true,
@@ -249,7 +265,7 @@ export const defaultApps: IApp[][] = [
             label: "Snake",
             id: "snake",
             content: <SnakeProject key={"snake"} />,
-            iconKey: "clipouille",
+            iconKey: "snake",
             state: 0,
             type: "application",
             hide: false,

@@ -2,10 +2,12 @@ import "./style.scss";
 
 import Terminal from "./icons/Terminal.png";
 import Clipouille from "./icons/Clipouille.png";
+import Leaderboard from "./icons/Leaderboard.png";
 import Calc from "./icons/calc.svg";
 import Clock from "./icons/clock-icon.svg";
-import Leaderboard from "./icons/Leaderboard.png";
 import Folder from "./icons/folder.svg";
+import Windous from "./icons/win.png";
+import Snake from "./icons/Snake.png";
 
 const icons = {
     terminal: Terminal,
@@ -14,6 +16,8 @@ const icons = {
     clock: Clock,
     leaderboard: Leaderboard,
     folder: Folder,
+    windous: Windous,
+    snake: Snake,
 };
 
 export interface IconProps {
@@ -25,7 +29,9 @@ export interface IconProps {
         | "calc"
         | "clock"
         | "leaderboard"
-        | "folder";
+        | "folder"
+        | "windous"
+        | "snake";
     index: number;
     onClick?: () => void;
 }

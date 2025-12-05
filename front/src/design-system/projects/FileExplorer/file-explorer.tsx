@@ -128,6 +128,7 @@ export const FileExplorerProject = () => {
                 return [];
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPath, fs, refreshTrigger]);
 
     const handleItemClick = (item: FileItem) => {
