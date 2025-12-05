@@ -6,6 +6,8 @@ import Leaderboard from './icons/Leaderboard.png';
 import Calc from "./icons/calc.svg";
 import Clock from "./icons/clock-icon.svg";
 import Windous from './icons/win.png';
+import Snake from './icons/Snake.png';
+
 import "./style.scss";
 
 const icons = {
@@ -15,12 +17,13 @@ const icons = {
     clock: Clock,
     leaderboard: Leaderboard,
     windous: Windous,
+    snake: Snake,
 };
 
 export interface IconProps {
     label: string;
     state: 0 | 1 | 2;
-    iconKey: 'terminal' | 'clipouille' | 'leaderboard' | 'windous'| "calc" | "clock";
+    iconKey: 'terminal' | 'clipouille' | 'leaderboard' | 'windous'| "calc" | "clock" | "snake";
     index: number;
     onClick?: () => void;
 }
