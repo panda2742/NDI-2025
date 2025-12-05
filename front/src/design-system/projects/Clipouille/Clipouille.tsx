@@ -2,6 +2,7 @@ import './style.scss';
 
 import { useEffect, useRef, useState } from 'react'
 import '@atoms/project_template/style.scss'
+import { openApp, closeApp } from '#/api/appController';
 
 import SendIcon from '../../../assets/clipouille/send.svg'
 
@@ -67,6 +68,17 @@ export const Clipouille = () => {
 			setIsThinking(false)
 			return ;
 		}
+
+		if (data.tool)
+		{
+			if (data.tool.action == 'open') {
+				openApp(data.tool.name);
+			}
+			else if (data.tool.action == 'close') {
+				closeApp(data.tool.name);
+			}
+		}
+		
 
 		setMessages(data.history);
 		setIsThinking(false);
