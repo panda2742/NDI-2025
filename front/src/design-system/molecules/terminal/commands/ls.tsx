@@ -10,8 +10,9 @@ export const ls: Command = (args: string[], fileSystem: FileSystemState, shell: 
 	} else {
 		node = fileSystem.getPath(args[1]);
 	}
+	console.log(node);
 	if (node instanceof FileSystemFile) {
 		return { status: 0, content: [<>{args[1]}</>] };
 	}
-	return { status: 0, content: [<>{node.children.join(" ")}</>] };
+	return { status: 0, content: [<>{node.children.map(val => val.name).join("\n")}</>] };
 }
