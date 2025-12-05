@@ -3,18 +3,20 @@ import './style.scss'
 import Terminal from './icons/Terminal.png';
 import Clipouille from './icons/Clipouille.png';
 import Leaderboard from './icons/Leaderboard.png';
+import Windous from './icons/win.png';
 
 
 const icons = {
     terminal: Terminal,
     clipouille: Clipouille,
     leaderboard: Leaderboard,
+    windous: Windous,
 };
 
 export interface IconProps {
     label: string;
     state: 0 | 1 | 2;
-    iconKey: 'terminal' | 'clipouille' | 'leaderboard';
+    iconKey: 'terminal' | 'clipouille' | 'leaderboard' | 'windous';
     index: number;
     onClick?: () => void;
 }

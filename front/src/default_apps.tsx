@@ -7,6 +7,7 @@ import {
     Clipouille,
     SnakeProject,
     LeaderboardProject,
+    Windous,
 } from "@projects/index.ts";
 import { Terminal } from "@molecules/terminal/display/terminal";
 import { PlaceholderApp } from "@molecules/placeholder-app/placeholder-app.tsx";
@@ -18,6 +19,7 @@ export interface IApp {
     iconKey:
         | "terminal"
         | "clipouille"
+        | "windous"
         | "leaderboard";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
@@ -34,6 +36,15 @@ export const defaultApps: IApp[][] = [
             id: "clipouille",
             content: <Clipouille key={"clipouille"} />,
             iconKey: "clipouille",
+            state: 0,
+            type: "application",
+            pinnedToDock: true,
+        },
+        {
+            label: "Login: WinDoUS",
+            id: "windous",
+            content: <Windous key={"windous"} />,
+            iconKey: "windous",
             state: 0,
             type: "application",
             pinnedToDock: true,
