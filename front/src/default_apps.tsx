@@ -2,13 +2,6 @@ import { ReactElement } from "react";
 
 // import { ProjectTemplate } from '@atoms/project_template/project_template.tsx';
 // import { Terminal } from '@molecules/terminal/terminal.tsx';
-<<<<<<< HEAD
-import { Contact } from '@molecules/contact/contact.tsx';
-import { OkNestorProject, RootmeProject, WhatsWebProject } from '@projects/index.ts';
-import {Terminal} from "@molecules/terminal/terminal.tsx";
-import { SnakeProject } from '@projects/Snake/snake';
-=======
->>>>>>> main
 
 import { Contact } from "@molecules/contact/contact.tsx";
 import {
