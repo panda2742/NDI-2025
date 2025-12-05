@@ -8,6 +8,9 @@ import { Activities } from "@molecules/activities/activities.tsx";
 import { AppDrawer } from "@molecules/app-drawer/app-drawer.tsx";
 import { DraggableJellyfish } from "@molecules/draggable-jellyfish/draggable-jellyfish.tsx";
 import { initAppController } from "#/api/appController.ts";
+import { ToastContainer } from '#/lib/toast/ToastContainer.tsx'
+import { ToastProvider } from './lib/toast';
+
 
 import Draggable from "gsap/Draggable";
 import gsap from "gsap";
@@ -88,30 +91,31 @@ function Ubuntu() {
 
     return (
         <div id="app">
-            <WindowServer
-                {...appWindow}
-                onActivityClick={() => setShowActivities(true)}
-            />
-            {showActivities && <div className="activities-overlay"></div>}
-            {showActivities && (
-                <Activities
-                    isVisible={showActivities}
-                    apps={apps}
-                    onClose={() => setShowActivities(false)}
-                    onAppClick={(appId) => {
-                        updateAppState(appId, 2);
-                    }}
-                    onWindowBringToFront={(appId) => {
-                        const appElement = document.querySelector(
-                            `.app-id-${appId}`,
-                        ) as HTMLElement;
+            <ToastProvider>
+                <WindowServer
+                    {...appWindow}
+                    onActivityClick={() => setShowActivities(true)}
+                />
+                {showActivities && <div className="activities-overlay"></div>}
+                {showActivities && (
+                    <Activities
+                        isVisible={showActivities}
+                        apps={apps}
+                        onClose={() => setShowActivities(false)}
+                        onAppClick={(appId) => {
+                            updateAppState(appId, 2);
+                        }}
+                        onWindowBringToFront={(appId) => {
+                            const appElement = document.querySelector(
+                                `.app-id-${appId}`,
+                            ) as HTMLElement;
 
-                        const currentApp = apps
-                            .flat()
-                            .find((app) => app.id === appId);
+                            const currentApp = apps
+                                .flat()
+                                .find((app) => app.id === appId);
 
-                        if (appElement && currentApp) {
-                            const elementRef: MutableRefObject<HTMLDivElement | null> =
+                            if (appElement && currentApp) {
+                                const elementRef: MutableRefObject<HTMLDivElement | null> =
                                 {
                                     current: appElement as HTMLDivElement,
                                 };
