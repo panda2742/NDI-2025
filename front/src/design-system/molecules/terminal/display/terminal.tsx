@@ -1,5 +1,6 @@
 import { closeApp } from '#/api/appController';
 import { useFileSystem } from '#/store/fileSystem';
+import { useShell } from '#/store/shell';
 import { runCommand } from '../runCommand';
 import Line from './Line';
 import Prompt from './Prompt';
@@ -8,6 +9,7 @@ import { useState, KeyboardEvent, useRef, Fragment, useEffect } from 'react';
 
 
 export function Terminal() {
+    const shell = useShell((state) => state);
     const fileSystem = useFileSystem((state) => state);
 
     const [command, setCommand] = useState("");
@@ -38,8 +40,8 @@ export function Terminal() {
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
-            const output = runCommand(command, fileSystem);
-            const newContentHistory = output.content.split("\n");
+            const output = runCommand(command, fileSystem, shell);
+            const newContentHistory = output.content ?? [];
             if (!newContentHistory[newContentHistory.length - 1])
                 newContentHistory.pop();
             setTerminalContentHistory([...terminalContentHistoryRef.current, <Line><Prompt /><span>{command}</span></Line>, ...(newContentHistory.map((txt) => <Line>{txt}</Line>))]);
