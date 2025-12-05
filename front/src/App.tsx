@@ -8,6 +8,7 @@ import { Activities } from "@molecules/activities/activities.tsx";
 import { DraggableJellyfish } from "@molecules/draggable-jellyfish/draggable-jellyfish.tsx";
 import { ToastContainer } from '#/lib/toast/ToastContainer.tsx'
 import { ToastProvider } from './lib/toast';
+import { Task } from '@atoms/routine.tsx';
 
 
 import Draggable from "gsap/Draggable";
@@ -27,6 +28,7 @@ const createDraggableApp = (uniqueKey: string) => {
 };
 
 function Ubuntu() {
+
     const [appWindow, setAppWindow] = useState({
         focusAppName: "Finder",
         menuItems: [
@@ -85,6 +87,7 @@ function Ubuntu() {
     return (
         <div id="app">
             <ToastProvider>
+                <Task/>
                 <WindowServer
                     {...appWindow}
                     onActivityClick={() => setShowActivities(true)}

@@ -69,7 +69,7 @@ async function runChatWithTools(history) {
     let newHistory = [...history];
     
     let response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-2.5-flash-lite',
         contents: newHistory, 
         config: {
             systemInstruction: systemInstruction,
@@ -127,4 +127,18 @@ exports.message = async (req, res) => {
     }
 	return res.status(200).json({ history: chatHistory });
 
+}
+
+exports.notification = async (req, res) => {
+    let chatHistory = [];
+
+    chatHistory.push({ role: "user", parts: [{ text: "Dit moi quelque chose sans me répété" }] });
+    try {
+        chatHistory = await runChatWithTools(chatHistory);
+    }
+	  catch (error) {
+        console.error("\nAPI_CALL Error:", error.message);
+		    return res.status(200).json({ text: "test" });
+    }
+	return res.status(200).json({ text: chatHistory.pop().parts[0].text });
 }
