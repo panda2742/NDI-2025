@@ -1,5 +1,5 @@
 import './style.scss';
-import Slides from './Slides.jsx';
+import Slides from "./Slides";
 
 export const Windous = () => {
 

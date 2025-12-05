@@ -1,7 +1,7 @@
 import '@atoms/project_template/style.scss'
 import './style.scss'
 
-export const Intro = ({setStage, setCurrentIndex }: { setStage: () => void, setCurrentIndex: () => void }) => {
+export const Intro = ({setStage, setCurrentIndex }: { setStage: any, setCurrentIndex: any }) => {
 	return <div className="question-block">
 		<section>
 			<h3>Avant de commencer</h3>

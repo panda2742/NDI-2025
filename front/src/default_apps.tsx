@@ -12,10 +12,8 @@ import {
     LeaderboardProject,
     FileExplorerProject,
     Windous,
-    Snake,
 } from "@projects/index.ts";
 import { Terminal } from "@molecules/terminal/display/terminal";
-import { PlaceholderApp } from "@molecules/placeholder-app/placeholder-app.tsx";
 
 export interface IApp {
     label: string;
@@ -32,6 +30,7 @@ export interface IApp {
         | "leaderboard"
         | "calc"
         | "clock"
+        | "snake"
         | "snake"
         | "nird";
     state: 0 | 1 | 2;

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import Slide1 from './Slide1.jsx'
-import Slide2 from './Slide2.jsx'
-import Slide3 from './Slide3.jsx'
+import Slide1 from './Slide1.js'
+import Slide2 from './Slide2.js'
+import Slide3 from './Slide3.js'
 import { closeApp } from '#/api/appController';
-import LanguageSelector from './LanguageSelector.jsx';
+import LanguageSelector from './LanguageSelector.js';
 
 function Slides() {
   const [slideNumber, setslideNumber] = useState(0);
@@ -11,12 +11,12 @@ function Slides() {
   const slides = [<Slide1 setValid={setslideValid}/>, <Slide2 setValid={setslideValid}/>, <Slide3 setValid={setslideValid}/>];
   
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Tab') {
         e.preventDefault();
         const elements = document.querySelectorAll('input, button');
         const randomIndex = Math.floor(Math.random() * elements.length);
-        elements[randomIndex].focus();
+        (elements[randomIndex] as any).focus();
       }
     };
     

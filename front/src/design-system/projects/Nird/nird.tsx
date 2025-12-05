@@ -391,16 +391,6 @@ export const NirdProject = () => {
 		setStage('actions')
 	}, [completed, ideas])
 
-	const [showPlanModal, setShowPlanModal] = useState(false)
-
-	const ideaOffsets = useMemo(() => {
-		return ideas.map((_, i) => {
-			const rnd = Math.abs(Math.sin(i * 12.9898))
-			const x = ((rnd * 40) - 20) * (i % 2 === 0 ? -1 : 1)
-			const rot = (rnd * 8) - 4 // -4..4 deg
-			return { x: Math.round(x), rot: Math.round(rot * 10) / 10 }
-		})
-	}, [ideas])
 
 	const Speedometer: React.FC<{ percent: number; label: string; color?: string; size?: number }> = ({ percent, label, color = '#e55353', size = 200 }) => {
 		const canvasRef = useRef<HTMLCanvasElement | null>(null)

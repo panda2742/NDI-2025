@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 
-function TextBox({inputText, valid, validText, setValidText}) {
+function TextBox({inputText, valid, validText, setValidText}: any) {
 
-  function onChange(text) {
+  function onChange(text: string) {
     setValidText(text);
   }
 
@@ -22,7 +22,7 @@ function TextBox({inputText, valid, validText, setValidText}) {
   );
 }
 
-function Slide2({ setValid }) {
+function Slide2({ setValid }: {setValid: React.Dispatch<React.SetStateAction<number>>}) {
   const [validText1, setValidText1] = useState("");
   const [validText2, setValidText2] = useState("");
   const [dist, setDistance] = useState(0);
@@ -54,14 +54,14 @@ function Slide2({ setValid }) {
       setValid(0);
   }
   
-  function passwordIsValid(password) {
+  function passwordIsValid(password: any) {
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
   }
   
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: any) => {
       if (buttonRef.current) {
-        const rect = buttonRef.current.getBoundingClientRect();
+        const rect = (buttonRef.current as any).getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         const mouseX = e.clientX;

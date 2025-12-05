@@ -1,4 +1,4 @@
-import { CSSProperties, PropsWithChildren, StyleHTMLAttributes } from "react";
+import { CSSProperties, PropsWithChildren } from "react";
 
 export interface ColorInterface {
 	c?: 'black' | 'white' | 'red' | 'blue' | 'green' | 'yellow' | 'cyan' | 'purple';

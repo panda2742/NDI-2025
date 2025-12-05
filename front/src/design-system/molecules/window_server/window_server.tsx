@@ -11,7 +11,6 @@ interface IWindowServer {
 
 export const WindowServer = ({
     focusAppName,
-    menuItems,
     onActivityClick,
 }: IWindowServer) => {
     // apps.map(e => e.iconKey)

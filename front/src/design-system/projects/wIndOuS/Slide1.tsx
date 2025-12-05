@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 
-function TextBox({inputText, valid, setValidText}) {
+function TextBox({inputText, valid, setValidText}: any) {
   const [text, setText] = useState("");
   const [isVisualKeyboardOpen, setIsVisualKeyboardOpen] = useState(false);
   const [isVisualKeyboardDisable, setIsVisualKeyboardDisable] = useState(false);
   const [buttonPos, setButtonPos] = useState({ x: 0, y: 0 });
 
-  const addChar = (char) => {
+  const addChar = (char: any) => {
     setText(text + char);
   };
 
@@ -38,7 +38,7 @@ function TextBox({inputText, valid, setValidText}) {
       })
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: any) => {
     const button = e.currentTarget.getBoundingClientRect();
     const mouseX = e.clientX;
     const mouseY = e.clientY;
@@ -66,7 +66,7 @@ function TextBox({inputText, valid, setValidText}) {
     }
   };
 
-  function randomString(str) {
+  function randomString(str: string) {
     const arr = str.split('');
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -89,7 +89,7 @@ function TextBox({inputText, valid, setValidText}) {
       <div>
         {lines.map((line, indexline) => (
           <div key={indexline} style={{ display: 'flex', gap: '5px', marginBottom: '5px' }}>
-            {line.map((char) => (
+            {line.map((char: any) => (
               <button key={char == '/' ? "delete" : char} onMouseDown={() => char == '/' ? delChar() : addChar(char)}>
                 {char == '/' ? 'DEL' : char}
               </button>
@@ -131,7 +131,7 @@ function TextBox({inputText, valid, setValidText}) {
   )
 }
 
-function Slide1({ setValid }) {
+function Slide1({ setValid }: any) {
 
   const [validText1, setValidText1] = useState(0);
   const [validText2, setValidText2] = useState(0);
@@ -144,11 +144,11 @@ function Slide1({ setValid }) {
       setValid(0);
   }, [validText1, validText2, validText3]);
 
-  function emailIsValid (email) {
+  function emailIsValid (email: string) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
   }
 
-  function nameIsValid (text) {
+  function nameIsValid (text: string) {
     return /^[A-Z][a-z]+(?:[-\s][A-Z][a-z]+)*$/.test(text)
   }
 
