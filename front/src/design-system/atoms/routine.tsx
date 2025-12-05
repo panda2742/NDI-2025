@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useToast } from '#/lib/toast';
 
-// import Clipouille from '../atoms/app_icon/icons/'
+import Clipouille from '../atoms/app_icon/icons/Clipouille.png'
 
 async function routine() {
     if (Math.random() < 0.1) {
@@ -35,11 +35,11 @@ const Task = () => {
                 const notificationText = await routine();
                 
                 if (notificationText) {
-                    toast.success("Clipouille", notificationText, );
+                    toast.success("Clipouille", notificationText, <img src={Clipouille}/>);
                 }
             };
     
-            const intervalId = setInterval(executeRoutineAndNotify, 1000);
+            const intervalId = setInterval(executeRoutineAndNotify, 10000);
     
             return () => {
                 clearInterval(intervalId);
