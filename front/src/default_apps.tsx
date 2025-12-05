@@ -51,6 +51,17 @@ export interface IApp {
 export const defaultApps: IApp[][] = [
     [
         {
+            label: "Nird",
+            id: "nird",
+            content: <NirdProject key={"nird"} />,
+            iconKey: "nird",
+            state: 2,
+            type: "application",
+            pinnedToDock: true,
+            defaultSize: { width: 1720, height: 750 },
+            defaultPosition: { left: 100, top: 0 },
+        },
+        {
             label: "Clipouille",
             id: "clipouille",
             content: <Clipouille key={"clipouille"} />,
@@ -100,17 +111,6 @@ export const defaultApps: IApp[][] = [
             minWidth: 450,
             minHeight: 400,
             pinnedToDock: true,
-        },
-        {
-            label: "Nird",
-            id: "nird",
-            content: <NirdProject key={"nird"} />,
-            iconKey: "nird",
-            state: 2,
-            type: "application",
-            pinnedToDock: true,
-            defaultSize: { width: 1720, height: 750 },
-            defaultPosition: { left: 100, top: 0 },
         },
     ],
     [
