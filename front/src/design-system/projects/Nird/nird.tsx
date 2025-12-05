@@ -563,6 +563,77 @@ export const NirdProject = () => {
 						</ul>
 					</section>
 
+					{/* Full project document from NIRD.md integrated below */}
+					<section style={{ marginTop: 18 }}>
+						<h2>Présentation complète du NIRD</h2>
+						<p>Le NIRD est une initiative visant à proposer un « numérique éducatif » inclusif, responsable et durable dans les établissements scolaires. L'idée est de repenser non seulement les outils informatiques, mais aussi <strong>les usages, les valeurs et les pratiques</strong> autour du numérique : inclusion, solidarité, autonomie, sobriété.</p>
+
+						<h3>Principes et piliers fondamentaux</h3>
+						<p>Le NIRD s'appuie sur plusieurs axes :</p>
+						<h4>Inclusion numérique et citoyenne</h4>
+						<ul>
+							<li>Reconditionner des ordinateurs pour les distribuer à des élèves ou écoles défavorisées.</li>
+							<li>Favoriser l'accès à tous, donner la possibilité à chacun d'utiliser un ordinateur, sans barrière financière ni technique.</li>
+							<li>Permettre aux élèves d'être acteurs — les impliquer dans le reconditionnement, l'installation et la maintenance.</li>
+						</ul>
+
+						<h4>Responsabilité & émancipation numérique</h4>
+						<ul>
+							<li>Préconiser les logiciels libres et systèmes ouverts (GNU/Linux) pour donner la liberté d'utiliser, modifier et partager les outils.</li>
+							<li>Sensibiliser la communauté éducative aux enjeux : souveraineté, dépendance logicielle, protection des données.</li>
+							<li>Fournir formation, documentation et retours d'expérience accessibles.</li>
+						</ul>
+
+						<h4>Durabilité & sobriété numérique</h4>
+						<ul>
+							<li>Reconditionner les machines plutôt que d'acheter systématiquement du neuf.</li>
+							<li>Utiliser des systèmes légers pour prolonger la durée de vie des machines et réduire la consommation d'énergie.</li>
+							<li>Réduire les coûts de licences et d'entretien pour rendre le numérique plus accessible et pérenne.</li>
+						</ul>
+
+						<h4>Partage, mutualisation, documentation ouverte</h4>
+						<p>Publier protocoles, retours d'expérience et supports pédagogiques sous licences ouvertes afin qu'ils soient adaptables et réutilisables par d'autres établissements.</p>
+					</section>
+
+					<section style={{ marginTop: 18 }}>
+						<h3>Mise en œuvre — Cas d'étude</h3>
+						<p>Exemple : Lycée Carnot de Bruay‑la‑Buissière — le projet a permis de reconditionner des machines, monter un club NIRD, et distribuer du matériel reconditionné aux écoles locales.</p>
+						<ul>
+							<li>Pendant le confinement 2020, des mini-ordinateurs (Raspberry Pi) sous Linux ont été fournis pour assurer la continuité pédagogique.</li>
+							<li>Un club « informatique / NIRD » a été mis en place : les élèves réparent, installent un OS libre et redistribuent les machines.</li>
+							<li>Bilan (campagne 2024‑2025) : 132 ordinateurs reconditionnés offerts à 11 écoles primaires, couvrant près de 800 élèves.</li>
+						</ul>
+					</section>
+
+					<section style={{ marginTop: 18 }}>
+						<h3>Intérêts et bénéfices</h3>
+						<ul>
+							<li>Réduction de la fracture numérique</li>
+							<li>Autonomie et émancipation des élèves</li>
+							<li>Réduction des coûts et de l'empreinte écologique</li>
+							<li>Culture du libre et mutualisation des ressources</li>
+						</ul>
+					</section>
+
+					<section style={{ marginTop: 18 }}>
+						<h3>Déploiement et soutien</h3>
+						<p>Le projet a essaimé dans plusieurs académies et bénéficie d'un soutien institutionnel (CNLL, académies), mais il nécessite une mobilisation locale (enseignants, collectivités).</p>
+					</section>
+
+					<section style={{ marginTop: 18 }}>
+						<h3>Limites et contraintes</h3>
+						<ul>
+							<li>Le succès dépend d'une mobilisation humaine : temps, formation et maintenance.</li>
+							<li>Le reconditionnement dépend souvent de partenariats et dons.</li>
+							<li>Certains usages pédagogiques spécifiques peuvent nécessiter des logiciels propriétaires.</li>
+						</ul>
+					</section>
+
+					<section style={{ marginTop: 18 }}>
+						<h3>Conclusion</h3>
+						<p>Le NIRD propose une approche pragmatique et solidaire : logiciel libre + réemploi + formation locale. C'est une alternative viable et reproductible pour rendre le numérique scolaire plus durable et accessible.</p>
+					</section>
+
 					<section style={{ marginTop: 18 }}>
 						<h3>Pourquoi c'est utile pour un lycée</h3>
 						<p>Améliorer l'autonomie numérique protège les données scolaires, réduit les coûts à long terme et crée des compétences pratiques pour les élèves et le personnel. Le NIRD propose des solutions adaptées : expérimentations sur petites séries, guides de réemploi, et formations pour référents.</p>
