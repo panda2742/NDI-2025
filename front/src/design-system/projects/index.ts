@@ -4,5 +4,14 @@ import { ServerProject } from "@projects/Server/server.tsx";
 import { WhatsEcoSystemProject } from "@projects/WhatsEcoSystem/whatsecosystem.tsx";
 import { WhatsWebProject } from "@projects/WhatsWeb/whatsweb.tsx";
 import { Clipouille } from "@projects/Clipouille/Clipouille.tsx";
+import { SnakeProject } from "@projects/Snake/snake.tsx";
 
-export { OkNestorProject, RootmeProject, ServerProject, WhatsEcoSystemProject, WhatsWebProject, Clipouille }
+export {
+    OkNestorProject,
+    RootmeProject,
+    ServerProject,
+    WhatsEcoSystemProject,
+    WhatsWebProject,
+    Clipouille,
+    SnakeProject,
+};

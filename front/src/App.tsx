@@ -5,10 +5,11 @@ import { defaultApps, IApp } from "#/default_apps.tsx";
 import { Dock } from "@molecules/dock/dock.tsx";
 import { App } from "@molecules/app/app.tsx";
 import { Activities } from "@molecules/activities/activities.tsx";
+import { AppDrawer } from "@molecules/app-drawer/app-drawer.tsx";
 import { DraggableJellyfish } from "@molecules/draggable-jellyfish/draggable-jellyfish.tsx";
-import { ToastContainer } from '#/lib/toast/ToastContainer.tsx'
-import { ToastProvider } from './lib/toast';
-
+import { initAppController } from "#/api/appController.ts";
+import { ToastContainer } from "#/lib/toast/ToastContainer.tsx";
+import { ToastProvider } from "./lib/toast";
 
 import Draggable from "gsap/Draggable";
 import gsap from "gsap";
@@ -41,6 +42,7 @@ function Ubuntu() {
 
     const [apps, setApps] = useState(defaultApps);
     const [showActivities, setShowActivities] = useState(false);
+    const [showAppDrawer, setShowAppDrawer] = useState(false);
 
     const updateAppState = (id: string, newState: 0 | 1 | 2) => {
         setApps((prevApps) =>
@@ -51,6 +53,10 @@ function Ubuntu() {
             ),
         );
     };
+
+    useEffect(() => {
+        initAppController(updateAppState);
+    }, []);
 
     const zIndexBoost = useRef(100);
 
@@ -109,9 +115,9 @@ function Ubuntu() {
 
                             if (appElement && currentApp) {
                                 const elementRef: MutableRefObject<HTMLDivElement | null> =
-                                {
-                                    current: appElement as HTMLDivElement,
-                                };
+                                    {
+                                        current: appElement as HTMLDivElement,
+                                    };
                                 handleZIndexBoost(elementRef, currentApp);
                             }
                         }}
@@ -127,6 +133,7 @@ function Ubuntu() {
                                     state={app.state}
                                     uniqueKey={app.id}
                                     type={app.type}
+                                    resizable={app.resizable}
                                     key={groupIndex + appIndex}
                                     onMouseDown={(e) => {
                                         handleZIndexBoost(e, app);
@@ -142,7 +149,24 @@ function Ubuntu() {
                     )}
                 </div>
 
-                <Dock apps={apps} updateAppState={updateAppState} />
+                <Dock
+                    apps={apps}
+                    updateAppState={updateAppState}
+                    onShowApplications={() => setShowAppDrawer(true)}
+                />
+
+                <AppDrawer
+                    isVisible={showAppDrawer}
+                    apps={apps}
+                    onClose={() => setShowAppDrawer(false)}
+                    onAppClick={(app) => {
+                        if (app.onClick) {
+                            app.onClick();
+                        } else {
+                            updateAppState(app.id, 2);
+                        }
+                    }}
+                />
 
                 <div className="jellyfish-layer">
                     <DraggableJellyfish
