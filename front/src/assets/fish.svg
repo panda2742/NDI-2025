@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <defs>
+    <style>
+      .t1{fill:#888888;}
+      .t2{fill:#A0A0A0;}
+      .t3{fill:#6E6E6E;}
+      .eye{fill:#3A3A3A;}
+    </style>
+  </defs>
+
+  <polygon class="t1" points="20,50 60,20 110,20 150,50 110,80 60,80"/>
+  <polygon class="t2" points="60,20 80,50 60,80"/>
+  <polygon class="t3" points="110,20 130,50 110,80"/>
+  <polygon class="t1" points="150,50 180,30 180,70"/>
+
+  <polygon class="t2" points="80,20 95,5 110,20"/>
+  <polygon class="t2" points="80,80 95,95 110,80"/>
+  <circle class="eye" cx="45" cy="50" r="6"/>
+  <circle cx="47" cy="48" r="2" fill="#ffffff"/>
+</svg>
