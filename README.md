@@ -199,8 +199,8 @@ npm start
 ### Frontend
 ```bash
 cd front
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 L'application sera accessible sur `http://localhost:5173`
