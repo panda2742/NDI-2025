@@ -106,48 +106,49 @@ export const AppDrawer = ({
                 ) as HTMLElement;
 
                 if (jellyfish) {
-                    const jellyfishRect = jellyfish.getBoundingClientRect();
-
-                    const centerX =
-                        jellyfishRect.left + jellyfishRect.width / 2;
-                    const centerY =
-                        jellyfishRect.top + jellyfishRect.height / 2 - 24;
-
-                    const percentX = centerX / viewportWidth;
-                    const percentY = centerY / viewportHeight;
-
-                    const miniX = percentX * miniWidth;
-                    const miniY = percentY * miniHeight;
-
-                    const jellyfishScale = Math.min(
-                        (miniWidth * 0.8) / jellyfishRect.width,
-                        (miniHeight * 0.8) / jellyfishRect.height,
-                    );
+                    const miniX = miniWidth / 2;
+                    const miniY = miniHeight / 2;
 
                     const wrapper = document.createElement("div");
-                    wrapper.className = "desktop-preview-jellyfish-wrapper";
+                    wrapper.className = "desktop-preview-fish-wrapper";
                     wrapper.style.cssText = `
                         position: absolute;
                         left: ${miniX}px;
                         top: ${miniY}px;
                         transform: translate(-50%, -50%);
                         pointer-events: none;
-                        z-index: 5;
+                        z-index: -1;
+                        width: 100px;
+                        height: 50px;
                     `;
 
-                    const jellyfishClone = jellyfish.cloneNode(
-                        true,
-                    ) as HTMLElement;
-                    jellyfishClone.style.cssText = `
-                        transform: scale(${jellyfishScale});
-                        transform-origin: center center;
-                        width: ${jellyfishRect.width}px;
-                        height: ${jellyfishRect.height}px;
-                        position: relative;
-                        pointer-events: none;
+                    wrapper.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 200 100"
+                             style="width: 100%; height: 100%; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));"
+                             opacity="0.2">
+
+                            <defs>
+                                <style>
+                                    .t1{fill:#888888;}
+                                    .t2{fill:#A0A0A0;}
+                                    .t3{fill:#6E6E6E;}
+                                    .eye{fill:#3A3A3A;}
+                                </style>
+                            </defs>
+
+                            <polygon class="t1" points="20,50 60,20 110,20 150,50 110,80 60,80"/>
+                            <polygon class="t2" points="60,20 80,50 60,80"/>
+                            <polygon class="t3" points="110,20 130,50 110,80"/>
+                            <polygon class="t1" points="150,50 180,30 180,70"/>
+                            <polygon class="t2" points="80,20 95,5 110,20"/>
+                            <polygon class="t2" points="80,80 95,95 110,80"/>
+                            <circle class="eye" cx="45" cy="50" r="6"/>
+                            <circle cx="47" cy="48" r="2" fill="#ffffff"/>
+                        </svg>
+
                     `;
 
-                    wrapper.appendChild(jellyfishClone);
                     previewContainer.appendChild(wrapper);
                 }
             }
