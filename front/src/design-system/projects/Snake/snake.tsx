@@ -7,6 +7,8 @@ import appleImg from "./assets/apple.png";
 import gameOverImg from "./assets/gameOver.png";
 import playButton from "./assets/playButton.png";
 import playButtonHover from "./assets/playButtonHover.png";
+import cupImg from "./assets/cup.png";
+import cupHoverImg from "./assets/cupHover.png";
 import "./style.scss";
 
 export const SnakeProject = () => {
@@ -17,6 +19,7 @@ export const SnakeProject = () => {
 	const [isGameOver, setIsGameOver] = useState(false);
 	const [showMenu, setShowMenu] = useState(true);
 
+	const [isCupHover, setIsCupHover] = useState(false);
 	const [isHover, setIsHover] = useState(false);
 
 	const [score, setScore] = useState(0);
@@ -295,129 +298,140 @@ export const SnakeProject = () => {
 	}, [score, isRunning, time, isPaused]);
 
 	return (
+	<div
+		style={{
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		width: "100%",
+		height: "100%",
+		background: "#A1E5AB",
+		position: "relative",
+		fontFamily: "'Press Start 2P', monospace",
+		}}
+	>
+		{(showMenu || isGameOver) && (
 		<div
 			style={{
+			position: "absolute",
+			inset: 0,
+			backgroundColor: "rgba(0, 0, 0, 0.5)",
+			pointerEvents: "none",
+			}}
+		/>
+		)}
+
+		<div
+		style={{
+			display: "flex",
+			flexDirection: "row",
+			gap: "20px",
+			alignItems: "center",
+		}}
+		>
+		{/* --- LEFT PANEL : SCORE + TIME --- */}
+		<div
+			style={{
+			width: "120px",
+			textAlign: "left",
+			color: "#fff",
+			fontSize: "12px",
+			textShadow: "2px 2px 0px #000",
+			userSelect: "none",
+			}}
+		>
+			<div style={{ marginBottom: "20px" }}>
+			<div className="snake-font">SCORE</div>
+			<div className="snake-font" style={{ fontSize: "16px", marginTop: "5px" }}>{score}</div>
+			</div>
+
+			<div>
+			<div className="snake-font">TIME</div>
+			<div className="snake-font" style={{ fontSize: "16px", marginTop: "5px" }}>{time}s</div>
+			</div>
+		</div>
+
+		{/* --- CANVAS AREA --- */}
+		<div
+			style={{
+			textAlign: "center",
+			width: GRID_SIZE * cellSize,
+			height: GRID_SIZE * cellSize,
+			position: "relative",
+			}}
+		>
+			<canvas
+			ref={canvasRef}
+			width={GRID_SIZE * cellSize}
+			height={GRID_SIZE * cellSize}
+			/>
+
+			{/* --- MENU START / PAUSE --- */}
+			{showMenu && !isGameOver && (
+			<div
+				style={{
+				position: "absolute",
+				top: 0,
+				left: 0,
+				width: "100%",
+				height: "100%",
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				justifyContent: "center",
+				backgroundColor: "rgba(0, 0, 0, 0.5)",
+				cursor: "pointer",
+				}}
+			>
+				{/* Bouton Play */}
+				<img
+				src={isHover ? playButtonHover : playButton}
+				alt="Play"
+				style={{ width: "40%" }}
+				onMouseEnter={() => setIsHover(true)}
+				onMouseLeave={() => setIsHover(false)}
+				onClick={() => {
+					if (isPaused) resumeGame();
+					else startGame();
+				}}
+				/>
+
+				{/* Coupe en dessous */}
+				<img
+				src={isCupHover ? cupHoverImg : cupImg}
+				alt="Cup"
+				style={{ width: "20%", marginTop: "20px" }}
+				onMouseEnter={() => setIsCupHover(true)}
+				onMouseLeave={() => setIsCupHover(false)}
+				/>
+			</div>
+			)}
+
+			{/* --- GAME OVER SCREEN --- */}
+			{isGameOver && (
+			<div
+				style={{
+				position: "absolute",
+				top: 0,
+				left: 0,
+				width: "100%",
+				height: "100%",
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "center",
-				width: "100%",
-				height: "100%",
-				background: "#A1E5AB",
-				position: "relative",
-			}}
-		>
-			{(showMenu || isGameOver) && (
-				<div
-					style={{
-						position: "absolute",
-						inset: 0,
-						backgroundColor: "rgba(0, 0, 0, 0.5)",
-						pointerEvents: "none",
-					}}
-				/>
-			)}
-
-			<div
-				style={{
-					display: "flex",
-					flexDirection: "row",
-					gap: "20px",
-					alignItems: "center",
+				backgroundColor: "rgba(0,0,0,0.5)",
+				userSelect: "none",
 				}}
 			>
-
-				<div
-					style={{
-						width: "120px",
-						textAlign: "left",
-						color: "#fff",
-						fontSize: "12px",
-						textShadow: "2px 2px 0px #000",
-						userSelect: "none",
-					}}
-				>
-					<div style={{ marginBottom: "20px" }}>
-						<div className="snake-font" >SCORE</div>
-						<div className="snake-font" style={{ fontSize: "16px", marginTop: "5px"}}>{score}</div>
-					</div>
-
-					<div>
-						<div className="snake-font" >TIME</div>
-						<div className="snake-font" style={{ fontSize: "16px", marginTop: "5px" }}>
-							{time}s
-						</div>
-					</div>
-				</div>
-
-				<div
-					style={{
-						textAlign: "center",
-						width: GRID_SIZE * cellSize,
-						height: GRID_SIZE * cellSize,
-						position: "relative",
-					}}
-				>
-					<canvas
-						ref={canvasRef}
-						width={GRID_SIZE * cellSize}
-						height={GRID_SIZE * cellSize}
-					/>
-
-					{/* MENU (pause or start) */}
-					{showMenu && !isGameOver && (
-						<div
-							style={{
-								position: "absolute",
-								top: 0,
-								left: 0,
-								width: "100%",
-								height: "100%",
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "center",
-								backgroundColor: "rgba(0, 0, 0, 0.5)",
-								cursor: "pointer",
-							}}
-							onMouseEnter={() => setIsHover(true)}
-							onMouseLeave={() => setIsHover(false)}
-							onClick={() => {
-								if (isPaused) resumeGame();
-								else startGame();
-							}}
-						>
-							<img
-								src={isHover ? playButtonHover : playButton}
-								alt="Play"
-								style={{ width: "40%" }}
-							/>
-						</div>
-					)}
-
-					{/* GAME OVER SCREEN */}
-					{isGameOver && (
-						<div
-							style={{
-								position: "absolute",
-								top: 0,
-								left: 0,
-								width: "100%",
-								height: "100%",
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "center",
-								backgroundColor: "rgba(0,0,0,0.5)",
-								userSelect: "none",
-							}}
-						>
-							<img
-								src={gameOverImg}
-								alt="Game Over"
-								style={{ width: "80%" }}
-							/>
-						</div>
-					)}
-				</div>
+				<img
+				src={gameOverImg}
+				alt="Game Over"
+				style={{ width: "80%" }}
+				/>
 			</div>
+			)}
 		</div>
+		</div>
+	</div>
 	);
 };
