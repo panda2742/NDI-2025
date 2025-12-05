@@ -16,6 +16,7 @@ const systemInstruction = "Tu te nomme Clipouille.\
   Voila ton environnement tu est sur un site créer a l'occasion de la nuit de l'info pour promouvoir les valeur du NIRD.\
   Ce site est une reconstitution d'un bureau Linux il y a une application Windows qui est une parodie d'une page de connexion très difficile avec une ergonomie horrible, il y a aussi un jeu Snake qui est caché sur le site tu ne doit pas en parler sauf si mentionner et il y a un Leaderboard des joueurs ayant joué au jeu.\
   Tu peut utiliser execute_sql_query comme bon te semble pour envoyé des requète SQL a la base de donnée pour récupéré des informations.\
+  La Table qui contient les donnée du leaderboard est nomé \"scores\" et contient ces champs \"id\" \"player\" \"score\" \"metadata\".\
   Executé les requète SQL que l'utilisateur te demande.\
   Tu peut utiliser manage_window pour manipuler les fenêtre du site tu peut les fermer ou les ouvrir.\
   Voila les nom de fenêtre que tu peut utiliser: Terminale ou Calculatrice ou Finder, des noms similaire peuvent correspondre.\
@@ -50,10 +51,29 @@ const windowToolDeclaration = {
   }
 };
 
-function execute_sql_query(query) {
+function execute_sql_query(args) {
+  const { query } = args;
     console.log(`\n[INFO: Tool Exécuté] Requête SQL interceptée : ${query}`);
     
-    return JSON.stringify({ status: "success", result: `Requête SQL exécutée: ${query}` });
+    try {
+      const lines = db.rawDb.prepare(query).all();
+      const sortieTexte = JSON.stringify(lines);
+      return JSON.stringify({ status: "success", result: sortieTexte });
+    }
+    catch (err) {
+      console.log(`Error SQL TOOL: ${err}`);
+      db.rawDb.exec(`
+        CREATE TABLE IF NOT EXISTS scores (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          player_name TEXT NOT NULL,
+          score INTEGER NOT NULL,
+          metadata TEXT,
+          created_at TEXT NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_scores_score ON scores(score DESC);
+      `);
+      return JSON.stringify({ status: "error", result: err });
+    }
 }
 function manage_window(args) {
     const { window_name, action } = args;
@@ -65,11 +85,11 @@ const availableFunctions = {
     execute_sql_query: execute_sql_query,
     manage_window: manage_window
 };
-async function runChatWithTools(history) {
+async function runChatWithTools(history, model) {
     let newHistory = [...history];
     
     let response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-lite',
+        model: model,
         contents: newHistory, 
         config: {
             systemInstruction: systemInstruction,
@@ -119,7 +139,7 @@ exports.message = async (req, res) => {
     if (!chatHistory) return res.status(400).json({ error: "Invalid request body: missing history" });
 
     try {
-        chatHistory = await runChatWithTools(chatHistory);
+        chatHistory = await runChatWithTools(chatHistory, 'gemini-2.5-flash');
     }
 	catch (error) {
         console.error("\nAPI_CALL Error:", error.message);
@@ -134,7 +154,7 @@ exports.notification = async (req, res) => {
 
     chatHistory.push({ role: "user", parts: [{ text: "Dit moi quelque chose sans me répété" }] });
     try {
-        chatHistory = await runChatWithTools(chatHistory);
+        chatHistory = await runChatWithTools(chatHistory, 'gemini-2.5-flash');
     }
 	  catch (error) {
         console.error("\nAPI_CALL Error:", error.message);

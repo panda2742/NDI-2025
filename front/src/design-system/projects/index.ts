@@ -4,6 +4,7 @@ import { SnakeProject } from "@projects/Snake/snake.tsx";
 import { CalculatorProject } from "@projects/Calculator/calculator.tsx";
 import { ClockProject } from "@projects/Clock/clock.tsx";
 import { LeaderboardProject } from "@projects/Leaderboard/leaderboard.tsx";
+import { FileExplorerProject } from "@projects/FileExplorer/file-explorer.tsx";
 
 export {
     Clipouille,
@@ -12,4 +13,5 @@ export {
     CalculatorProject,
     ClockProject,
     LeaderboardProject,
+    FileExplorerProject,
 };

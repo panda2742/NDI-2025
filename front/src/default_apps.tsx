@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 
 // import { ProjectTemplate } from '@atoms/project_template/project_template.tsx';
 // import { Terminal } from '@molecules/terminal/terminal.tsx';
+import { NirdProject } from "@projects/Nird/nird";
 
 import {
     Clipouille,
@@ -9,7 +10,9 @@ import {
     CalculatorProject,
     ClockProject,
     LeaderboardProject,
+    FileExplorerProject,
     Windous,
+    Snake,
 } from "@projects/index.ts";
 import { Terminal } from "@molecules/terminal/display/terminal";
 import { PlaceholderApp } from "@molecules/placeholder-app/placeholder-app.tsx";
@@ -21,10 +24,16 @@ export interface IApp {
     iconKey:
         | "terminal"
         | "clipouille"
+        | "calc"
+        | "clock"
+        | "leaderboard"
+        | "folder"
         | "windous"
         | "leaderboard"
         | "calc"
-        | "clock";
+        | "clock"
+        | "snake"
+        | "nird";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
     onClick?: () => void;
@@ -32,6 +41,7 @@ export interface IApp {
     hide?: boolean;
     resizable?: boolean;
     defaultSize?: { width: number; height: number };
+    defaultPosition?: { left: number; top: number };
     minWidth?: number;
     minHeight?: number;
     maxWidth?: number;
@@ -40,6 +50,17 @@ export interface IApp {
 
 export const defaultApps: IApp[][] = [
     [
+        {
+            label: "Nird",
+            id: "nird",
+            content: <NirdProject key={"nird"} />,
+            iconKey: "nird",
+            state: 2,
+            type: "application",
+            pinnedToDock: true,
+            defaultSize: { width: 1720, height: 750 },
+            defaultPosition: { left: 100, top: 0 },
+        },
         {
             label: "Clipouille",
             id: "clipouille",
@@ -63,7 +84,7 @@ export const defaultApps: IApp[][] = [
             id: "terminal",
             content: <Terminal key={"contact"} />,
             iconKey: "terminal",
-            state: 2,
+            state: 0,
             type: "application",
             pinnedToDock: true,
         },
@@ -78,158 +99,21 @@ export const defaultApps: IApp[][] = [
             defaultSize: { width: 300, height: 440 },
             pinnedToDock: true,
         },
-    ],
-    [
-        {
-            label: "Firefox",
-            id: "firefox",
-            content: <PlaceholderApp appName="Firefox" iconKey="clipouille" />,
-            iconKey: "clipouille",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Chrome",
-            id: "chrome",
-            content: <PlaceholderApp appName="Chrome" iconKey="clipouille" />,
-            iconKey: "clipouille",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "VS Code",
-            id: "vscode",
-            content: <PlaceholderApp appName="VS Code" iconKey="terminal" />,
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Spotify",
-            id: "spotify",
-            content: <PlaceholderApp appName="Spotify" iconKey="clipouille" />,
-            iconKey: "clipouille",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Discord",
-            id: "discord",
-            content: <PlaceholderApp appName="Discord" iconKey="terminal" />,
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Slack",
-            id: "slack",
-            content: <PlaceholderApp appName="Slack" iconKey="terminal" />,
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Notion",
-            id: "notion",
-            content: <PlaceholderApp appName="Notion" iconKey="terminal" />,
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Figma",
-            id: "figma",
-            content: <PlaceholderApp appName="Figma" iconKey="clipouille" />,
-            iconKey: "clipouille",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Postman",
-            id: "postman",
-            content: <PlaceholderApp appName="Postman" iconKey="terminal" />,
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Docker",
-            id: "docker",
-            content: <PlaceholderApp appName="Docker" iconKey="terminal" />,
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Gimp",
-            id: "gimp",
-            content: <PlaceholderApp appName="Gimp" iconKey="clipouille" />,
-            iconKey: "clipouille",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Blender",
-            id: "blender",
-            content: <PlaceholderApp appName="Blender" iconKey="clipouille" />,
-            iconKey: "clipouille",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "OBS Studio",
-            id: "obs",
-            content: (
-                <PlaceholderApp appName="OBS Studio" iconKey="clipouille" />
-            ),
-            iconKey: "clipouille",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Audacity",
-            id: "audacity",
-            content: <PlaceholderApp appName="Audacity" iconKey="clipouille" />,
-            iconKey: "clipouille",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "VLC",
-            id: "vlc",
-            content: <PlaceholderApp appName="VLC" iconKey="clipouille" />,
-            iconKey: "clipouille",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "LibreOffice",
-            id: "libreoffice",
-            content: (
-                <PlaceholderApp appName="LibreOffice" iconKey="terminal" />
-            ),
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
-        {
-            label: "Thunderbird",
-            id: "thunderbird",
-            content: (
-                <PlaceholderApp appName="Thunderbird" iconKey="terminal" />
-            ),
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
         {
             label: "Files",
             id: "files",
-            content: <PlaceholderApp appName="Files" iconKey="terminal" />,
-            iconKey: "terminal",
+            content: <FileExplorerProject key={"files"} />,
+            iconKey: "folder",
             state: 0,
             type: "application",
+            resizable: true,
+            defaultSize: { width: 600, height: 500 },
+            minWidth: 450,
+            minHeight: 400,
+            pinnedToDock: true,
         },
+    ],
+    [
         {
             label: "Clock",
             id: "clock",
@@ -241,18 +125,10 @@ export const defaultApps: IApp[][] = [
             defaultSize: { width: 320, height: 380 },
         },
         {
-            label: "Settings",
-            id: "settings",
-            content: <PlaceholderApp appName="Settings" iconKey="clipouille" />,
-            iconKey: "clipouille",
-            state: 0,
-            type: "application",
-        },
-        {
             label: "Snake",
             id: "snake",
             content: <SnakeProject key={"snake"} />,
-            iconKey: "clipouille",
+            iconKey: "snake",
             state: 0,
             type: "application",
             hide: true,

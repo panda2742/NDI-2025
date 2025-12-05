@@ -29,7 +29,7 @@ Interface épurée - une question par écran :
 
 ### 3. **Actions prioritaires (cœur du simulateur)**
 #### Interface unique :
-- **Message** : "Choisissez 2 actions pour commencer"
+- **Message** : "Choisissez 2 actions pour commencer"`
 - **3 options maximum** (mélange des meilleures idées NIRD)
 
 #### Options proposées :

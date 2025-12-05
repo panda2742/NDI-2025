@@ -1,5 +1,5 @@
 {
-    "name": "portfolio-2025",
+    "name": "ndi-2025",
     "private": true,
     "version": "0.0.0",
     "type": "module",
@@ -13,6 +13,7 @@
     },
     "dependencies": {
         "@gsap/react": "^2.1.1",
+        "@tailwindcss/vite": "^4.1.17",
         "date-fns": "^4.1.0",
         "gsap": "^3.12.5",
         "interactjs": "^1.10.27",

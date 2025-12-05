@@ -3,10 +3,12 @@ import { ShellState } from "#/store/shell";
 import { clear } from "./commands/clear";
 import { exit } from "./commands/exit";
 import { mkdir } from "./commands/mkdir";
+import { snake } from "./commands/snake";
 
 export type TerminalAction =
 	| "clear"
 	| "exit"
+	| "snake"
 	| ""
 
 export interface TerminalResponse {
@@ -22,5 +24,6 @@ export type CommandMap = Record<string, Command>;
 export const commands: CommandMap = {
 	exit,
 	clear,
-	mkdir
+	mkdir,
+	snake
 }
