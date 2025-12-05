@@ -2,13 +2,8 @@ import { ReactElement } from "react";
 
 // import { ProjectTemplate } from '@atoms/project_template/project_template.tsx';
 // import { Terminal } from '@molecules/terminal/terminal.tsx';
-<<<<<<< HEAD
 import { NirdProject } from '@projects/Nird/nird';
 
-=======
-
-import { NirdProject } from '@projects/Nird/nird';
->>>>>>> d26c793 (Pushing un truc qui marche mais on sait pas comment)
 import {
     Clipouille,
     SnakeProject,
