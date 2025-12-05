@@ -205,3 +205,4 @@ npm run dev
 ```
 
 L'application sera accessible sur `http://localhost:5173`
+Pour genéré une clé API Gemini rendez vous sur ce site `https://aistudio.google.com/app/api-keys` créer une nouvelle clé et copier la
