@@ -2,3 +2,4 @@
 database.debug
 database.db
 test/
+data.sqlite

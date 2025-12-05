@@ -1,35 +1,33 @@
-const express = require("express");
-const path = require('path');
-const dotenv = require('dotenv');
+require('dotenv').config();
+const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
+const limiter = require('./middlewares/rateLimit');
+const scoresRouter = require('./routes/scores.routes');
 
 const app = express();
 
-dotenv.config({ path: './.env' });
-
+app.use(helmet());
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(limiter);
 
-const http = require("http").createServer(app);
-
-
+// routes
 app.use('/api/chatbot', require('./routes/chatbot'));
+app.use('/api/', scoresRouter);
 
+// 404
+app.use((req, res) => res.status(404).json({ error: 'not_found' }));
 
-app.use(function (req, res, next) {
-	res.status(404);
-
-	res.format({
-		json: function () {
-			res.json({ error: 'Not found' });
-		},
-		default: function () {
-			res.type('txt').send('Not found');
-		}
-	})
+// error handler
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: 'internal_error' });
 });
 
-const PORT = process.env.PORT || 3000;
-
-http.listen(PORT, () => {
-	console.log("http://localhost:" + PORT);
+// démarrage
+const PORT = Number(process.env.PORT) || 3000;
+app.listen(PORT, () => {
+  console.log(`API leaderboard démarrée sur http://localhost:${PORT} (DB: ${require('./db').dbPath})`);
 });
