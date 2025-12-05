@@ -101,17 +101,6 @@ export const defaultApps: IApp[][] = [
     ],
     [
         {
-            label: "Thunderbird",
-            id: "thunderbird",
-            content: (
-                <PlaceholderApp appName="Thunderbird" iconKey="terminal" />
-            ),
-            iconKey: "terminal",
-            state: 0,
-            type: "application",
-        },
-
-        {
             label: "Clock",
             id: "clock",
             content: <ClockProject key={"clock"} />,
