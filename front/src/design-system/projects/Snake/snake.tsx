@@ -10,6 +10,7 @@ import playButtonHover from "./assets/playButtonHover.png";
 import cupImg from "./assets/cup.png";
 import cupHoverImg from "./assets/cupHover.png";
 import { openApp } from "../../../api/appController";
+import { svc } from "../../../services/ScoreService.ts";
 import "./style.scss";
 
 export const SnakeProject = () => {
@@ -24,6 +25,9 @@ export const SnakeProject = () => {
 	const [isHover, setIsHover] = useState(false);
 
 	const [score, setScore] = useState(0);
+	const scoreRef = useRef(score);
+	scoreRef.current = score;
+
 	const [time, setTime] = useState(0);
 
 	const [playerName, setPlayerName] = useState<string | null>(null);
@@ -83,6 +87,7 @@ export const SnakeProject = () => {
 		appleRef.current = newApple;
 
 		setScore(0);
+		scoreRef.current = score;
 		setTime(0);
 		setIsRunning(true);
 		setIsPaused(false);
@@ -148,7 +153,7 @@ export const SnakeProject = () => {
 	useEffect(() => {
 		if (!isRunning || isPaused) return;
 
-		const interval = setInterval(() => {
+		const interval = setInterval( async () => {
 			const dir = directionRef.current;
 
 			const newSnake = [...snakeRef.current];
@@ -161,6 +166,8 @@ export const SnakeProject = () => {
 			if (hitSelf || newHead.x < 0 || newHead.y < 0 || newHead.x >= GRID_SIZE || newHead.y >= GRID_SIZE) {
 				setIsRunning(false);
 				setIsGameOver(true);
+				if (playerName)
+					await svc.createScore({player_name : playerName, score: scoreRef.current});
 				return;
 			}
 
@@ -173,6 +180,7 @@ export const SnakeProject = () => {
 				setApple(newApple);
 				appleRef.current = newApple;
 				setScore(prev => prev + 1);
+				scoreRef.current = score;
 			} else {
 				newSnake.unshift(newHead);
 				newSnake.pop();
@@ -187,14 +195,12 @@ export const SnakeProject = () => {
 		return () => clearInterval(interval);
 	}, [isRunning, isPaused]);
 
-	// TIMER
 	useEffect(() => {
 		if (!isRunning || isPaused) return;
 		const timer = setInterval(() => setTime(prev => prev + 1), 1000);
 		return () => clearInterval(timer);
 	}, [isRunning, isPaused]);
 
-	// CANVAS RENDER
 	const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 
 	useEffect(() => {
@@ -366,11 +372,12 @@ export const SnakeProject = () => {
 				</div>
 				<input
 					ref={nameInputRef}
-					className="snake-font"
+					placeholder="Name"
+					className="snake-font placeholder-name"
 					type="text"
 					value={tempName}
 					onChange={(e) => setTempName(e.target.value)}
-					style={{ textAlign: "center", fontSize: "14px", padding: "5px", marginBottom: "20px" }}
+					style={{ textAlign: "center", fontSize: "14px", padding: "5px", marginBottom: "20px"}}
 					onKeyDown={(e) => {
 						if (e.key === "Enter" && tempName.trim()) {
 						setPlayerName(tempName.trim());
