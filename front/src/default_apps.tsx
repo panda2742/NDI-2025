@@ -17,7 +17,8 @@ export interface IApp {
     content: ReactElement | null;
     iconKey:
         | "terminal"
-        | "clipouille";
+        | "clipouille"
+        | "leaderboard";
     state: 0 | 1 | 2;
     type: "application" | "project" | "contact";
     onClick?: () => void;
@@ -224,7 +225,7 @@ export const defaultApps: IApp[][] = [
             label: "Leaderboard",
             id: "leaderboard",
             content: <LeaderboardProject key={"leaderboard"} />,
-            iconKey: "clipouille",
+            iconKey: "leaderboard",
             state: 0,
             type: "application",
             hide: true,
