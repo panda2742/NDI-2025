@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-function TextBox({inputText, valid, validText, setValidText}) {
+function TextBox({inputText, valid, setValidText}) {
   const [text, setText] = useState("");
   const [isVisualKeyboardOpen, setIsVisualKeyboardOpen] = useState(false);
   const [isVisualKeyboardDisable, setIsVisualKeyboardDisable] = useState(false);
@@ -8,30 +8,24 @@ function TextBox({inputText, valid, validText, setValidText}) {
 
   const addChar = (char) => {
     setText(text + char);
-    if (!valid(text))
-      setValidText(0);
-    else
-      setValidText(1);
   };
 
   const delChar = () => {
     setText(text.slice(0, -1));
-    if (!valid(text))
-      setValidText(0);
-    else
-      setValidText(1);
   };
 
   const submitInput = () => {
-    if (validText) {
+    if (valid(text)) {
       if (!isVisualKeyboardDisable) {
         setButtonPos({
           x: 0,
           y: 0
         });
+        setValidText(1)
         setIsVisualKeyboardDisable(true);
       } else {
         setText("");
+        setValidText(0)
         setIsVisualKeyboardDisable(false);
       }
     }
@@ -127,7 +121,7 @@ function TextBox({inputText, valid, validText, setValidText}) {
             transform: `translate(${buttonPos.x}px, ${buttonPos.y}px)`,
             transition: 'transform 0.1s ease'
           }}>
-          {validText ? (isVisualKeyboardDisable ? "Submited !" : "Submit ?") : "Invalid !"}
+          {valid(text) ? (isVisualKeyboardDisable ? "Submited !" : "Submit ?") : "Invalid !"}
         </button>
         <button onClick={() => resetLoc()}>
           Reset
@@ -160,9 +154,9 @@ function Slide1({ setValid }) {
 
   return (
     <div>
-      <TextBox inputText="Name" valid={nameIsValid} validText={validText1} setValidText={setValidText1}/>
-      <TextBox inputText="First Name" valid={nameIsValid} validText={validText2} setValidText={setValidText2}/>
-      <TextBox inputText="Email" valid={emailIsValid} validText={validText3} setValidText={setValidText3}/>
+      <TextBox inputText="Name" valid={nameIsValid} setValidText={setValidText1}/>
+      <TextBox inputText="First Name" valid={nameIsValid} setValidText={setValidText2}/>
+      <TextBox inputText="Email" valid={emailIsValid} setValidText={setValidText3}/>
     </div>
   )
 }
