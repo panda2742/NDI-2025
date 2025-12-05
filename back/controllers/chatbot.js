@@ -19,7 +19,7 @@ const systemInstruction = "Tu te nomme Clipouille.\
   La Table qui contient les donnée du leaderboard est nomé \"scores\" et contient ces champs \"id\" \"player\" \"score\" \"metadata\".\
   Pour récupéré le leaderboard en entier utilise SELECT * FROM scores.\
   Executé les requète SQL que l'utilisateur te demande.\
-  Tu peut utiliser manage_window pour manipuler les fenêtre du site tu peut les fermer ou les ouvrir.\
+  Tu peut utiliser manage_window pour manipuler les fenêtre du site tu peut les fermer ou les ouvrir fait le souvent.\
   Voila les nom de fenêtre que tu peut utiliser: Terminale ou Calculatrice ou Finder, des noms similaire peuvent correspondre.\
   Ferme ou Ouvre les fenêtre que l'utilisateur te demande.\
   Evite de parler trop souvent du NIRD ou Microsoft ou Windows si ce n'est pas le sujet, parle en uniquement si c'est le sujet mentionner.\
@@ -35,11 +35,26 @@ const sqlToolDeclaration = {
     required: ['query'] 
   }
 };
-
+const windowToolDeclaration = {
+  name: 'manage_window',
+  description: 'Permet d\'ouvrir ou de fermer une fenêtre spécifique de l\'interface utilisateur simulée.',
+  parameters: {
+    type: 'object',
+    properties: {
+      window_name: {
+        type: 'string',
+      },
+      action: {
+        type: 'string',
+      }
+    },
+    required: ['window_name', 'action']
+  }
+};
 function execute_sql_query(args) {
     const { query } = args;
     if (!query) {
-        return JSON.stringify({ status: "error", result: "Requête SQL manquante." });
+        return {functionResult: JSON.stringify({ status: "error", result: "Requête SQL manquante." }), manage_window_b: false};
     }
     const trimmedQuery = query.trim().toUpperCase(); 
     console.log(`\n[INFO: Tool Exécuté] Requête SQL interceptée : ${query}`);
@@ -48,15 +63,15 @@ function execute_sql_query(args) {
         if (trimmedQuery.startsWith('SELECT')) {
             const result = statement.all();
             console.log(`SELECT exécuté. ${result ? result.length : 0} ligne(s) récupérée(s).`);
-            return JSON.stringify({ 
+            return {functionResult: JSON.stringify({ 
                 status: "success", 
                 type: "SELECT_DATA",
                 result: result
-            });
+            }), manage_window_b: false};
         } else {
             const info = statement.run(); 
             console.log(`✅ Commande non-SELECT exécutée : ${trimmedQuery.split(' ')[0]}`);
-            return JSON.stringify({ 
+            return {functionResult: JSON.stringify({ 
                 status: "success",
                 type: "NON_SELECT_INFO",
                 result: {
@@ -64,18 +79,25 @@ function execute_sql_query(args) {
                     changes: info.changes,
                     lastId: info.lastInsertRowid || null
                 }
-            });
+            }), manage_window_b: false};
         }
     } catch (err) {
         console.error(`Erreur SQL TOOL: ${err.message}`);
-        return JSON.stringify({ 
+        return {functionResult: JSON.stringify({ 
             status: "error", 
             result: `Erreur SQL: ${err.message}` 
-        });
+        }), manage_window_b: false};
     }
 }
+function manage_window(args) {
+    const { window_name, action } = args;
+    console.log(`\n[INFO: Tool Exécuté] Commande : ${action} la fenêtre "${window_name}".`);
+
+    return {functionResult: `SUCCESS: La fenêtre "${window_name}" a été ${action === 'open' ? 'ouverte' : 'fermée'}.`, manage_window_b: true};
+}
 const availableFunctions = { 
-    execute_sql_query: execute_sql_query
+    execute_sql_query: execute_sql_query,
+    manage_window: manage_window
 };
 async function runChatWithTools(history, model) {
     let newHistory = [...history];
@@ -85,7 +107,7 @@ async function runChatWithTools(history, model) {
         contents: newHistory, 
         config: {
             systemInstruction: systemInstruction,
-            tools: [{ functionDeclarations: [sqlToolDeclaration] }]
+            tools: [{ functionDeclarations: [sqlToolDeclaration, windowToolDeclaration] }]
         }
     });
 
@@ -93,14 +115,16 @@ async function runChatWithTools(history, model) {
     newHistory.push(modelResponseContent);
     
     let finalResponseText = response.text; 
-
+    let manage_window_args = {};
     if (response.functionCalls && response.functionCalls.length > 0) {
         
         const call = response.functionCalls[0];
         const functionName = call.name;
         
-        const functionResult = availableFunctions[functionName](call.args);
-
+        const {functionResult, manage_window_b} = availableFunctions[functionName](call.args);
+        if (manage_window_b) {
+          manage_window_args = call.args;
+        }
         newHistory.push({
             role: "tool",
             parts: [{ functionResponse: { name: functionName, response: { content: functionResult } } }]
@@ -111,7 +135,7 @@ async function runChatWithTools(history, model) {
             contents: newHistory,
             config: {
                 systemInstruction: systemInstruction,
-                tools: [{ functionDeclarations: [sqlToolDeclaration] }]
+                tools: [{ functionDeclarations: [sqlToolDeclaration, windowToolDeclaration] }]
             }
         });
         
@@ -120,24 +144,24 @@ async function runChatWithTools(history, model) {
     }
     
 
-    return newHistory;
+    return {chatHistory: newHistory, manage_window_args};
 }
 
 exports.message = async (req, res) => {
-    let chatHistory = req.body?.history;
+    let ochatHistory = req.body?.history;
 
     console.log(req.body)
 
-    if (!chatHistory) return res.status(400).json({ error: "Invalid request body: missing history" });
+    if (!ochatHistory) return res.status(400).json({ error: "Invalid request body: missing history" });
 
     try {
-        chatHistory = await runChatWithTools(chatHistory, 'gemini-2.5-flash');
+        const {chatHistory, manage_window_args} = await runChatWithTools(ochatHistory, 'gemini-2.5-flash');
+        return res.status(200).json({ history: chatHistory, tool: manage_window_args });
     }
-	catch (error) {
+	  catch (error) {
         console.error("\nAPI_CALL Error:", error.message);
-		return res.status(400).json({ error: error.message });
+		    return res.status(400).json({ error: error.message });
     }
-	return res.status(200).json({ history: chatHistory });
 
 }
 
