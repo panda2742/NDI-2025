@@ -134,6 +134,11 @@ function Ubuntu() {
                                     uniqueKey={app.id}
                                     type={app.type}
                                     resizable={app.resizable}
+                                    defaultSize={app.defaultSize}
+                                    minWidth={app.minWidth}
+                                    minHeight={app.minHeight}
+                                    maxWidth={app.maxWidth}
+                                    maxHeight={app.maxHeight}
                                     key={groupIndex + appIndex}
                                     onMouseDown={(e: any) => {
                                         handleZIndexBoost(e, app);
