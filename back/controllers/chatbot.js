@@ -17,6 +17,7 @@ const systemInstruction = "Tu te nomme Clipouille.\
   Ce site est une reconstitution d'un bureau Linux il y a une application Windows qui est une parodie d'une page de connexion très difficile avec une ergonomie horrible, il y a aussi un jeu Snake qui est caché sur le site tu ne doit pas en parler sauf si mentionner et il y a un Leaderboard des joueurs ayant joué au jeu.\
   Tu peut utiliser execute_sql_query comme bon te semble pour envoyé des requète SQL a la base de donnée pour récupéré des informations.\
   La Table qui contient les donnée du leaderboard est nomé \"scores\" et contient ces champs \"id\" \"player\" \"score\" \"metadata\".\
+  Pour récupéré le leaderboard en entier utilise SELECT * FROM scores.\
   Executé les requète SQL que l'utilisateur te demande.\
   Tu peut utiliser manage_window pour manipuler les fenêtre du site tu peut les fermer ou les ouvrir.\
   Voila les nom de fenêtre que tu peut utiliser: Terminale ou Calculatrice ou Finder, des noms similaire peuvent correspondre.\
@@ -34,22 +35,6 @@ const sqlToolDeclaration = {
     required: ['query'] 
   }
 };
-const windowToolDeclaration = {
-  name: 'manage_window',
-  description: 'Permet d\'ouvrir ou de fermer une fenêtre spécifique de l\'interface utilisateur simulée.',
-  parameters: {
-    type: 'object',
-    properties: {
-      window_name: {
-        type: 'string',
-      },
-      action: {
-        type: 'string',
-      }
-    },
-    required: ['window_name', 'action']
-  }
-};
 
 function execute_sql_query(args) {
   const { query } = args;
@@ -62,28 +47,11 @@ function execute_sql_query(args) {
     }
     catch (err) {
       console.log(`Error SQL TOOL: ${err}`);
-      db.rawDb.exec(`
-        CREATE TABLE IF NOT EXISTS scores (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          player_name TEXT NOT NULL,
-          score INTEGER NOT NULL,
-          metadata TEXT,
-          created_at TEXT NOT NULL
-        );
-        CREATE INDEX IF NOT EXISTS idx_scores_score ON scores(score DESC);
-      `);
       return JSON.stringify({ status: "error", result: err });
     }
 }
-function manage_window(args) {
-    const { window_name, action } = args;
-    console.log(`\n[INFO: Tool Exécuté] Commande : ${action} la fenêtre "${window_name}".`);
-
-    return `SUCCESS: La fenêtre "${window_name}" a été ${action === 'open' ? 'ouverte' : 'fermée'}.`;
-}
 const availableFunctions = { 
-    execute_sql_query: execute_sql_query,
-    manage_window: manage_window
+    execute_sql_query: execute_sql_query
 };
 async function runChatWithTools(history, model) {
     let newHistory = [...history];
@@ -93,7 +61,7 @@ async function runChatWithTools(history, model) {
         contents: newHistory, 
         config: {
             systemInstruction: systemInstruction,
-            tools: [{ functionDeclarations: [sqlToolDeclaration, windowToolDeclaration] }]
+            tools: [{ functionDeclarations: [sqlToolDeclaration] }]
         }
     });
 
@@ -116,10 +84,10 @@ async function runChatWithTools(history, model) {
 
         const toolResponse = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
-            contents: newHistory, 
+            contents: newHistory,
             config: {
                 systemInstruction: systemInstruction,
-                tools: [{ functionDeclarations: [sqlToolDeclaration, windowToolDeclaration] }]
+                tools: [{ functionDeclarations: [sqlToolDeclaration] }]
             }
         });
         
