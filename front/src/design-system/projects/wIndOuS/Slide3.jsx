@@ -1,171 +1,72 @@
 import { useState, useEffect } from 'react'
 
-function TextBox({inputText, valid, validText, setValidText}) {
+function TextBox({ inputText, setValidText }) {
   const [text, setText] = useState("");
-  const [isVisualKeyboardOpen, setIsVisualKeyboardOpen] = useState(false);
-  const [isVisualKeyboardDisable, setIsVisualKeyboardDisable] = useState(false);
-  const [buttonPos, setButtonPos] = useState({ x: 0, y: 0 });
+  const [value, setValue] = useState(0);
 
-  const addChar = (char) => {
-    setText(text + char);
-    if (!valid(text))
-      setValidText(0);
-    else
-      setValidText(1);
-  };
+  const chars = 'qazwsxedcrfvtgbyhnujmikolpAZERTYUIOPQSDFGHJKLMWXCVBN-_.@/';
 
-  const delChar = () => {
-    setText(text.slice(0, -1));
-    if (!valid(text))
-      setValidText(0);
-    else
-      setValidText(1);
-  };
-
-  const submitInput = () => {
-    if (validText) {
-      if (!isVisualKeyboardDisable) {
-        setButtonPos({
-          x: 0,
-          y: 0
-        });
-        setIsVisualKeyboardDisable(true);
-      } else {
-        setText("");
-        setIsVisualKeyboardDisable(false);
-      }
+  const addInput = () => {
+    if (value === chars.length - 1) {
+      // Dernier caractère choisi → supprime le dernier caractère
+      setText((prev) => prev.slice(0, -1));
+      setValidText((prev) => prev.slice(0, -1));
+    } else {
+      setText((prev) => prev + chars[value]);
+      setValidText((prev) => prev + chars[value]);
     }
   };
 
-  const resetLoc = () => {
-      setButtonPos({
-        x: 0,
-        y: 0
-      })
-  };
-
-  const handleMouseMove = (e) => {
-    const button = e.currentTarget.getBoundingClientRect();
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-    const buttonCenterX = button.left + button.width / 2;
-    const buttonCenterY = button.top + button.height / 2;
-
-    const distance = Math.sqrt(
-      Math.pow(mouseX - buttonCenterX, 2) +
-      Math.pow(mouseY - buttonCenterY, 2)
-    );
-
-    if (distance < 200) {
-      const angle = Math.atan2(mouseY - buttonCenterY, mouseX - buttonCenterX);
-      const moveDistance = 20;
-
-      const maxX = window.innerWidth - button.width - 50;
-      const maxY = window.innerHeight - button.height - 50;
-      const minX = -button.left + 50;
-      const minY = -button.top + 50;
-
-      setButtonPos({
-        x: Math.max(minX, Math.min(buttonPos.x - Math.cos(angle) * moveDistance, maxX)),
-        y: Math.max(minY, Math.min(buttonPos.y - Math.sin(angle) * moveDistance, maxY))
-      });
-    }
-  };
-
-  function randomString(str) {
-    const arr = str.split('');
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr.join('');
-  }
-
-
-  function Clavier() {
-    const keys = randomString('qazwsxedcrfvtgbyhnujmikolpAZERTYUIOPQSDFGHJKLMWXCVBN0123456789-_.@/');
-    const keysArray = keys.split('');
-    const lines = [];
-
-    for (let i = 0; i < keysArray.length; i += 15) {
-      lines.push(keysArray.slice(i, i + 15));
-    }
-
-    return (
-      <div>
-        {lines.map((line, indexline) => (
-          <div key={indexline} style={{ display: 'flex', gap: '5px', marginBottom: '5px' }}>
-            {line.map((char) => (
-              <button key={char == '/' ? "delete" : char} onMouseDown={() => char == '/' ? delChar() : addChar(char)}>
-                {char == '/' ? 'DEL' : char}
-              </button>
-            ))}
-          </div>
-        ))}
-      </div>
-    );
-  }
-
+  const incrementValue = () => setValue((prev) => Math.min(chars.length - 1, prev + 1));
+  const decrementValue = () => setValue((prev) => Math.max(0, prev - 1));
 
   return (
     <div>
+      <h5>{inputText}</h5>
       <div>
-        <h5>{inputText}</h5>
-        <div onFocus={() => { setIsVisualKeyboardOpen(true) }} onBlur={() => { setIsVisualKeyboardOpen(false) }}>
+        <input
+          value={text}
+        />
+      </div>
 
-          <input value={text} disabled={isVisualKeyboardDisable}/>
-
-          {isVisualKeyboardOpen &&
-            <div>
-              <Clavier />
-            </div>
-          }
-        </div>
-        <button onClick={() => submitInput()} onMouseMove={handleMouseMove}
-          style={{
-            position: 'relative',
-            transform: `translate(${buttonPos.x}px, ${buttonPos.y}px)`,
-            transition: 'transform 0.1s ease'
-          }}>
-          {validText ? (isVisualKeyboardDisable ? "Submited !" : "Submit ?") : "Invalid !"}
-        </button>
-        <button onClick={() => resetLoc()}>
-          Reset
-        </button>
+      <div style={{ marginTop: "10px" }}>
+        <h5>{value}</h5>
+        <button onClick={addInput}>Add</button>
+        <button onClick={incrementValue}>+</button>
+        <button onClick={decrementValue}>-</button>
       </div>
     </div>
-  )
+  );
 }
 
-function Slide1({ setValid }) {
+function Slide3({ setValid }) {
 
   const [validText1, setValidText1] = useState(0);
   const [validText2, setValidText2] = useState(0);
-  const [validText3, setValidText3] = useState(0);
+  const [validText3, setValidText3] = useState(0); 
+  const [validText4, setValidText4] = useState(0);
+  const [validText5, setValidText5] = useState(0);
+  const [validText6, setValidText6] = useState("");
 
-  useEffect(() => {
-    if (validText1 === 1 && validText2 === 1 && validText3 === 1)
-      setValid(1);
-    else
-      setValid(0);
-  }, [validText1, validText2, validText3]);
-
-  function emailIsValid (email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-  }
-
-  function nameIsValid (text) {
-    return /^[A-Z][a-z]+(?:[-\s][A-Z][a-z]+)*$/.test(text)
+  function clickedButton(){
+    if (validText6 !== ""){
+    alert("We saw that your Fatherś father: " + validText6 + " don´t exists in our database. You should create him a account");
+    setValid(1);
+    }
   }
 
   return (
     <div>
-      <TextBox inputText="Name" valid={nameIsValid} validText={validText1} setValidText={setValidText1}/>
-      <TextBox inputText="First Name" valid={nameIsValid} validText={validText2} setValidText={setValidText2}/>
-      <TextBox inputText="Email" valid={emailIsValid} validText={validText3} setValidText={setValidText3}/>
+    <h4>qazwsxedcrfvtgbyhnujmikolpAZERTYUIOPQSDFGHJKLMWXCVBN-_.@"del"</h4>
+    <TextBox inputText="Mother Name" setValidText={setValidText1}/>
+    <TextBox inputText="Father Name" setValidText={setValidText2}/>
+    <TextBox inputText="Mother Mother Name" setValidText={setValidText3}/>
+    <TextBox inputText="Mother Father Name" setValidText={setValidText4}/>
+    <TextBox inputText="Mother Father Name" setValidText={setValidText5}/>
+    <TextBox inputText="Father Father Name" setValidText={setValidText6}/>
+    <button onClick={clickedButton}>Submit</button>
     </div>
   )
 }
 
-export default Slide1
-
+export default Slide3
