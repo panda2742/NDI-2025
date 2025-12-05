@@ -41,6 +41,42 @@
 			color: #d6dce6;
 		}
 
+		.message.tool {
+			align-self: flex-start;
+			background: linear-gradient(180deg, rgba(12,18,28,0.7), rgba(8,12,18,0.7));
+			border: 1px solid rgba(255,255,255,0.03);
+			color: #cfe8ff;
+		}
+
+		.message.tool .function-response {
+			display: block;
+			background: rgba(10,14,22,0.5);
+			padding: 8px;
+			border-radius: 10px;
+			box-shadow: 0 6px 12px rgba(2,6,12,0.4);
+		}
+
+		.message.tool .function-response .fr-header {
+			font-size: 12px;
+			font-weight: 700;
+			color: rgba(255,255,255,0.9);
+			margin-bottom: 6px;
+		}
+
+		.message.tool .function-response .fr-content {
+			font-family: ui-monospace, monospace;
+			font-size: 13px;
+			line-height: 1.4;
+			color: rgba(230,245,255,0.95);
+			background: transparent;
+			white-space: pre-wrap;
+			word-break: break-word;
+			margin: 0;
+			max-height: 260px;
+			overflow: auto;
+			padding: 4px 2px;
+		}
+
 		.message.error {
 			align-self: flex-start;
 			background: rgba(230, 33, 33, 0.2);

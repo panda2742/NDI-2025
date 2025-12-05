@@ -6,15 +6,21 @@ import '@atoms/project_template/style.scss'
 import SendIcon from '../../../assets/clipouille/send.svg'
 
 type Message = {
-	role: 'user' | 'model' | 'error'
+	role: 'user' | 'model' | 'tool' | 'error'
 	parts: [{
-		text: string
+		text?: string
+		functionResponse?: {
+			name: string
+			response: {
+				content: string
+			}
+		}
 	}]
 }
 
 export const Clipouille = () => {
 	const [messages, setMessages] = useState<Message[]>([
-		{ role: "model", parts: [{ text: "Ceci est un test" }] },
+		// { role: 'tool', parts: [{ functionResponse: { name: "test", response: { content: "result" } } }] }
 	])
 	const [input, setInput] = useState('')
 	const endRef = useRef<HTMLDivElement | null>(null)
@@ -69,11 +75,21 @@ export const Clipouille = () => {
 	return (
 		<div className="clipouille">
 			<div className="messages-box">
-				{messages.map((m, i) => (
-					<div key={i} className={`message ${m.role}`}>
-						{m.parts[0].text}
-					</div>
-				))}
+				{messages.map((m, i) => {
+					const part = m.parts[0];
+					return (
+						<div key={i} className={`message ${m.role}`}>
+							{part.functionResponse ? (
+								<div className="function-response" role="group" aria-label={`function response ${part.functionResponse.name}`}>
+									<div className="fr-header">{part.functionResponse.name}</div>
+									<pre className="fr-content">{part.functionResponse.response.content}</pre>
+								</div>
+							) : (
+								<span>{part.text}</span>
+							)}
+						</div>
+					)
+				})}
 					{isThinking && (
 						<div className={`message model typing`} aria-hidden>
 							<span className="typing-dot"/>
