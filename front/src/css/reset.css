@@ -28,9 +28,9 @@ html {
 }
 
 /* Reapply the pointer cursor for anchor tags */
-a, button {
+/* a, button {
     cursor: revert;
-}
+} */
 
 /* Remove list styles (bullets/numbers) */
 ol, ul, menu, summary {
@@ -121,3 +121,14 @@ input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+
+input[type="checkbox"], input[type="radio"] {
+    -webkit-appearance: checkbox;
+    appearance: checkbox;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    opacity: 1;
+    visibility: visible;
+}
