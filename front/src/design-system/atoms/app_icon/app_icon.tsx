@@ -8,6 +8,9 @@ import Clock from "./icons/clock-icon.svg";
 import Folder from "./icons/folder.svg";
 import Windous from "./icons/win.png";
 import Snake from "./icons/Snake.png";
+import Nird from './icons/nird.png';
+
+import "./style.scss";
 
 const icons = {
     terminal: Terminal,
@@ -18,6 +21,7 @@ const icons = {
     folder: Folder,
     windous: Windous,
     snake: Snake,
+    nird: Nird,
 };
 
 export interface IconProps {
@@ -31,7 +35,8 @@ export interface IconProps {
         | "leaderboard"
         | "folder"
         | "windous"
-        | "snake";
+        | "snake"
+        | "nird";
     index: number;
     onClick?: () => void;
 }
