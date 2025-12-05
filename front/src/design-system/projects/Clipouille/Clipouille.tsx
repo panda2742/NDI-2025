@@ -6,17 +6,17 @@ import '@atoms/project_template/style.scss'
 import SendIcon from '../../../assets/clipouille/send.svg'
 
 type Message = {
-	id: number
-	sender: 'user' | 'assistant'
-	text: string
+	role: 'user' | 'model' | 'error'
+	parts: [{
+		text: string
+	}]
 }
 
 export const Clipouille = () => {
 	const [messages, setMessages] = useState<Message[]>([
-		{ id: 1, sender: 'assistant', text: "Bonjour ! Je suis ton assistant virtuel. Envoie un message pour commencer la discussion." },
+		{ role: "model", parts: [{ text: "Ceci est un test" }] },
 	])
 	const [input, setInput] = useState('')
-	const nextId = useRef(2)
 	const endRef = useRef<HTMLDivElement | null>(null)
 	const [isThinking, setIsThinking] = useState(false)
 	const [isInputShaking, setIsInputShaking] = useState(false)
@@ -32,37 +32,50 @@ export const Clipouille = () => {
 		}, 200);
 	}
 
-	const sendMessage = () => {
+	const sendMessage = async () => {
 		if (isThinking) return shakeInputError();
 		const text = input.trim()
 		if (!text) return shakeInputError();
 
-		const userMsg: Message = { id: nextId.current++, sender: 'user', text }
+		const userMsg: Message = { role: 'user', parts: [{ text: text }] }
 		setMessages((prev) => [...prev, userMsg])
 		setInput('')
 		setIsThinking(true)
 
-		setTimeout(() => {
+		const historyToSend = [...messages, userMsg];
+
+		const response = await fetch("/api/chatbot/message", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ history: historyToSend })
+		});
+
+		const data = await response.json();
+
+		if (response.status !== 200) {
 			const reply: Message = {
-				id: nextId.current++,
-				sender: 'assistant',
-				text: `Réponse fixe de l'assistant : j'ai reçu "${text}".`,
+				role: 'error',
+				parts: [{ text: `Une erreur s'est produite : ${data.error}` }]
 			}
 			setMessages((prev) => [...prev, reply])
 			setIsThinking(false)
-		}, 800)
+			return ;
+		}
+
+		setMessages(data.history);
+		setIsThinking(false);
 	}
 
 	return (
 		<div className="clipouille">
 			<div className="messages-box">
-				{messages.map((m) => (
-					<div key={m.id} className={`message ${m.sender}`}>
-						{m.text}
+				{messages.map((m, i) => (
+					<div key={i} className={`message ${m.role}`}>
+						{m.parts[0].text}
 					</div>
 				))}
 					{isThinking && (
-						<div className={`message assistant typing`} aria-hidden>
+						<div className={`message model typing`} aria-hidden>
 							<span className="typing-dot"/>
 							<span className="typing-dot"/>
 							<span className="typing-dot"/>

@@ -35,9 +35,15 @@
 			color: #e6f9ea;
 		}
 	
-		.message.assistant {
+		.message.model {
 			align-self: flex-start;
 			background: rgba(255, 255, 255, 0.03);
+			color: #d6dce6;
+		}
+
+		.message.error {
+			align-self: flex-start;
+			background: rgba(230, 33, 33, 0.2);
 			color: #d6dce6;
 		}
 

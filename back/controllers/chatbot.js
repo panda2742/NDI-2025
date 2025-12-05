@@ -82,8 +82,13 @@ async function runChatWithTools(history) {
 }
 
 exports.message = async (req, res) => {
-	const chatHistory = req.body.history;
-	try {
+    let chatHistory = req.body?.history;
+
+    console.log(req.body)
+
+    if (!chatHistory) return res.status(400).json({ error: "Invalid request body: missing history" });
+
+    try {
         chatHistory = await runChatWithTools(chatHistory);
     }
 	catch (error) {
