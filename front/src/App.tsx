@@ -11,6 +11,7 @@ import { initAppController } from "#/api/appController.ts";
 import { ToastContainer } from "#/lib/toast/ToastContainer.tsx";
 import { ToastProvider } from "./lib/toast";
 import { Task } from "@atoms/routine.tsx";
+import TEST123 from "./assets/jellyfish_RGB-grey_hex.svg"
 
 import Draggable from "gsap/Draggable";
 import gsap from "gsap";
@@ -177,7 +178,7 @@ function Ubuntu() {
 
                 <div className="jellyfish-layer">
                     <DraggableJellyfish
-                        src="/src/assets/jellyfish_RGB-grey_hex.svg"
+                        src={TEST123}
                         alt="jellyfish"
                     />
                 </div>
